@@ -1,0 +1,13 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    group 'gs.calendar.scheduler'
+    version '1.0-SNAPSHOT'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

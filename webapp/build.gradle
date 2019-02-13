@@ -1,0 +1,4 @@
+plugins {
+    id 'war'
+    id 'org.jetbrains.kotlin.plugin.spring'
+}
