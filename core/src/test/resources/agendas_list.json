@@ -1,0 +1,214 @@
+{
+  "kind": "calendar#calendarList",
+  "etag": "\"p32o9t9n3m2su00g\"",
+  "nextSyncToken": "CLCepuOwueACEiFndWlsbGVybW8ubWF6em9sYUBtZXJjYWRvbGlicmUuY2w=",
+  "items": [
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547490781699000\"",
+      "id": "guillermo.mazzola@mercadolibre.cl",
+      "summary": "guillermo.mazzola@mercadolibre.cl",
+      "timeZone": "America/Santiago",
+      "colorId": "11",
+      "backgroundColor": "#fbe983",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "owner",
+      "defaultReminders": [
+        {
+          "method": "popup",
+          "minutes": 10
+        }
+      ],
+      "notificationSettings": {
+        "notifications": [
+          {
+            "type": "eventCreation",
+            "method": "email"
+          },
+          {
+            "type": "eventChange",
+            "method": "email"
+          },
+          {
+            "type": "eventCancellation",
+            "method": "email"
+          }
+        ]
+      },
+      "primary": true,
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547490785428000\"",
+      "id": "chd2ekml0uejdrv7kn850sfm669e0j17@import.calendar.google.com",
+      "summary": ":TripCase",
+      "timeZone": "UTC",
+      "summaryOverride": "TripCase",
+      "colorId": "2",
+      "backgroundColor": "#d06b64",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "reader",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547490785975000\"",
+      "id": "gmazzo65@gmail.com",
+      "summary": "Personal",
+      "timeZone": "America/Santiago",
+      "summaryOverride": "Personal",
+      "colorId": "6",
+      "backgroundColor": "#ffad46",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "writer",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547659959028000\"",
+      "id": "mercadolibre.com_4dto4umglr2f8uo0ha7ofjmmi0@group.calendar.google.com",
+      "summary": "Birthday's Classi IT CL",
+      "description": "Como hablamos en la Retro del Centro, La idea es que no se nos pase ningún cumple. Y que todos estemos atentos. :) no solamente nuestros Managers",
+      "timeZone": "America/Santiago",
+      "colorId": "24",
+      "backgroundColor": "#a47ae2",
+      "foregroundColor": "#000000",
+      "accessRole": "writer",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1548342862367000\"",
+      "id": "mercadolibre.com_lqdrdoj06g139v2coi210uo6mg@group.calendar.google.com",
+      "summary": "Ingresos 14 de Enero",
+      "description": "Es un calendario con todos los ingresos del 14 de enero.",
+      "timeZone": "America/Santiago",
+      "colorId": "10",
+      "backgroundColor": "#b3dc6c",
+      "foregroundColor": "#000000",
+      "accessRole": "owner",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547659956721000\"",
+      "id": "mercadolibre.com_1csp4kjq6uce47efu0aq1gav3g@group.calendar.google.com",
+      "summary": "Freeze!",
+      "description": "Calendario de freeze. Incluye cualquier cambio en entorno productivo, deploy, cambio de configuración, etc. ",
+      "timeZone": "America/Argentina/Cordoba",
+      "colorId": "18",
+      "backgroundColor": "#b99aff",
+      "foregroundColor": "#000000",
+      "accessRole": "reader",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1549045555236000\"",
+      "id": "mercadolibre.com_jamavitrt8ne6atqc2k3e77p1c@group.calendar.google.com",
+      "summary": "Home Office y Ausencias Classi",
+      "description": "Para que marquemos los días que hacemos home ofice y las ausencias (vacaciones + días de examen)",
+      "timeZone": "America/Argentina/Buenos_Aires",
+      "summaryOverride": "Home Office y Ausencias Classi",
+      "colorId": "1",
+      "backgroundColor": "#ac725e",
+      "foregroundColor": "#000000",
+      "accessRole": "writer",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1549045557370000\"",
+      "id": "f6h423gm5poeoma5tgbr7onp19q4se96@import.calendar.google.com",
+      "summary": "webcal://app.opsgenie.com/webcal/getRecentSchedule?webcalToken=6cedd14f9f8d47a96574f7bc7abdffb051f4f1c8f238d3be7ec42f988fb96f91&scheduleId=0b7cf92f-47a7-472b-98eb-bf67368580aa",
+      "timeZone": "America/Argentina/Buenos_Aires",
+      "summaryOverride": "Guardias",
+      "colorId": "4",
+      "backgroundColor": "#fa573c",
+      "foregroundColor": "#000000",
+      "accessRole": "reader",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547490781018000\"",
+      "id": "#contacts@group.v.calendar.google.com",
+      "summary": "Contacts",
+      "timeZone": "America/Santiago",
+      "summaryOverride": "Birthdays",
+      "colorId": "8",
+      "backgroundColor": "#16a765",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "reader",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    },
+    {
+      "kind": "calendar#calendarListEntry",
+      "etag": "\"1547490787309000\"",
+      "id": "es.cl#holiday@group.v.calendar.google.com",
+      "summary": "Festivos en Chile",
+      "timeZone": "America/Santiago",
+      "summaryOverride": "Festivos en Chile",
+      "colorId": "3",
+      "backgroundColor": "#f83a22",
+      "foregroundColor": "#000000",
+      "selected": true,
+      "accessRole": "reader",
+      "defaultReminders": [],
+      "conferenceProperties": {
+        "allowedConferenceSolutionTypes": [
+          "hangoutsMeet"
+        ]
+      }
+    }
+  ]
+}

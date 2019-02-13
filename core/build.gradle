@@ -7,11 +7,10 @@ plugins {
 dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7'
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-jackson:$retrofitVersion"
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile "com.google.dagger:dagger:$daggerVersion"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev364-1.25.0'
 
     testCompile 'junit:junit:4.12'
 }
