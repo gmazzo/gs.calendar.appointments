@@ -7,10 +7,9 @@ plugins {
 dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    compile "com.google.dagger:dagger:$daggerVersion"
-    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-
+    implementation "com.google.dagger:dagger:$daggerVersion"
     implementation 'com.google.apis:google-api-services-calendar:v3-rev364-1.25.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
     testCompile 'junit:junit:4.12'
 }

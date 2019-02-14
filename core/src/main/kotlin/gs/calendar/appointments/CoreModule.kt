@@ -1,4 +1,4 @@
-package gs.calendar.scheduler
+package gs.calendar.appointments
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.BasicAuthentication
@@ -7,12 +7,13 @@ import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.calendar.Calendar
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import gs.calendar.appointments.agendas.AgendasModule
+import gs.calendar.appointments.booking.BookingModule
 
-@Module
-internal interface CoreModule {
+@Module(includes = [AgendasModule::class, BookingModule::class])
+internal class CoreModule {
 
     @Provides
     fun provideCalendar(transport: HttpTransport,
@@ -28,7 +29,7 @@ internal interface CoreModule {
     @Provides
     fun provideJsonFactory(): JsonFactory = JacksonFactory.getDefaultInstance()
 
-    @Binds
+    @Provides
     fun provideHttpRequestInitializer(): HttpRequestInitializer =
             BasicAuthentication("guillermo.mazzola@mercadolibre.cl", "") // TODO improve this
 

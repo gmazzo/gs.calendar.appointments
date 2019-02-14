@@ -1,7 +1,7 @@
-package gs.calendar.scheduler.agendas
+package gs.calendar.appointments.agendas
 
 import com.google.api.services.calendar.Calendar
-import gs.calendar.scheduler.model.Agenda
+import gs.calendar.appointments.model.Agenda
 import javax.inject.Inject
 
 internal class AgendasServiceImpl @Inject constructor(

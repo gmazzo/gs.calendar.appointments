@@ -1,4 +1,4 @@
-package gs.calendar.scheduler.model
+package gs.calendar.appointments.model
 
 data class Agenda(
         val id: AgendaId,

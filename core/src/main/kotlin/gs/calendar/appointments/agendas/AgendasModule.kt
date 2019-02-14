@@ -1,4 +1,4 @@
-package gs.calendar.scheduler.agendas
+package gs.calendar.appointments.agendas
 
 import dagger.Binds
 import dagger.Module

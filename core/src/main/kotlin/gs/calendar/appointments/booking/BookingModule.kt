@@ -1,4 +1,4 @@
-package gs.calendar.scheduler.booking
+package gs.calendar.appointments.booking
 
 import dagger.Binds
 import dagger.Module

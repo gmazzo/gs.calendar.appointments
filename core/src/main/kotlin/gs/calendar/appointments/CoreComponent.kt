@@ -1,8 +1,8 @@
-package gs.calendar.scheduler
+package gs.calendar.appointments
 
 import dagger.Component
-import gs.calendar.scheduler.agendas.AgendasService
-import gs.calendar.scheduler.booking.BookingService
+import gs.calendar.appointments.agendas.AgendasService
+import gs.calendar.appointments.booking.BookingService
 
 @Component(modules = [CoreModule::class])
 interface CoreComponent {
