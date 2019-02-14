@@ -9,8 +9,10 @@ plugins {
 
 apply(plugin = "io.spring.dependency-management")
 
+val googleClientVersion: String by project
+
 dependencies {
-    project(":core")
+    implementation(project(":core"))
 
     implementation(kotlin("stdlib"))
     implementation("org.springframework.boot:spring-boot-starter-web")

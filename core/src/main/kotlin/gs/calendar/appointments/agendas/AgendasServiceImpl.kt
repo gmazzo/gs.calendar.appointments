@@ -10,8 +10,14 @@ internal class AgendasServiceImpl @Inject constructor(
     private val listRequest = api.calendarList()
             .list()
 
-    override fun list() = listRequest.execute()
-            .let { it.items }
-            .map { Agenda(id = it.id, name = it.summary, color = it.colorId) }
+    override fun list() = listRequest.execute().items
+            .filter { it.accessRole in listOf("owner", "writer") }
+            .map {
+                Agenda(
+                        id = it.id,
+                        name = it.summary,
+                        foregroundColor = it.foregroundColor,
+                        backgroundColor = it.backgroundColor)
+            }
 
 }

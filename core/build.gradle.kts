@@ -5,13 +5,15 @@ plugins {
 }
 
 val daggerVersion: String by project
+val googleClientVersion: String by project
 
 dependencies {
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
+    compile("com.google.apis:google-api-services-calendar:v3-rev364-$googleClientVersion")
+
     implementation(kotlin("stdlib"))
     implementation("com.google.dagger:dagger:$daggerVersion")
-    implementation("com.google.apis:google-api-services-calendar:v3-rev364-1.25.0")
 
     testCompile("junit:junit:4.12")
 }
