@@ -1,7 +1,6 @@
-package gs.calendar.appointments.api
+package gs.calendar.appointments.auth
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
-import gs.calendar.appointments.ApplicationConfiguration.Companion.PARAM_ADMIN_USER
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
