@@ -1,39 +1,43 @@
 package gs.calendar.appointments.auth
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import javax.servlet.http.HttpServletResponse
+import javax.inject.Inject
+import javax.inject.Singleton
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
+import javax.ws.rs.QueryParam
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriInfo
 
-@RestController
-@RequestMapping("auth")
-class AuthController(
-        val flow: GoogleAuthorizationCodeFlow) {
+@Singleton
+@Path("auth")
+@Produces(MediaType.APPLICATION_JSON)
+class AuthController @Inject constructor(
+        private val service: AuthService) {
 
-    @GetMapping
-    fun authorize(response: HttpServletResponse) {
-        response.sendRedirect(flow.newAuthorizationUrl()
-                .setRedirectUri(ServletUriComponentsBuilder.fromCurrentRequestUri()
-                        .path("/handler")
-                        .build()
-                        .toUriString())
-                .build())
-    }
+    @GET
+    fun authorize(@Context uri: UriInfo): Response = Response
+            .seeOther(service.init(uri.requestUriBuilder
+                    .path("handler")
+                    .build()))
+            .build()
 
-    @GetMapping(path = ["handler"])
-    fun handleCallback(@RequestParam("code") code: String, response: HttpServletResponse) {
-        val token = flow.newTokenRequest(code)
-                .setRedirectUri(ServletUriComponentsBuilder.fromCurrentRequestUri()
-                        .build()
-                        .toUriString())
-                .execute()
+    @GET
+    @Path("handler")
+    fun handleCallback(@QueryParam("code") code: String, @Context uri: UriInfo): Response {
+        service.authorize(
+                uri.requestUriBuilder
+                        .replaceQuery(null)
+                        .build(),
+                code)
 
-        flow.createAndStoreCredential(token, PARAM_ADMIN_USER)
-
-        response.sendRedirect("/agendas") // TODO improve this
+        return Response
+                .seeOther(uri.baseUriBuilder
+                        .path("agendas") // TODO improve this
+                        .build())
+                .build()
     }
 
 }

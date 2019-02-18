@@ -2,25 +2,26 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("war")
-    id("org.springframework.boot") version "2.1.2.RELEASE"
     id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.kotlin.plugin.spring")
+    id("org.jetbrains.kotlin.kapt")
 }
 
-apply(plugin = "io.spring.dependency-management")
-
-val googleClientVersion: String by project
+val daggerVersion: String by project
+val restEasyVersion: String by project
 
 dependencies {
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+
     implementation(project(":core"))
 
     implementation(kotlin("stdlib"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    implementation("org.jboss.resteasy:resteasy-netty4:$restEasyVersion")
+    implementation("org.jboss.resteasy:resteasy-jackson2-provider:$restEasyVersion")
+}
 
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+kapt {
+    correctErrorTypes = true
 }
 
 tasks.withType(KotlinCompile::class).all {

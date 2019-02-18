@@ -1,11 +1,34 @@
 package gs.calendar.appointments
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import gs.calendar.appointments.agendas.AgendasController
+import gs.calendar.appointments.auth.AuthController
+import gs.calendar.appointments.booking.BookingController
+import javax.inject.Inject
 
-@SpringBootApplication
-class Application
+class Application : javax.ws.rs.core.Application() {
 
-fun main(args: Array<String>) {
-    runApplication<Application>(*args)
+    @Inject
+    lateinit var authController: AuthController
+
+    @Inject
+    lateinit var agendasController: AgendasController
+
+    @Inject
+    lateinit var bookingController: BookingController
+
+    private val injector by lazy {
+        DaggerApplicationComponent.builder()
+                .coreComponent(DaggerCoreComponent.builder()
+                        .applicationName("Appointments")
+                        .clientSecrets(javaClass.getResource("/google_client_secrets.json"))
+                        .build())
+                .build()
+    }
+
+    override fun getSingletons(): Set<*> {
+        injector.inject(this)
+
+        return setOf(authController, agendasController, bookingController)
+    }
+
 }

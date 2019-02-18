@@ -1,18 +1,22 @@
 package gs.calendar.appointments.booking
 
 import gs.calendar.appointments.model.AgendaId
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import javax.inject.Inject
+import javax.inject.Singleton
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
+import javax.ws.rs.QueryParam
+import javax.ws.rs.core.MediaType
 
-@RestController
-@RequestMapping("booking")
-class BookingController(
-        val service: BookingService) {
+@Singleton
+@Path("booking")
+@Produces(MediaType.APPLICATION_JSON)
+class BookingController @Inject constructor(
+        private val service: BookingService) {
 
-    @GetMapping
-    fun list(@RequestParam("agenda") agendaId: AgendaId) =
+    @GET
+    fun list(@QueryParam("agenda") agendaId: AgendaId) =
             service.list(agendaId)
 
 }

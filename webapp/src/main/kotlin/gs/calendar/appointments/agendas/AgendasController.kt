@@ -1,15 +1,19 @@
 package gs.calendar.appointments.agendas
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import javax.inject.Inject
+import javax.inject.Singleton
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.Produces
+import javax.ws.rs.core.MediaType
 
-@RestController
-@RequestMapping("agendas")
-class AgendasController(
-        val service: AgendasService) {
+@Singleton
+@Path("agendas")
+@Produces(MediaType.APPLICATION_JSON)
+class AgendasController @Inject constructor(
+        private val service: AgendasService) {
 
-    @GetMapping
+    @GET
     fun list() = service.list()
 
 }

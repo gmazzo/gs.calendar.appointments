@@ -6,13 +6,14 @@ import com.google.api.services.calendar.model.EventAttendee
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.BookingSlot
 import javax.inject.Inject
+import javax.inject.Provider
 
 internal class BookingServiceImpl @Inject constructor(
-        api: Calendar) : BookingService {
+        private val api: Provider<Calendar>) : BookingService {
 
-    private val eventsApi = api.events()
-
-    override fun list(agendaId: AgendaId) = eventsApi.list(agendaId)
+    override fun list(agendaId: AgendaId) = api.get()
+            .events()
+            .list(agendaId)
             .execute()
             .items
             .map {

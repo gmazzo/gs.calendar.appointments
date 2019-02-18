@@ -3,14 +3,14 @@ package gs.calendar.appointments.agendas
 import com.google.api.services.calendar.Calendar
 import gs.calendar.appointments.model.Agenda
 import javax.inject.Inject
+import javax.inject.Provider
 
 internal class AgendasServiceImpl @Inject constructor(
-        api: Calendar) : AgendasService {
+        private val api: Provider<Calendar>) : AgendasService {
 
-    private val listRequest = api.calendarList()
+    override fun list() = api.get()
+            .calendarList()
             .list()
-
-    override fun list() = listRequest
             .setMinAccessRole("writer")
             .execute()
             .items
