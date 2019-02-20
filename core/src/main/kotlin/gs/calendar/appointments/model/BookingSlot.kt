@@ -1,7 +1,7 @@
 package gs.calendar.appointments.model
 
 data class BookingSlot(
-        val id: String,
+        val id: BookingSlotId,
         val description: String?,
         val location: String?,
         val extraInfo: String?,
