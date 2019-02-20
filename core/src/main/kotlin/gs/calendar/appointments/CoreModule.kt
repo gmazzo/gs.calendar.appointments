@@ -20,28 +20,29 @@ import javax.inject.Named
 internal class CoreModule {
 
     @Provides
-    @Reusable
-    fun provideCalendar(transport: HttpTransport,
-                        jsonFactory: JsonFactory,
-                        credential: Credential?,
-                        @Named("applicationName") applicationName: String): Calendar =
-            Calendar.Builder(transport, jsonFactory, credential)
-                    .setApplicationName(applicationName)
-                    .build()!!
+    fun provideCalendar(
+        transport: HttpTransport,
+        jsonFactory: JsonFactory,
+        credential: Credential?,
+        @Named("applicationName") applicationName: String
+    ): Calendar =
+        Calendar.Builder(transport, jsonFactory, credential)
+            .setApplicationName(applicationName)
+            .build()!!
 
     @Provides
     @Reusable
     fun provideHttpTransport(): HttpTransport =
-            GoogleNetHttpTransport.newTrustedTransport()
+        GoogleNetHttpTransport.newTrustedTransport()
 
     @Provides
     @Reusable
     fun provideJsonFactory(): JsonFactory =
-            JacksonFactory.getDefaultInstance()
+        JacksonFactory.getDefaultInstance()
 
     @Provides
     @Reusable
     fun provideDataStoreFactory(): DataStoreFactory =
-            MemoryDataStoreFactory()
+        MemoryDataStoreFactory()
 
 }
