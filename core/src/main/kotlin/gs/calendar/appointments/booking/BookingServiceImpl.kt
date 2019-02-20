@@ -10,33 +10,43 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 internal class BookingServiceImpl @Inject constructor(
-        private val api: Provider<Calendar>) : BookingService {
+    private val api: Provider<Calendar>
+) : BookingService {
 
     override fun list(agendaId: AgendaId) = api.get()
-            .events()
-            .list(agendaId)
-            .execute()
-            .items
-            .map(::toSlot)
+        .events()
+        .list(agendaId)
+        .execute()
+        .items
+        .map { it.toSlot() }
 
     override fun book(agendaId: AgendaId, slotId: BookingSlotId, email: String) = api.get()
-            .events()
-            .patch(agendaId, slotId, Event().apply {
-                attendees.add(EventAttendee().apply {
-                    setEmail(email)
+        .events()
+        .get(agendaId, slotId)
+        .execute()
+        .let { event ->
+            api
+                .get()
+                .events()
+                .patch(agendaId, slotId, event.apply {
+                    attendees.add(EventAttendee().apply {
+                        setEmail(email)
+                    })
                 })
-            })
-            .execute()
-            .let(::toSlot)
+                .execute()
+                .let { it.toSlot() }
+        }
 
-    private fun toSlot(event: Event) =
-            BookingSlot(
-                    id = event.id,
-                    description = event.summary,
-                    location = event.location,
-                    extraInfo = event.description,
-                    attendees = event.attendees?.map(EventAttendee::getId)?.toSet() ?: emptySet(),
-                    capacity = event.attendeesCapacity)
+
+    private fun Event.toSlot() =
+        BookingSlot(
+            id = id,
+            description = summary,
+            location = location,
+            extraInfo = description,
+            attendees = attendees?.map(EventAttendee::getId)?.toSet() ?: emptySet(),
+            capacity = attendeesCapacity
+        )
 
     private var Event.attendeesCapacity: Int
         get() = extendedProperties?.shared?.get("attendees.capacity")?.toInt() ?: 0

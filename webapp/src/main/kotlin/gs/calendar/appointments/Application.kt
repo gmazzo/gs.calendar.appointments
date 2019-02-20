@@ -1,8 +1,9 @@
 package gs.calendar.appointments
 
-import gs.calendar.appointments.agendas.AgendasController
-import gs.calendar.appointments.auth.AuthController
-import gs.calendar.appointments.booking.BookingController
+import gs.calendar.appointments.api.RequiredQueryParamValidator
+import gs.calendar.appointments.api.agendas.AgendasController
+import gs.calendar.appointments.api.auth.AuthController
+import gs.calendar.appointments.api.booking.BookingController
 import javax.inject.Inject
 
 class Application : javax.ws.rs.core.Application() {
@@ -16,19 +17,22 @@ class Application : javax.ws.rs.core.Application() {
     @Inject
     lateinit var bookingController: BookingController
 
-    private val injector by lazy {
+    init {
         DaggerApplicationComponent.builder()
-                .coreComponent(DaggerCoreComponent.builder()
-                        .applicationName("Appointments")
-                        .clientSecrets(javaClass.getResource("/google_client_secrets.json"))
-                        .build())
-                .build()
+            .coreComponent(
+                DaggerCoreComponent.builder()
+                    .applicationName("Appointments")
+                    .clientSecrets(javaClass.getResource("/google_client_secrets.json"))
+                    .build()
+            )
+            .build()
+            .inject(this)
     }
 
-    override fun getSingletons(): Set<*> {
-        injector.inject(this)
+    override fun getSingletons() =
+        setOf(authController, agendasController, bookingController)
 
-        return setOf(authController, agendasController, bookingController)
-    }
+    override fun getClasses() =
+        setOf(RequiredQueryParamValidator::class.java)
 
 }

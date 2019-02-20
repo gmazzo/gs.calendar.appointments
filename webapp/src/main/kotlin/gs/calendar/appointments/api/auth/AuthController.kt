@@ -1,5 +1,6 @@
-package gs.calendar.appointments.auth
+package gs.calendar.appointments.api.auth
 
+import gs.calendar.appointments.auth.AuthService
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.GET
@@ -15,29 +16,37 @@ import javax.ws.rs.core.UriInfo
 @Path("auth")
 @Produces(MediaType.APPLICATION_JSON)
 class AuthController @Inject constructor(
-        private val service: AuthService) {
+    private val service: AuthService
+) {
 
     @GET
     fun authorize(@Context uri: UriInfo): Response = Response
-            .seeOther(service.init(uri.requestUriBuilder
+        .seeOther(
+            service.init(
+                uri.requestUriBuilder
                     .path("handler")
-                    .build()))
-            .build()
+                    .build()
+            )
+        )
+        .build()
 
     @GET
     @Path("handler")
     fun handleCallback(@QueryParam("code") code: String, @Context uri: UriInfo): Response {
         service.authorize(
-                uri.requestUriBuilder
-                        .replaceQuery(null)
-                        .build(),
-                code)
+            uri.requestUriBuilder
+                .replaceQuery(null)
+                .build(),
+            code
+        )
 
         return Response
-                .seeOther(uri.baseUriBuilder
-                        .path("agendas") // TODO improve this
-                        .build())
-                .build()
+            .seeOther(
+                uri.baseUriBuilder
+                    .path("agendas") // TODO improve this
+                    .build()
+            )
+            .build()
     }
 
 }

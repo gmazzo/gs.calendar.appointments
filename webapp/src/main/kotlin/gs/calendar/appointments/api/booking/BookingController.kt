@@ -1,5 +1,7 @@
-package gs.calendar.appointments.booking
+package gs.calendar.appointments.api.booking
 
+import gs.calendar.appointments.api.Required
+import gs.calendar.appointments.booking.BookingService
 import gs.calendar.appointments.model.AgendaId
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,10 +15,11 @@ import javax.ws.rs.core.MediaType
 @Path("booking")
 @Produces(MediaType.APPLICATION_JSON)
 class BookingController @Inject constructor(
-        private val service: BookingService) {
+    private val service: BookingService
+) {
 
     @GET
-    fun list(@QueryParam("agenda") agendaId: AgendaId) =
-            service.list(agendaId)
+    fun list(@Required @QueryParam("agenda") agendaId: AgendaId) =
+        service.list(agendaId)
 
 }
