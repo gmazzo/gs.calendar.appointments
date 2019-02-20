@@ -1,6 +1,7 @@
 package gs.calendar.appointments.api.auth
 
 import gs.calendar.appointments.auth.AuthService
+import io.swagger.v3.oas.annotations.Operation
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.GET
@@ -32,6 +33,7 @@ class AuthController @Inject constructor(
 
     @GET
     @Path("handler")
+    @Operation(hidden = true)
     fun handleCallback(@QueryParam("code") code: String, @Context uri: UriInfo): Response {
         service.authorize(
             uri.requestUriBuilder

@@ -9,5 +9,7 @@ fun main(args: Array<String>) {
             application = Application()
         }
         start()
+
+        println("Visit https://petstore.swagger.io/?url=http://localhost:$port/openapi.json to explore the API")
     }
 }
