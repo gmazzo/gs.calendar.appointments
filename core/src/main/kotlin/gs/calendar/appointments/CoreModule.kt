@@ -5,8 +5,6 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.client.util.store.DataStoreFactory
-import com.google.api.client.util.store.MemoryDataStoreFactory
 import com.google.api.services.calendar.Calendar
 import dagger.Module
 import dagger.Provides
@@ -39,10 +37,5 @@ internal class CoreModule {
     @Reusable
     fun provideJsonFactory(): JsonFactory =
         JacksonFactory.getDefaultInstance()
-
-    @Provides
-    @Reusable
-    fun provideDataStoreFactory(): DataStoreFactory =
-        MemoryDataStoreFactory()
 
 }

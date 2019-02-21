@@ -1,5 +1,7 @@
 package gs.calendar.appointments
 
+import com.google.api.client.util.store.DataStoreFactory
+import com.google.api.client.util.store.MemoryDataStoreFactory
 import dagger.BindsInstance
 import dagger.Component
 import gs.calendar.appointments.agendas.AgendasService
@@ -18,15 +20,23 @@ interface CoreComponent {
     fun provideBookingService(): BookingService
 
     @Component.Builder
-    interface Builder {
+    @Suppress("LeakingThis")
+    abstract class Builder {
+
+        init {
+            dataStoreFactory(MemoryDataStoreFactory())
+        }
 
         @BindsInstance
-        fun applicationName(@Named("applicationName") applicationName: String): Builder
+        abstract fun applicationName(@Named("applicationName") applicationName: String): Builder
 
         @BindsInstance
-        fun clientSecrets(@Named("clientSecrets") clientSecrets: URL): Builder
+        abstract fun clientSecrets(@Named("clientSecrets") clientSecrets: URL): Builder
 
-        fun build(): CoreComponent
+        @BindsInstance
+        abstract fun dataStoreFactory(dataStoreFactory: DataStoreFactory): Builder
+
+        abstract fun build(): CoreComponent
 
     }
 

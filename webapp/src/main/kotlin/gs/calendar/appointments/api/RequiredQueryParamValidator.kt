@@ -1,6 +1,7 @@
 package gs.calendar.appointments.api
 
 import javax.ws.rs.QueryParam
+import javax.ws.rs.WebApplicationException
 import javax.ws.rs.container.ContainerRequestContext
 import javax.ws.rs.container.ContainerRequestFilter
 import javax.ws.rs.container.ResourceInfo
@@ -21,10 +22,14 @@ class RequiredQueryParamValidator(
             .toSet()
 
         if (missing.isNotEmpty()) {
-            context.abortWith(
+            throw WebApplicationException(
                 Response
                     .status(Response.Status.BAD_REQUEST.statusCode)
-                    .entity("Missing query params: ${missing.joinToString(", ")}")
+                    .entity(
+                        mapOf(
+                            "requiredParams" to missing
+                        )
+                    )
                     .build()
             )
         }

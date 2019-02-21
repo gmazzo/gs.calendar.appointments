@@ -20,7 +20,7 @@ internal class BookingServiceImpl @Inject constructor(
         .items
         .map { it.toSlot() }
 
-    override fun book(agendaId: AgendaId, slotId: BookingSlotId, email: String) = api.get()
+    override fun book(agendaId: AgendaId, slotId: BookingSlotId, bookEmail: String) = api.get()
         .events()
         .get(agendaId, slotId)
         .execute()
@@ -28,11 +28,21 @@ internal class BookingServiceImpl @Inject constructor(
             api
                 .get()
                 .events()
+                // FIXME just one iteration, not the whole series
                 .patch(agendaId, slotId, event.apply {
-                    attendees.add(EventAttendee().apply {
-                        setEmail(email)
-                    })
+                    val attendee = EventAttendee().apply {
+                        email = bookEmail
+                        responseStatus = "accepted"
+                    }
+
+                    if (attendees == null) {
+                        attendees = mutableListOf(attendee)
+
+                    } else {
+                        attendees.add(attendee)
+                    }
                 })
+                .setSendUpdates("all")
                 .execute()
                 .let { it.toSlot() }
         }
@@ -44,7 +54,7 @@ internal class BookingServiceImpl @Inject constructor(
             description = summary,
             location = location,
             extraInfo = description,
-            attendees = attendees?.map(EventAttendee::getId)?.toSet() ?: emptySet(),
+            attendees = attendees?.map(EventAttendee::getEmail)?.toSet() ?: emptySet(),
             capacity = attendeesCapacity
         )
 
