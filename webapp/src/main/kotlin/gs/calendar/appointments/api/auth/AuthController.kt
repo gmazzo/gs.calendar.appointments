@@ -23,7 +23,7 @@ class AuthController @Inject constructor(
     @GET
     fun authorize(@Context uri: UriInfo): Response = Response
         .seeOther(
-            service.init(
+            service.authorize(
                 uri.requestUriBuilder
                     .path("handler")
                     .build()

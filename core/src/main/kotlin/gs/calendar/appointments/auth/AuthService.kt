@@ -4,8 +4,8 @@ import java.net.URI
 
 interface AuthService {
 
-    fun init(callbackUri: URI): URI
+    fun authorize(callbackUri: URI): URI
 
-    fun authorize(callbackUri: URI, code: String)
+    fun authorize(callbackUri: URI, authorizationCode: String)
 
 }
