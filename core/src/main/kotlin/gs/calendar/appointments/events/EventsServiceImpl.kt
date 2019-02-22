@@ -1,45 +1,39 @@
-package gs.calendar.appointments.booking
+package gs.calendar.appointments.events
 
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventAttendee
 import gs.calendar.appointments.model.AgendaId
-import gs.calendar.appointments.model.BookingSlot
-import gs.calendar.appointments.model.BookingSlotId
+import gs.calendar.appointments.model.Slot
+import gs.calendar.appointments.model.SlotId
 import javax.inject.Inject
 import javax.inject.Provider
 
-internal class BookingServiceImpl @Inject constructor(
+internal class EventsServiceImpl @Inject constructor(
     private val api: Provider<Calendar>
-) : BookingService {
+) : EventsService {
 
-    override fun list(agendaId: AgendaId) = api.get()
+    override fun list(agendaId: AgendaId, flatInstances: Boolean) = api.get()
         .events()
         .list(agendaId)
+        .setSingleEvents(flatInstances)
         .execute()
         .items
         .map { it.toSlot() }
 
-    override fun book(agendaId: AgendaId, slotId: BookingSlotId, bookEmail: String) = api.get()
+    override fun invite(agendaId: AgendaId, slotId: SlotId, email: String) = api.get()
         .events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
-            api
-                .get()
+            api.get()
                 .events()
-                // FIXME just one iteration, not the whole series
                 .patch(agendaId, slotId, event.apply {
-                    val attendee = EventAttendee().apply {
-                        email = bookEmail
-                        responseStatus = "accepted"
-                    }
-
-                    if (attendees == null) {
-                        attendees = mutableListOf(attendee)
-
-                    } else {
-                        attendees.add(attendee)
+                    attendees = (attendees ?: mutableListOf()).apply {
+                        add(EventAttendee().also {
+                            it.email = email
+                            it.responseStatus = "accepted"
+                        })
                     }
                 })
                 .setSendUpdates("all")
@@ -49,7 +43,7 @@ internal class BookingServiceImpl @Inject constructor(
 
 
     private fun Event.toSlot() =
-        BookingSlot(
+        Slot(
             id = id,
             description = summary,
             location = location,
@@ -61,13 +55,11 @@ internal class BookingServiceImpl @Inject constructor(
     private var Event.attendeesCapacity: Int
         get() = extendedProperties?.shared?.get("attendees.capacity")?.toInt() ?: 0
         set(value) {
-            if (extendedProperties == null) {
-                extendedProperties = Event.ExtendedProperties()
+            extendedProperties = (extendedProperties ?: Event.ExtendedProperties()).apply {
+                shared = (shared ?: mutableMapOf()).apply {
+                    this["attendees.capacity"] = value.toString()
+                }
             }
-            if (extendedProperties.shared == null) {
-                extendedProperties.shared = mutableMapOf()
-            }
-            extendedProperties.shared["attendees.capacity"] = value.toString()
         }
 
 }

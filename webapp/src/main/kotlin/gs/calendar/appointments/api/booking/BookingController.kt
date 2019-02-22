@@ -1,9 +1,9 @@
 package gs.calendar.appointments.api.booking
 
 import gs.calendar.appointments.api.Required
-import gs.calendar.appointments.booking.BookingService
+import gs.calendar.appointments.events.EventsService
 import gs.calendar.appointments.model.AgendaId
-import gs.calendar.appointments.model.BookingSlotId
+import gs.calendar.appointments.model.SlotId
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.*
@@ -13,19 +13,19 @@ import javax.ws.rs.core.MediaType
 @Path("booking")
 @Produces(MediaType.APPLICATION_JSON)
 class BookingController @Inject constructor(
-    private val service: BookingService
+    private val service: EventsService
 ) {
 
     @GET
     fun list(@Required @QueryParam("agenda") agendaId: AgendaId) =
-        service.list(agendaId)
+        service.list(agendaId, true)
 
     @PUT
     fun book(
         @Required @QueryParam("agenda") agendaId: AgendaId,
-        @Required @QueryParam("slot") slotId: BookingSlotId,
+        @Required @QueryParam("slot") slotId: SlotId,
         @Required @QueryParam("email") email: String
     ) =
-        service.book(agendaId, slotId, email)
+        service.invite(agendaId, slotId, email)
 
 }

@@ -6,7 +6,7 @@ import dagger.BindsInstance
 import dagger.Component
 import gs.calendar.appointments.agendas.AgendasService
 import gs.calendar.appointments.auth.AuthService
-import gs.calendar.appointments.booking.BookingService
+import gs.calendar.appointments.events.EventsService
 import java.net.URL
 import javax.inject.Named
 
@@ -17,7 +17,7 @@ interface CoreComponent {
 
     fun provideAgendasService(): AgendasService
 
-    fun provideBookingService(): BookingService
+    fun provideEventsService(): EventsService
 
     @Component.Builder
     @Suppress("LeakingThis")
