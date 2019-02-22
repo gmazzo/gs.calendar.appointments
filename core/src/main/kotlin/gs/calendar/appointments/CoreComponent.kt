@@ -1,5 +1,9 @@
 package gs.calendar.appointments
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.http.HttpTransport
+import com.google.api.client.json.JsonFactory
+import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.store.DataStoreFactory
 import com.google.api.client.util.store.MemoryDataStoreFactory
 import dagger.BindsInstance
@@ -24,6 +28,9 @@ interface CoreComponent {
     abstract class Builder {
 
         init {
+            applicationName("Appointments")
+            httpTransport(GoogleNetHttpTransport.newTrustedTransport())
+            jsonFactory(JacksonFactory.getDefaultInstance())
             dataStoreFactory(MemoryDataStoreFactory())
         }
 
@@ -32,6 +39,12 @@ interface CoreComponent {
 
         @BindsInstance
         abstract fun clientSecrets(@Named("clientSecrets") clientSecrets: URL): Builder
+
+        @BindsInstance
+        abstract fun httpTransport(httpTransport: HttpTransport): Builder
+
+        @BindsInstance
+        abstract fun jsonFactory(jsonFactory: JsonFactory): Builder
 
         @BindsInstance
         abstract fun dataStoreFactory(dataStoreFactory: DataStoreFactory): Builder

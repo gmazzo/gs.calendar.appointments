@@ -31,7 +31,6 @@ class Application : javax.ws.rs.core.Application() {
         DaggerApplicationComponent.builder()
             .coreComponent(
                 DaggerCoreComponent.builder()
-                    .applicationName("Appointments")
                     .clientSecrets(javaClass.getResource("/google_client_secrets.json"))
                     .dataStoreFactory(FileDataStoreFactory(File("storage")))
                     .build()

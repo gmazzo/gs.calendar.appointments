@@ -6,6 +6,7 @@ import com.google.api.services.calendar.model.EventAttendee
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -46,6 +47,8 @@ internal class EventsServiceImpl @Inject constructor(
         Slot(
             id = id,
             description = summary,
+            startTime = start?.dateTime?.value?.let(::Date),
+            endTime = end?.dateTime?.value?.let(::Date),
             location = location,
             extraInfo = description,
             attendees = attendees?.map(EventAttendee::getEmail)?.toSet() ?: emptySet(),
@@ -53,7 +56,7 @@ internal class EventsServiceImpl @Inject constructor(
         )
 
     private var Event.attendeesCapacity: Int
-        get() = extendedProperties?.shared?.get("attendees.capacity")?.toInt() ?: 0
+        get() = extendedProperties?.shared?.get("attendees.capacity")?.toInt() ?: 1
         set(value) {
             extendedProperties = (extendedProperties ?: Event.ExtendedProperties()).apply {
                 shared = (shared ?: mutableMapOf()).apply {
