@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriInfo
 @Singleton
 @Path("auth")
 @Produces(MediaType.APPLICATION_JSON)
-class AuthController @Inject constructor(
+class AuthResource @Inject constructor(
     private val service: AuthService
 ) {
 

@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType
 @Singleton
 @Path("booking")
 @Produces(MediaType.APPLICATION_JSON)
-class BookingController @Inject constructor(
+class BookingResource @Inject constructor(
     private val service: EventsService
 ) {
 

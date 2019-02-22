@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType
 @Singleton
 @Path("agendas")
 @Produces(MediaType.APPLICATION_JSON)
-class AgendasController @Inject constructor(
+class AgendasResource @Inject constructor(
     private val service: AgendasService
 ) {
 

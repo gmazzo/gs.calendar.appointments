@@ -3,9 +3,9 @@ package gs.calendar.appointments
 import com.google.api.client.util.store.FileDataStoreFactory
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.RequiredQueryParamValidator
-import gs.calendar.appointments.api.agendas.AgendasController
-import gs.calendar.appointments.api.auth.AuthController
-import gs.calendar.appointments.api.booking.BookingController
+import gs.calendar.appointments.api.agendas.AgendasResource
+import gs.calendar.appointments.api.auth.AuthResource
+import gs.calendar.appointments.api.booking.BookingResource
 import io.swagger.v3.jaxrs2.SwaggerSerializers
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource
@@ -19,13 +19,13 @@ class Application : javax.ws.rs.core.Application() {
     lateinit var corsFilter: CorsFilter
 
     @Inject
-    lateinit var authController: AuthController
+    lateinit var authResource: AuthResource
 
     @Inject
-    lateinit var agendasController: AgendasController
+    lateinit var agendasResource: AgendasResource
 
     @Inject
-    lateinit var bookingController: BookingController
+    lateinit var bookingResource: BookingResource
 
     init {
         DaggerApplicationComponent.builder()
@@ -42,9 +42,9 @@ class Application : javax.ws.rs.core.Application() {
 
     override fun getSingletons() = setOf(
         corsFilter,
-        authController,
-        agendasController,
-        bookingController
+        authResource,
+        agendasResource,
+        bookingResource
     )
 
     override fun getClasses() = setOf(
