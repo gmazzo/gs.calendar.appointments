@@ -4,6 +4,7 @@ plugins {
     id("war")
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.kapt")
+    id("com.github.gmazzo.buildconfig") version "1.1.0"
 }
 
 val daggerVersion: String by project
@@ -22,14 +23,39 @@ dependencies {
     implementation("org.jboss.resteasy:resteasy-netty4:$restEasyVersion")
 }
 
+buildConfig {
+    buildConfigField(
+        type = "java.io.File",
+        name = "DATA_STORE_FILE",
+        value = "File(\"${rootProject.buildDir.relativeTo(rootDir)}/storage\")"
+    )
+}
+
 kapt {
     correctErrorTypes = true
 }
 
 tasks {
+
     withType(KotlinCompile::class).all {
         kotlinOptions {
             jvmTarget = "1.8"
         }
     }
+
+    create("generateResourcesConstants") {
+        doFirst {
+            val resources = sourceSets["main"].resources
+
+            resources.files.forEach {
+                val name = it.name.toUpperCase().replace("\\W".toRegex(), "_")
+                val path = it.relativeTo(resources.srcDirs.iterator().next())
+
+                buildConfig.buildConfigField("java.io.File", "RESOURCE_$name", "File(\"$path\")")
+            }
+        }
+
+        tasks["generateBuildConfig"].dependsOn(this)
+    }
+
 }

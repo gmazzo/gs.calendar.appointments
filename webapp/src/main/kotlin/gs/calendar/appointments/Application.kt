@@ -10,7 +10,6 @@ import io.swagger.v3.jaxrs2.SwaggerSerializers
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource
 import org.jboss.resteasy.plugins.interceptors.CorsFilter
-import java.io.File
 import javax.inject.Inject
 
 class Application : javax.ws.rs.core.Application() {
@@ -31,8 +30,8 @@ class Application : javax.ws.rs.core.Application() {
         DaggerApplicationComponent.builder()
             .coreComponent(
                 DaggerCoreComponent.builder()
-                    .clientSecrets(javaClass.getResource("/google_client_secrets.json"))
-                    .dataStoreFactory(FileDataStoreFactory(File("storage")))
+                    .clientSecrets(javaClass.getResource("/$RESOURCE_GOOGLE_CLIENT_SECRETS_JSON"))
+                    .dataStoreFactory(FileDataStoreFactory(DATA_STORE_FILE))
                     .build()
             )
             .build()
