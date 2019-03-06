@@ -8,12 +8,11 @@ import javax.ws.rs.ext.Provider
 @Provider
 class DefaultExceptionMapper : ExceptionMapper<Exception> {
 
-    override fun toResponse(exception: Exception): Response =
-        Response
-            .status(exception.statusCode)
-            .entity(exception.message)
-            .build()
-            .also { exception.printStackTrace() }
+    override fun toResponse(exception: Exception): Response = Response
+        .status(exception.statusCode)
+        .entity(exception.message)
+        .build()
+        .also { exception.printStackTrace() }
 
     private val Exception.statusCode
         get() =
