@@ -1,5 +1,6 @@
 package gs.calendar.appointments.api.auth
 
+import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.auth.AuthService
 import io.swagger.v3.oas.annotations.Operation
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriBuilder
 import javax.ws.rs.core.UriInfo
 
 @Singleton
@@ -34,7 +36,7 @@ class AuthResource @Inject constructor(
     @GET
     @Path("handler")
     @Operation(hidden = true)
-    fun handleCallback(@QueryParam("code") code: String, @Context uri: UriInfo): Response {
+    fun handleCallback(@Context uri: UriInfo, @QueryParam("code") code: String): Response {
         service.authorize(
             uri.requestUriBuilder
                 .replaceQuery(null)
@@ -44,8 +46,7 @@ class AuthResource @Inject constructor(
 
         return Response
             .seeOther(
-                uri.baseUriBuilder
-                    .path("agendas") // TODO improve this
+                UriBuilder.fromResource(AgendasResource::class.java)
                     .build()
             )
             .build()
