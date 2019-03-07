@@ -41,6 +41,9 @@ interface CoreComponent {
         abstract fun clientSecrets(@Named("clientSecrets") clientSecrets: URL): Builder
 
         @BindsInstance
+        abstract fun adminUserId(@Named("adminUserId") adminUserId: String): Builder
+
+        @BindsInstance
         abstract fun httpTransport(httpTransport: HttpTransport): Builder
 
         @BindsInstance

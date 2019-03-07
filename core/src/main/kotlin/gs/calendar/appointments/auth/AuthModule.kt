@@ -14,36 +14,46 @@ import dagger.Reusable
 import java.net.URL
 import javax.inject.Named
 
-internal const val PARAM_ADMIN_USER = "admin_user"
-
 @Module(includes = [AuthModule.Bindings::class])
 internal class AuthModule {
 
     @Provides
     @Reusable
-    fun getClientCredential(jsonFactory: JsonFactory,
-                            @Named("clientSecrets") clientSecrets: URL): GoogleClientSecrets =
-            GoogleClientSecrets.load(jsonFactory, clientSecrets.openStream().reader())
+    fun provideClientCredential(
+        jsonFactory: JsonFactory,
+        @Named("clientSecrets") clientSecrets: URL
+    ): GoogleClientSecrets =
+        GoogleClientSecrets.load(jsonFactory, clientSecrets.openStream().reader())
 
     @Provides
     @Reusable
-    fun googleAuthorizationCodeFlow(jsonFactory: JsonFactory,
-                                    httpTransport: HttpTransport,
-                                    clientCredential: GoogleClientSecrets,
-                                    dataStoreFactory: DataStoreFactory): GoogleAuthorizationCodeFlow =
-            GoogleAuthorizationCodeFlow
-                    .Builder(
-                            httpTransport,
-                            jsonFactory,
-                            clientCredential,
-                            listOf(CalendarScopes.CALENDAR, CalendarScopes.CALENDAR_EVENTS))
-                    .setDataStoreFactory(dataStoreFactory)
-                    .setAccessType("offline")
-                    .build()
+    fun provideGoogleAuthorizationCodeFlow(
+        jsonFactory: JsonFactory,
+        httpTransport: HttpTransport,
+        clientCredential: GoogleClientSecrets,
+        dataStoreFactory: DataStoreFactory
+    ): GoogleAuthorizationCodeFlow =
+        GoogleAuthorizationCodeFlow
+            .Builder(
+                httpTransport,
+                jsonFactory,
+                clientCredential,
+                listOf(
+                    "https://www.googleapis.com/auth/userinfo.email",
+                    CalendarScopes.CALENDAR,
+                    CalendarScopes.CALENDAR_EVENTS
+                )
+            )
+            .setDataStoreFactory(dataStoreFactory)
+            .setAccessType("offline")
+            .build()
 
     @Provides
-    fun credential(flow: GoogleAuthorizationCodeFlow): Credential? =
-            flow.loadCredential(PARAM_ADMIN_USER)
+    fun provideCredential(
+        flow: GoogleAuthorizationCodeFlow,
+        @Named("adminUserId") adminUserId: String
+    ): Credential? =
+        flow.loadCredential(adminUserId)
 
     @Module
     interface Bindings {

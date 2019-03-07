@@ -22,31 +22,30 @@ class AuthResource @Inject constructor(
     private val service: AuthService
 ) {
 
+    @Context
+    private lateinit var uri: UriInfo
+
+    private val callbackUri by lazy {
+        uri.requestUriBuilder
+            .path(javaClass, "handleCallback")
+            .build()
+    }
+
     @GET
-    fun authorize(@Context uri: UriInfo): Response = Response
-        .seeOther(
-            service.authorize(
-                uri.requestUriBuilder
-                    .path("handler")
-                    .build()
-            )
-        )
+    fun authorize(): Response = Response
+        .seeOther(service.authorize(callbackUri))
         .build()
 
     @GET
     @Path("handler")
     @Operation(hidden = true)
-    fun handleCallback(@Context uri: UriInfo, @QueryParam("code") code: String): Response {
-        service.authorize(
-            uri.requestUriBuilder
-                .replaceQuery(null)
-                .build(),
-            code
-        )
+    fun handleCallback(@QueryParam("code") code: String): Response {
+        service.authorize(callbackUri, code)
 
         return Response
             .seeOther(
-                UriBuilder.fromResource(AgendasResource::class.java)
+                UriBuilder
+                    .fromResource(AgendasResource::class.java)
                     .build()
             )
             .build()

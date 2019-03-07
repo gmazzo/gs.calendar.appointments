@@ -3,6 +3,7 @@ package gs.calendar.appointments
 import com.google.api.client.util.store.FileDataStoreFactory
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.RequiredQueryParamValidator
+import gs.calendar.appointments.api.StaticResource
 import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.api.auth.AuthResource
 import gs.calendar.appointments.api.booking.BookingResource
@@ -30,8 +31,9 @@ class Application : javax.ws.rs.core.Application() {
         DaggerApplicationComponent.builder()
             .coreComponent(
                 DaggerCoreComponent.builder()
-                    .clientSecrets(javaClass.getResource("/$RESOURCE_GOOGLE_CLIENT_SECRETS_JSON"))
-                    .dataStoreFactory(FileDataStoreFactory(DATA_STORE_FILE))
+                    .adminUserId(BuildConfig.ADMIN_USER_ID)
+                    .clientSecrets(javaClass.getResource(BuildConfig.RESOURCE_GOOGLE_CLIENT_SECRETS_JSON))
+                    .dataStoreFactory(FileDataStoreFactory(BuildConfig.DATA_STORE_FILE))
                     .build()
             )
             .build()
@@ -47,6 +49,7 @@ class Application : javax.ws.rs.core.Application() {
 
     override fun getClasses() = setOf(
         // resources
+        StaticResource::class.java,
         OpenApiResource::class.java,
         AcceptHeaderOpenApiResource::class.java,
 

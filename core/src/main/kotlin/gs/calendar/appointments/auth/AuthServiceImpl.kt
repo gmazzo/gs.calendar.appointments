@@ -14,12 +14,14 @@ internal class AuthServiceImpl @Inject constructor(
         .setRedirectUri(callbackUri.toString())
         .toURI()
 
-    override fun authorize(callbackUri: URI, authorizationCode: String) {
+    override fun authorize(callbackUri: URI, authorizationCode: String): AuthService.Token {
         val token = flow.newTokenRequest(authorizationCode)
             .setRedirectUri(callbackUri.toString())
             .execute()
 
-        flow.createAndStoreCredential(token, PARAM_ADMIN_USER)
+        val userId = token.parseIdToken().payload.email
+        val credential = flow.createAndStoreCredential(token, userId)
+        return AuthService.Token(userId, credential)
     }
 
 }
