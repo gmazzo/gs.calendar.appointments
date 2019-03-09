@@ -3,7 +3,6 @@ package gs.calendar.appointments
 import com.google.api.client.util.store.FileDataStoreFactory
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.RequiredQueryParamValidator
-import gs.calendar.appointments.api.StaticResource
 import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.api.auth.AuthResource
 import gs.calendar.appointments.api.booking.BookingResource
@@ -12,7 +11,9 @@ import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource
 import org.jboss.resteasy.plugins.interceptors.CorsFilter
 import javax.inject.Inject
+import javax.ws.rs.ApplicationPath
 
+@ApplicationPath(BuildConfig.API_CONTEXT)
 class Application : javax.ws.rs.core.Application() {
 
     @Inject
@@ -32,7 +33,7 @@ class Application : javax.ws.rs.core.Application() {
             .coreComponent(
                 DaggerCoreComponent.builder()
                     .adminUserId(BuildConfig.ADMIN_USER_ID)
-                    .clientSecrets(javaClass.getResource(BuildConfig.RESOURCE_GOOGLE_CLIENT_SECRETS_JSON))
+                    .clientSecrets(javaClass.getResource("/" + BuildConfig.RESOURCE_GOOGLE_CLIENT_SECRETS_JSON))
                     .dataStoreFactory(FileDataStoreFactory(BuildConfig.DATA_STORE_FILE))
                     .build()
             )
@@ -49,7 +50,6 @@ class Application : javax.ws.rs.core.Application() {
 
     override fun getClasses() = setOf(
         // resources
-        StaticResource::class.java,
         OpenApiResource::class.java,
         AcceptHeaderOpenApiResource::class.java,
 

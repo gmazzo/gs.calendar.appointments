@@ -1,15 +1,31 @@
 package gs.calendar.appointments
 
-import org.jboss.resteasy.core.ResteasyDeploymentImpl
-import org.jboss.resteasy.plugins.server.netty.NettyJaxrsServer
+import io.undertow.Handlers.resource
+import io.undertow.server.handlers.resource.ClassPathResourceManager
+import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer
+import org.jboss.resteasy.util.PortProvider
+import javax.ws.rs.ApplicationPath
 
 fun main(args: Array<String>) {
-    NettyJaxrsServer().apply {
-        deployment = ResteasyDeploymentImpl().apply {
-            application = Application()
-        }
+    UndertowJaxrsServer().apply {
+        deploy(Application::class.java)
+        addResourcePrefixPath(
+            "/",
+            resource(ClassPathResourceManager(javaClass.classLoader, BuildConfig.RESOURCE_PUBLIC))
+        )
         start()
-
-        println("Visit https://petstore.swagger.io/?url=http://localhost:$port/openapi.json to explore the API")
     }
+
+    printWelcomeMessage()
+}
+
+private fun printWelcomeMessage() {
+    val appPath = Application::class.java
+        .getAnnotation(ApplicationPath::class.java)
+        ?.let { it.value + "/" }
+        ?: ""
+
+    val url = "http://${PortProvider.getHost()}:${PortProvider.getPort()}/${appPath}openapi.json"
+
+    println("Visit https://petstore.swagger.io/?url=$url to explore the API")
 }
