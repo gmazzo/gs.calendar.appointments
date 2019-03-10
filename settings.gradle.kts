@@ -10,4 +10,4 @@ pluginManagement {
     }
 }
 
-include("core", "webapp")
+include("core", "webapp", "frontend")

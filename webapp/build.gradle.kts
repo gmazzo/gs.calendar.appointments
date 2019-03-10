@@ -24,6 +24,7 @@ dependencies {
 }
 
 buildConfig {
+    buildConfigField("String", "APP_NAME", "\"$group\"")
     buildConfigField("String", "API_CONTEXT", "\"api\"")
     buildConfigField("String", "ADMIN_USER_ID", "\"gmazzo65@gmail.com\"")
     buildConfigField(
@@ -45,18 +46,26 @@ tasks {
         }
     }
 
-    create("generateResourcesConstants") {
-        doFirst {
-            val resources = sourceSets["main"].resources
+    val copyFrontendBuild = create<Copy>("copyFrontendBuild") {
+        val frontend = evaluationDependsOn(":frontend")
+        val outputDir = file("$buildDir/frontend/public")
 
-            resources.srcDirs
-                .flatMap { it.listFiles()?.asIterable() ?: emptyList() }
-                .forEach {
-                    val name = it.name.toUpperCase().replace("\\W".toRegex(), "_")
-                    val path = it.relativeTo(it.parentFile)
+        dependsOn(frontend.tasks["build"])
+        from(frontend.buildDir)
+        into(outputDir)
+
+        sourceSets["main"].resources.srcDir(outputDir.parentFile)
+    }
+
+    create("generateResourcesConstants") {
+        dependsOn(copyFrontendBuild)
+        doFirst {
+            sourceSets["main"].resources.asFileTree
+                .visit(Action<FileVisitDetails> {
+                    val name = path.toUpperCase().replace("\\W".toRegex(), "_")
 
                     buildConfig.buildConfigField("String", "RESOURCE_$name", "\"$path\"")
-                }
+                })
         }
 
         tasks["generateBuildConfig"].dependsOn(this)
