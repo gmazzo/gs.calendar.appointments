@@ -1,11 +1,6 @@
 plugins {
-    id("com.moowork.node") version "1.2.0"
+    id("org.jetbrains.kotlin.jvm") apply false
+    id("com.github.node-gradle.node") version "1.3.0"
 }
 
-task("build") {
-    dependsOn("npm_run_build")
-}
-
-task<Delete>("clean") {
-    delete(buildDir)
-}
+apply(plugin = "kotlin2js")

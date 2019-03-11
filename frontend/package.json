@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "globalize": "^1.4.2",
     "react": "^16.8.4",
     "react-big-calendar": "^0.20.3",
     "react-dom": "^16.8.4"
