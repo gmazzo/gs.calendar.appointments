@@ -7,7 +7,7 @@ import org.jboss.resteasy.util.PortProvider
 import java.io.File
 import javax.ws.rs.ApplicationPath
 
-fun main(args: Array<String>) {
+fun main() {
     UndertowJaxrsServer().apply {
         deploy(Application::class.java)
         deploy(

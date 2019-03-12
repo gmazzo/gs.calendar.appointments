@@ -1,8 +1,7 @@
-package app
+package gs.calendar.appointments.frontend
 
-import react.*
-import react.dom.*
-import button.*
+import react.RBuilder
+import react.dom.div
 
 fun RBuilder.app() {
     div {

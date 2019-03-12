@@ -38,6 +38,7 @@ kapt {
     correctErrorTypes = true
 }
 
+
 tasks {
 
     withType(KotlinCompile::class).all {
@@ -47,11 +48,11 @@ tasks {
     }
 
     val copyFrontendBuild = create<Copy>("copyFrontendBuild") {
-        val frontend = evaluationDependsOn(":frontend")
+        val frontendBuildTask = evaluationDependsOn(":frontend").tasks["assembleStaticBundle"]
         val outputDir = file("$buildDir/frontend/public")
 
-        dependsOn(frontend.tasks["build"])
-        from(frontend.buildDir)
+        dependsOn(frontendBuildTask)
+        from(frontendBuildTask.outputs)
         into(outputDir)
 
         sourceSets["main"].resources.srcDir(outputDir.parentFile)
