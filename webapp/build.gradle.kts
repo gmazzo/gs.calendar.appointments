@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.kapt")
-    id("com.github.gmazzo.buildconfig") version "1.2.1"
+    id("com.github.gmazzo.buildconfig") version "1.3.1"
 }
 
 val daggerVersion: String by project
@@ -58,13 +58,15 @@ tasks {
     }
 
     create("generateResourcesConstants") {
+        val resConfig = buildConfig.forClass("Resources")
+
         dependsOn(copyFrontendBuild)
         doFirst {
             sourceSets["main"].resources.asFileTree
                 .visit(Action<FileVisitDetails> {
                     val name = path.toUpperCase().replace("\\W".toRegex(), "_")
 
-                    buildConfig.buildConfigField("String", "RESOURCE_$name", "\"$path\"")
+                    resConfig.buildConfigField("String", name, "\"$path\"")
                 })
         }
 

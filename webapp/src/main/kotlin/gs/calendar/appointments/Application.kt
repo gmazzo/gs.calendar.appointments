@@ -33,7 +33,7 @@ class Application : javax.ws.rs.core.Application() {
             .coreComponent(
                 DaggerCoreComponent.builder()
                     .adminUserId(BuildConfig.ADMIN_USER_ID)
-                    .clientSecrets(javaClass.getResource("/" + BuildConfig.RESOURCE_GOOGLE_CLIENT_SECRETS_JSON))
+                    .clientSecrets(javaClass.getResource("/" + Resources.GOOGLE_CLIENT_SECRETS_JSON))
                     .dataStoreFactory(FileDataStoreFactory(BuildConfig.DATA_STORE_FILE))
                     .build()
             )

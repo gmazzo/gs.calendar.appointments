@@ -15,8 +15,8 @@ fun main(args: Array<String>) {
                 .setDeploymentName(BuildConfig.APP_NAME)
                 .setContextPath("/")
                 .setClassLoader(javaClass.classLoader)
-                .setResourceManager(ClassPathResourceManager(javaClass.classLoader, BuildConfig.RESOURCE_PUBLIC))
-                .addWelcomePage(File(BuildConfig.RESOURCE_PUBLIC_INDEX_HTML).relativeTo(File(BuildConfig.RESOURCE_PUBLIC)).path)
+                .setResourceManager(ClassPathResourceManager(javaClass.classLoader, Resources.PUBLIC))
+                .addWelcomePage(File(Resources.PUBLIC_INDEX_HTML).relativeTo(File(Resources.PUBLIC)).path)
         )
         start()
     }
