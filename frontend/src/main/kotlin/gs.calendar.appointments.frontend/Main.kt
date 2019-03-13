@@ -18,6 +18,14 @@ fun main() {
                 }
                 +"Submit"
             }
+            Calendar {
+                attrs {
+                    localizer = Calendar.asDynamic().momentLocalizer(moment)
+                    events = arrayOf()
+                    startAccessor = "start"
+                    endAccessor = "end"
+                }
+            }
         }
     }
 }

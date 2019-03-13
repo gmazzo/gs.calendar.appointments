@@ -12,11 +12,13 @@ repositories {
     maven { url "https://dl.bintray.com/kotlin/kotlin-js-wrappers" }
 }
 
+def kotlinReactVersion = "$reactVersion-pre.69-kotlin-$kotlinVersion"
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-html-js:0.6.12"
-    compile "org.jetbrains:kotlin-react:$reactVersion-pre.69-kotlin-$kotlinVersion"
-    compile "org.jetbrains:kotlin-react-dom:$reactVersion-pre.69-kotlin-$kotlinVersion"
+    compile "org.jetbrains:kotlin-react:$kotlinReactVersion"
+    compile "org.jetbrains:kotlin-react-dom:$kotlinReactVersion"
 
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion"
 }
@@ -29,6 +31,8 @@ kotlinFrontend {
         dependency("react", reactVersion)
         dependency("react-dom", reactVersion)
         dependency("@material-ui/core", "3.9.2")
+        dependency("react-big-calendar", "0.20.3")
+        dependency("moment", "2.24.0")
     }
 
     sourceMaps = true
