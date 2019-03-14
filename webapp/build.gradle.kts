@@ -48,11 +48,13 @@ tasks {
     }
 
     val copyFrontendBuild = create<Copy>("copyFrontendBuild") {
-        val frontendBuildTask = evaluationDependsOn(":frontend").tasks["assembleStaticBundle"]
+        val frontend = evaluationDependsOn(":frontend")
+        val frontendBundleTask = frontend.tasks["bundle"]
         val outputDir = file("$buildDir/frontend/public")
 
-        dependsOn(frontendBuildTask)
-        from(frontendBuildTask.outputs)
+        dependsOn(frontendBundleTask)
+        from(frontendBundleTask.outputs)
+        from(frontend.file("src/main/web"))
         into(outputDir)
 
         sourceSets["main"].resources.srcDir(outputDir.parentFile)
