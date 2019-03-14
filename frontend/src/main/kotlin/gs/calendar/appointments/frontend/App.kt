@@ -8,7 +8,7 @@ fun RBuilder.app() {
         +"Hello World!"
     }
     Button {
-        //attrs.asDynamic.className = "submit-button"
+        attrs.className = "submit-button"
         +"Submit"
     }
 }

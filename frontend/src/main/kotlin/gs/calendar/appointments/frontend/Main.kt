@@ -22,7 +22,7 @@ fun main() {
             }
             Calendar {
                 attrs {
-                    localizer = Calendar.asDynamic().momentLocalizer(moment)
+                    localizer = moment.asLocalizer()
                     events = arrayOf()
                     startAccessor = "start"
                     endAccessor = "end"
