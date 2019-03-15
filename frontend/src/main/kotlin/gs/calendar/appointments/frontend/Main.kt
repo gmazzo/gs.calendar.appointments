@@ -21,6 +21,7 @@ fun main() {
             Calendar {
                 attrs {
                     localizer = moment.asLocalizer()
+                    culture = window.navigator.language
                     events = arrayOf()
                     startAccessor = "start"
                     endAccessor = "end"

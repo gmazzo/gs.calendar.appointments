@@ -20,6 +20,7 @@ external interface Localizer
 
 external interface CalendarProps : RProps {
     var localizer: Localizer
+    var culture: String
     var events: Array<CalendarEvent>
     var startAccessor: String
     var endAccessor: String
