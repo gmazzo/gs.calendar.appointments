@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.imports
 
 import kotlinext.js.require
 import react.RClass

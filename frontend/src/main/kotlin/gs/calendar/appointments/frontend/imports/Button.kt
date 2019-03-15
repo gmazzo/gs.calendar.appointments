@@ -1,6 +1,6 @@
 @file:JsModule("@material-ui/core/Button")
 
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.imports
 
 import org.w3c.dom.events.Event
 import react.RClass
