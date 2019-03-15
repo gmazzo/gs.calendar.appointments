@@ -1,17 +1,19 @@
 // FIXME for some reason this doesn't compile on KTS
 
-def deployDir = file("$buildDir/static")
-
 kotlinFrontend {
+    downloadNodeJsVersion = 'latest'
+
     npm {
         dependency("@material-ui/core")
         dependency("moment")
         dependency("react", reactVersion)
         dependency("react-big-calendar")
         dependency("react-dom", reactVersion)
-        dependency("style-loader")
 
         devDependency("karma")
+        devDependency("style-loader")
+        devDependency("css-loader")
+        devDependency("less-loader")
     }
 
     sourceMaps = true

@@ -6,7 +6,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 fun main() {
-    // FIXME kotlinext.js.require("react-big-calendar/lib/css/react-big-calendar.css")
+    kotlinext.js.require("react-big-calendar/lib/css/react-big-calendar.css")
 
     window.onload = {
         render(document.getElementById("root")!!) {
