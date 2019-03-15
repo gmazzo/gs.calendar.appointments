@@ -5,6 +5,7 @@ kotlinFrontend {
 
     npm {
         dependency("@material-ui/core")
+        dependency("less")
         dependency("moment")
         dependency("react", reactVersion)
         dependency("react-big-calendar")
