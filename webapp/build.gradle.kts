@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.kotlin.kapt")
-    id("com.github.gmazzo.buildconfig") version "1.3.1"
+    id("com.github.gmazzo.buildconfig") version "1.3.3"
 }
 
 val daggerVersion: String by project
@@ -38,42 +38,37 @@ kapt {
     correctErrorTypes = true
 }
 
+tasks.withType(KotlinCompile::class).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
-tasks {
+val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
+    val frontend = evaluationDependsOn(":frontend")
+    val frontendBundleTask = frontend.tasks["bundle"]
+    val outputDir = file("$buildDir/frontend/public")
 
-    withType(KotlinCompile::class).all {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
+    dependsOn(frontendBundleTask)
+    from(frontendBundleTask.outputs)
+    from(frontend.file("src/main/web"))
+    into(outputDir)
+
+    sourceSets["main"].resources.srcDir(outputDir.parentFile)
+}
+
+task("generateResourcesConstants") {
+    val resConfig = buildConfig.forClass("Resources")
+
+    dependsOn(copyFrontendBuild)
+    doFirst {
+        sourceSets["main"].resources.asFileTree
+            .visit(Action<FileVisitDetails> {
+                val name = path.toUpperCase().replace("\\W".toRegex(), "_")
+
+                resConfig.buildConfigField("String", name, "\"$path\"")
+            })
     }
 
-    val copyFrontendBuild = create<Copy>("copyFrontendBuild") {
-        val frontend = evaluationDependsOn(":frontend")
-        val frontendBundleTask = frontend.tasks["bundle"]
-        val outputDir = file("$buildDir/frontend/public")
-
-        dependsOn(frontendBundleTask)
-        from(frontendBundleTask.outputs)
-        from(frontend.file("src/main/web"))
-        into(outputDir)
-
-        sourceSets["main"].resources.srcDir(outputDir.parentFile)
-    }
-
-    create("generateResourcesConstants") {
-        val resConfig = buildConfig.forClass("Resources")
-
-        dependsOn(copyFrontendBuild)
-        doFirst {
-            sourceSets["main"].resources.asFileTree
-                .visit(Action<FileVisitDetails> {
-                    val name = path.toUpperCase().replace("\\W".toRegex(), "_")
-
-                    resConfig.buildConfigField("String", name, "\"$path\"")
-                })
-        }
-
-        tasks["generateBuildConfig"].dependsOn(this)
-    }
-
+    tasks["generateBuildConfig"].dependsOn(this)
 }
