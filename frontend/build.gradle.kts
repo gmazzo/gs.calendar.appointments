@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -25,8 +26,32 @@ dependencies {
     testCompile("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
 }
 
-// FIXME for some reason the 'kotlin-frontend-plugin' doesn't compile on KTS
-apply(from = "build-compat.gradle")
+kotlinFrontend {
+    downloadNodeJsVersion = "latest"
+    sourceMaps = true
+
+    npm {
+        dependency("@material-ui/core")
+        dependency("less")
+        dependency("moment")
+        dependency("react", reactVersion)
+        dependency("react-big-calendar")
+        dependency("react-dom", reactVersion)
+
+        devDependency("karma")
+        devDependency("style-loader")
+        devDependency("css-loader")
+        devDependency("less-loader")
+    }
+
+    bundle("webpack") {
+        this as WebPackExtension // TODO this should not be required once the frontend plugin is stable
+        bundleName = "main"
+        contentPath = file("src/main/web")
+        mode = "development"
+    }
+
+}
 
 tasks.withType(Kotlin2JsCompile::class) {
     kotlinOptions {

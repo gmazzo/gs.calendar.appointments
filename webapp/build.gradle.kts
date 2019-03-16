@@ -57,6 +57,8 @@ val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
     sourceSets["main"].resources.srcDir(outputDir.parentFile)
 }
 
+val generateBuildConfig by tasks
+
 task("generateResourcesConstants") {
     val resConfig = buildConfig.forClass("Resources")
 
@@ -70,5 +72,5 @@ task("generateResourcesConstants") {
             })
     }
 
-    tasks["generateBuildConfig"].dependsOn(this)
+    generateBuildConfig.dependsOn(this)
 }
