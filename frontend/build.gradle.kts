@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("kotlin2js")
-    id("org.jetbrains.kotlin.frontend") version "0.0.45"
+    kotlin("frontend") version "0.0.45"
 }
 
 repositories {
@@ -18,12 +18,14 @@ val kotlinVersion: String by project
 val kotlinReactVersion = "$reactVersion-pre.69-kotlin-$kotlinVersion"
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
-    compile("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
-    compile("org.jetbrains:kotlin-react:$kotlinReactVersion")
-    compile("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
+    implementation(project(":model"))
+    implementation(kotlin("stdlib-js"))
+    
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
+    implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
+    implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
 
-    testCompile("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
 }
 
 kotlinFrontend {
@@ -32,6 +34,7 @@ kotlinFrontend {
 
     npm {
         dependency("@material-ui/core")
+        dependency("axios")
         dependency("less")
         dependency("moment")
         dependency("react", reactVersion)

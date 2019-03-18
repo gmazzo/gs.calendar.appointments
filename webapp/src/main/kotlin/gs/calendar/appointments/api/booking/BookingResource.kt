@@ -2,8 +2,6 @@ package gs.calendar.appointments.api.booking
 
 import gs.calendar.appointments.api.Required
 import gs.calendar.appointments.events.EventsService
-import gs.calendar.appointments.model.AgendaId
-import gs.calendar.appointments.model.SlotId
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.*
@@ -17,13 +15,13 @@ class BookingResource @Inject constructor(
 ) {
 
     @GET
-    fun list(@Required @QueryParam("agenda") agendaId: AgendaId) =
+    fun list(@Required @QueryParam("agenda") agendaId: String) =
         service.list(agendaId, true)
 
     @PUT
     fun book(
-        @Required @QueryParam("agenda") agendaId: AgendaId,
-        @Required @QueryParam("slot") slotId: SlotId,
+        @Required @QueryParam("agenda") agendaId: String,
+        @Required @QueryParam("slot") slotId: String,
         @Required @QueryParam("email") email: String
     ) =
         service.invite(agendaId, slotId, email)

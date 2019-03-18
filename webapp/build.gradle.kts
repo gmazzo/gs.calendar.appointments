@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.kotlin.kapt")
+    kotlin("jvm")
+    kotlin("kapt")
     id("com.github.gmazzo.buildconfig") version "1.3.3"
 }
 
@@ -50,7 +49,7 @@ val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
     val outputDir = file("$buildDir/frontend/public")
 
     dependsOn(frontendBundleTask)
-    from(frontendBundleTask.outputs)
+    from(frontend.file("${frontend.buildDir}/bundle"))
     from(frontend.file("src/main/web"))
     into(outputDir)
 

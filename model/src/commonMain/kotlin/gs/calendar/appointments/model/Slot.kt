@@ -1,9 +1,7 @@
 package gs.calendar.appointments.model
 
-import java.util.*
-
 data class Slot(
-    val id: SlotId,
+    val id: String,
     val description: String?,
     val startTime: Date?,
     val endTime: Date?,

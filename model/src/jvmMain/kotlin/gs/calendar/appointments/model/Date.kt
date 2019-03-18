@@ -1,3 +1,3 @@
 package gs.calendar.appointments.model
 
-typealias AgendaId = String
+actual typealias Date = java.util.Date
