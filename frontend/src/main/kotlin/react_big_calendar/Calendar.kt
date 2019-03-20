@@ -1,13 +1,15 @@
-@file:Suppress("unused")
-
-package gs.calendar.appointments.frontend.imports
+package react_big_calendar
 
 import kotlinext.js.require
+import moment.Moment
 import react.RClass
 import react.RProps
 import kotlin.js.Date
 
+@Suppress("unused")
 private val css = require("react-big-calendar/lib/css/react-big-calendar.css")
+
+@Suppress("unused")
 private val less = require("react-big-calendar/lib/less/styles.less")
 
 data class CalendarEvent(

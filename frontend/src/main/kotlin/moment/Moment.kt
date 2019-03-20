@@ -1,4 +1,4 @@
-package gs.calendar.appointments.frontend.imports
+package moment
 
 import react.RClass
 import react.RProps

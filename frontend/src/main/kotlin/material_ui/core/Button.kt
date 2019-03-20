@@ -1,6 +1,6 @@
-@file:JsModule("@material-ui/core/Button")
+@file:JsModule("@material-ui/core")
 
-package gs.calendar.appointments.frontend.imports
+package material_ui.core
 
 import org.w3c.dom.events.Event
 import react.RClass
@@ -13,5 +13,5 @@ external interface ButtonProps : RProps {
     var href: String
 }
 
-@JsName("default")
+@JsName("Button")
 external val Button: RClass<ButtonProps>

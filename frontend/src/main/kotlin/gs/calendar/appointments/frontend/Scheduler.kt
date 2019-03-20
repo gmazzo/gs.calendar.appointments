@@ -1,14 +1,14 @@
 package gs.calendar.appointments.frontend
 
-import gs.calendar.appointments.frontend.imports.Calendar
-import gs.calendar.appointments.frontend.imports.CalendarEvent
-import gs.calendar.appointments.frontend.imports.asLocalizer
-import gs.calendar.appointments.frontend.imports.moment
+import moment.moment
 import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.br
+import react_big_calendar.Calendar
+import react_big_calendar.CalendarEvent
+import react_big_calendar.asLocalizer
 import kotlin.browser.window
 
 private val momentLocalizer = moment.asLocalizer()

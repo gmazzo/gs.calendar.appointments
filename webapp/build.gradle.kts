@@ -3,9 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     kotlin("kapt")
-    id("com.github.gmazzo.buildconfig") version "1.3.3"
+    id("com.github.gmazzo.buildconfig")
 }
 
+val appName: String by project
 val daggerVersion: String by project
 val restEasyVersion: String by project
 
@@ -23,7 +24,7 @@ dependencies {
 }
 
 buildConfig {
-    buildConfigField("String", "APP_NAME", "\"$group\"")
+    buildConfigField("String", "APP_NAME", "\"$appName\"")
     buildConfigField("String", "API_CONTEXT", "\"api\"")
     buildConfigField("String", "ADMIN_USER_ID", "\"gmazzo65@gmail.com\"")
     buildConfigField(

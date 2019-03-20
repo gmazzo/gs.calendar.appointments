@@ -1,9 +1,12 @@
+import com.github.gmazzo.gradle.plugins.BuildConfigLanguage
+import com.github.gmazzo.gradle.plugins.tasks.BuildConfigTask
 import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("kotlin2js")
     kotlin("frontend") version "0.0.45"
+    id("com.github.gmazzo.buildconfig")
 }
 
 repositories {
@@ -13,6 +16,7 @@ repositories {
     maven(url = "https://dl.bintray.com/kotlin/kotlin-js-wrappers")
 }
 
+val appName: String by project
 val reactVersion: String by project
 val kotlinVersion: String by project
 val kotlinReactVersion = "$reactVersion-pre.69-kotlin-$kotlinVersion"
@@ -20,12 +24,18 @@ val kotlinReactVersion = "$reactVersion-pre.69-kotlin-$kotlinVersion"
 dependencies {
     implementation(project(":model"))
     implementation(kotlin("stdlib-js"))
-    
+
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
     implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
+}
+
+buildConfig {
+    language(BuildConfigLanguage.KOTLIN)
+
+    buildConfigField("String", "APP_NAME", "\"$appName\"")
 }
 
 kotlinFrontend {
@@ -64,4 +74,8 @@ tasks.withType(Kotlin2JsCompile::class) {
         moduleKind = "commonjs"
         main = "call"
     }
+}
+
+tasks.withType(BuildConfigTask::class) {
+    addGeneratedAnnotation = false
 }
