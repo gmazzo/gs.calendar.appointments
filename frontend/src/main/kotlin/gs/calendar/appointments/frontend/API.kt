@@ -1,12 +1,13 @@
 package gs.calendar.appointments.frontend
 
-import gs.calendar.appointments.frontend.imports.axios.get
+import gs.calendar.appointments.frontend.imports.axios
+import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.Slot
 
-object api {
+object API {
 
-    fun listSlots() = get<List<Slot>?>("api/slots")
+    fun listAgendas() = axios.get<Array<Agenda>>("api/agendas")
 
-    data class Event(val id: String)
+    fun listSlots() = axios.get<Array<Slot>>("api/slots")
 
 }

@@ -8,24 +8,31 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
+import react.dom.br
 import kotlin.browser.window
 
 private val momentLocalizer = moment.asLocalizer()
 
-data class SchedulerState(
-    var events: List<CalendarEvent>? = null
-) : RState
-
-class Scheduler : RComponent<RProps, SchedulerState>() {
+class Scheduler : RComponent<RProps, Scheduler.State>() {
 
     override fun componentDidMount() {
-        // TODO improve logic here
-        api.listSlots().then {
-            setState(SchedulerState(events = it?.map { CalendarEvent(it.startTime!!, it.endTime!!, it.description!!) }))
+        // TODO not working
+        /*
+        API.listSlots().then {
+            setState(State(events = it.data?.map { ev ->
+                CalendarEvent(
+                    ev.startTime!!,
+                    ev.endTime!!,
+                    ev.description!!
+                )
+            }))
         }
+        */
     }
 
     override fun RBuilder.render() {
+        agendasSelector()
+        br {}
         Calendar {
             attrs {
                 localizer = momentLocalizer
@@ -36,6 +43,10 @@ class Scheduler : RComponent<RProps, SchedulerState>() {
             }
         }
     }
+
+    data class State(
+        var events: List<CalendarEvent>? = null
+    ) : RState
 
 }
 

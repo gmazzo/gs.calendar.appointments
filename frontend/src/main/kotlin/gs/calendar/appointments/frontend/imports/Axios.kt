@@ -6,15 +6,36 @@ data class AxiosConfig(
     val params: Map<String, Any>? = null
 )
 
-@JsModule("axios")
-external object axios {
+external interface AxiosResponse<T> {
 
-    fun <T> get(url: String, config: AxiosConfig? = definedExternally): Promise<T>
-
-    fun <T> post(url: String, data: Any? = definedExternally, config: AxiosConfig? = definedExternally): Promise<T>
-
-    fun <T> put(url: String, data: Any? = definedExternally, config: AxiosConfig? = definedExternally): Promise<T>
-
-    fun <T> delete(url: String, config: AxiosConfig? = definedExternally): Promise<T>
+    val data: T?
 
 }
+
+@JsModule("axios")
+external interface Axios {
+
+    fun <T> get(
+        url: String, config: AxiosConfig? = definedExternally
+    ): Promise<AxiosResponse<T>>
+
+    fun <T> post(
+        url: String,
+        data: Any? = definedExternally,
+        config: AxiosConfig? = definedExternally
+    ): Promise<AxiosResponse<T>>
+
+    fun <T> put(
+        url: String,
+        data: Any? = definedExternally,
+        config: AxiosConfig? = definedExternally
+    ): Promise<AxiosResponse<T>>
+
+    fun <T> delete(
+        url: String, config: AxiosConfig? = definedExternally
+    ): Promise<AxiosResponse<T>>
+
+}
+
+@JsModule("axios")
+external val axios: Axios
