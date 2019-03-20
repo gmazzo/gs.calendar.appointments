@@ -1,7 +1,7 @@
 package gs.calendar.appointments.model
 
 data class Slot(
-    val id: String,
+    val id: SlotId,
     val description: String?,
     val startTime: Date?,
     val endTime: Date?,

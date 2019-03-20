@@ -3,7 +3,9 @@ package gs.calendar.appointments.events
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventAttendee
+import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
+import gs.calendar.appointments.model.SlotId
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
@@ -20,7 +22,7 @@ internal class EventsServiceImpl @Inject constructor(
         .items
         .map { it.toSlot() }
 
-    override fun invite(agendaId: String, slotId: String, email: String) = api.get()
+    override fun invite(agendaId: AgendaId, slotId: SlotId, email: String) = api.get()
         .events()
         .get(agendaId, slotId)
         .execute()
