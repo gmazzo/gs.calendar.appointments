@@ -1,6 +1,6 @@
 package gs.calendar.appointments.frontend
 
-import gs.calendar.appointments.frontend.imports.axios
+import axios.axios
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.Slot
 

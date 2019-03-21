@@ -6,12 +6,14 @@ import org.w3c.dom.events.Event
 import react.RClass
 import react.RProps
 
-external interface ButtonProps : RProps {
-    var className: String
-    var onClick: (Event?) -> Unit
-    var color: String
-    var href: String
+abstract external class Button : RClass<Button.Props> {
+
+    interface Props : RProps {
+        var onClick: (Event?) -> Unit
+        var href: String
+    }
+
 }
 
 @JsName("Button")
-external val Button: RClass<ButtonProps>
+external val uiButton: Button

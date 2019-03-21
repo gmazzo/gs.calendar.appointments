@@ -78,4 +78,6 @@ tasks.withType(Kotlin2JsCompile::class) {
 
 tasks.withType(BuildConfigTask::class) {
     addGeneratedAnnotation = false
+
+    tasks["compileKotlin2Js"].dependsOn(this)
 }

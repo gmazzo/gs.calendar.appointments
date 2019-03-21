@@ -1,4 +1,4 @@
-package gs.calendar.appointments.frontend.imports
+package axios
 
 import kotlin.js.Promise
 
