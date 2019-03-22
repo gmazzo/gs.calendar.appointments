@@ -20,16 +20,21 @@ data class CalendarEvent(
 
 external interface Localizer
 
-external interface CalendarProps : RProps {
-    var localizer: Localizer
-    var culture: String
-    var events: Array<CalendarEvent>
-    var startAccessor: String
-    var endAccessor: String
+abstract external class BigCalendar : RClass<BigCalendar.Props> {
+
+    interface Props : RProps {
+        var localizer: Localizer
+        var culture: String
+        var events: Array<CalendarEvent>
+        var startAccessor: String
+        var endAccessor: String
+    }
+
+    fun momentLocalizer(moment: Moment): Localizer
+
 }
 
 @JsModule("react-big-calendar")
-external val Calendar: RClass<CalendarProps>
+external val bigCalendar: BigCalendar
 
-@Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
-fun Moment.asLocalizer() = Calendar.asDynamic().momentLocalizer(this) as Localizer
+fun Moment.asLocalizer() = bigCalendar.momentLocalizer(this)

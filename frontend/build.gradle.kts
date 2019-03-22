@@ -48,7 +48,7 @@ kotlinFrontend {
         dependency("less", "3.9.0")
         dependency("moment", "2.24.0")
         dependency("react", reactVersion)
-        dependency("react-big-calendar", "0.20.3")
+        dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
 
         devDependency("karma","4.0.1")

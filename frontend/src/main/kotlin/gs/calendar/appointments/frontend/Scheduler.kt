@@ -6,9 +6,9 @@ import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.br
-import react_big_calendar.Calendar
 import react_big_calendar.CalendarEvent
 import react_big_calendar.asLocalizer
+import react_big_calendar.bigCalendar
 import kotlin.browser.window
 
 private val momentLocalizer = moment.asLocalizer()
@@ -33,7 +33,7 @@ class Scheduler : RComponent<RProps, Scheduler.State>() {
     override fun RBuilder.render() {
         agendasSelector()
         br {}
-        Calendar {
+        bigCalendar {
             attrs {
                 localizer = momentLocalizer
                 culture = window.navigator.language
