@@ -1,10 +1,10 @@
 package gs.calendar.appointments.frontend
 
-import gs.calendar.appointments.BuildConfig
 import material_ui.core.Position
 import material_ui.core.appBar
 import react.RBuilder
 import react.dom.div
+import react.dom.h6
 
 fun RBuilder.app() {
     appBar {
@@ -12,7 +12,9 @@ fun RBuilder.app() {
             className = "appBar"
             position = Position.FIXED.value
         }
-        +BuildConfig.APP_NAME
+        h6 {
+            +BuildConfig.APP_NAME
+        }
     }
     div("content") {
         scheduler()
