@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    application
     kotlin("jvm")
     kotlin("kapt")
     id("com.github.gmazzo.buildconfig")
@@ -21,6 +22,10 @@ dependencies {
     implementation("javax.servlet:javax.servlet-api:4.0.1")
     implementation("org.jboss.resteasy:resteasy-jackson2-provider:$restEasyVersion")
     implementation("org.jboss.resteasy:resteasy-undertow:$restEasyVersion")
+}
+
+application {
+    mainClassName = "gs.calendar.appointments.MainKt"
 }
 
 buildConfig {

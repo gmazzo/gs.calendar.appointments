@@ -9,8 +9,6 @@ abstract external class AppBar : RClass<AppBar.Props> {
 
     interface Props : RProps {
 
-        var className: String
-
         @JsName("position")
         var positionValue: String
 
@@ -19,4 +17,4 @@ abstract external class AppBar : RClass<AppBar.Props> {
 }
 
 @JsName("AppBar")
-external val appBar: AppBar
+external val uiAppBar: AppBar

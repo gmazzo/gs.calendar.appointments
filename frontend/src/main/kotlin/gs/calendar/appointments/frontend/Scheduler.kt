@@ -1,7 +1,12 @@
 package gs.calendar.appointments.frontend
 
 import moment.moment
-import react.*
+import react.RBuilder
+import react.RComponent
+import react.RHandler
+import react.RProps
+import react.RState
+import react.setState
 import react_big_calendar.CalendarEvent
 import react_big_calendar.asLocalizer
 import react_big_calendar.bigCalendar
@@ -26,7 +31,6 @@ class Scheduler : RComponent<RProps, Scheduler.State>() {
     }
 
     override fun RBuilder.render() {
-        agendasSelector {}
         bigCalendar {
             attrs {
                 localizer = momentLocalizer
@@ -44,4 +48,5 @@ class Scheduler : RComponent<RProps, Scheduler.State>() {
 
 }
 
-fun RBuilder.scheduler(handler: (RHandler<RProps>) = {}) = child(Scheduler::class, handler)
+fun RBuilder.scheduler(handler: (RHandler<RProps>) = {}) =
+    child(Scheduler::class, handler)

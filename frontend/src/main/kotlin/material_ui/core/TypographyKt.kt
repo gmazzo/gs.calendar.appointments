@@ -64,12 +64,12 @@ var Typography.Props.variant
         variantValue = value.name.toLowerCase()
     }
 
-fun RBuilder.typography(
+fun RBuilder.uiTypography(
     variant: TypographyVariant,
     color: TypographyColor = TypographyColor.INHERIT,
     handler: RElementBuilder<Typography.Props>.() -> Unit
 ) =
-    typography {
+    uiTypography {
         attrs {
             this.variant = variant
             this.color = color

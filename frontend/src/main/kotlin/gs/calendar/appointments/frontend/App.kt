@@ -1,21 +1,11 @@
 package gs.calendar.appointments.frontend
 
-import material_ui.core.*
 import react.RBuilder
 import react.dom.div
 import react.dom.jsStyle
 
 fun RBuilder.app() {
-    appBar {
-        attrs {
-            position = AppBarPosition.STATIC
-        }
-        toolBar {
-            typography(TypographyVariant.H6) {
-                +BuildConfig.APP_NAME
-            }
-        }
-    }
+    header()
     div("content") {
         attrs {
             jsStyle {

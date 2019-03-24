@@ -1,6 +1,12 @@
 package material_ui.core
 
-enum class AppBarPosition { FIXED, ABSOLUTE, STICKY, STATIC, RELATIVE }
+enum class AppBarPosition(val value: String) {
+    FIXED("fixed"),
+    ABSOLUTE("absolute"),
+    STICKY("sticky"),
+    STATIC("static"),
+    RELATIVE("relative")
+}
 
 var AppBar.Props.position
     get() = AppBarPosition.valueOf(positionValue.toUpperCase())

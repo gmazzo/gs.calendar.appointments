@@ -3,13 +3,9 @@
 package material_ui.core
 
 import react.RClass
-import react.RProps
+import react.dom.WithClassName
 
-abstract external class Toolbar : RClass<Toolbar.Props> {
-
-    interface Props : RProps
-
-}
+abstract external class Toolbar : RClass<WithClassName>
 
 @JsName("Toolbar")
-external val toolBar: Toolbar
+external val uiToolBar: Toolbar
