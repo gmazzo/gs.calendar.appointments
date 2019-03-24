@@ -1,10 +1,7 @@
 package gs.calendar.appointments.frontend
 
 import gs.calendar.appointments.model.Agenda
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import react.dom.option
 import react.dom.select
 
@@ -12,7 +9,9 @@ class AgendasSelector : RComponent<RProps, AgendasSelector.State>() {
 
     override fun componentDidMount() {
         API.listAgendas().then {
-            setState(State(agendas = it.data?.toList()))
+            setState {
+                agendas = it.data?.toList()
+            }
         }
     }
 
@@ -33,4 +32,4 @@ class AgendasSelector : RComponent<RProps, AgendasSelector.State>() {
 
 }
 
-fun RBuilder.agendasSelector() = child(AgendasSelector::class) {}
+fun RBuilder.agendasSelector(handler: RHandler<RProps>) = child(AgendasSelector::class, handler)
