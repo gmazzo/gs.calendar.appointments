@@ -11,7 +11,8 @@ abstract external class AppBar : RClass<AppBar.Props> {
 
         var className: String
 
-        var position: String
+        @JsName("position")
+        var positionValue: String
 
     }
 
