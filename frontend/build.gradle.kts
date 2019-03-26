@@ -43,18 +43,19 @@ kotlinFrontend {
     sourceMaps = true
 
     npm {
-        dependency("@material-ui/core","3.9.2")
-        dependency("axios","0.18.0")
+        dependency("@material-ui/core", "3.9.2")
+        dependency("@material-ui/icons", "3.0.2")
+        dependency("axios", "0.18.0")
         dependency("less", "3.9.0")
         dependency("moment", "2.24.0")
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
 
-        devDependency("karma","4.0.1")
-        devDependency("style-loader","0.23.1")
-        devDependency("css-loader","2.1.1")
-        devDependency("less-loader","4.1.0")
+        devDependency("karma", "4.0.1")
+        devDependency("style-loader", "0.23.1")
+        devDependency("css-loader", "2.1.1")
+        devDependency("less-loader", "4.1.0")
     }
 
     bundle("webpack") {
