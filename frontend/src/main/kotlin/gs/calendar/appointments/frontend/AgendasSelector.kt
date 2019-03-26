@@ -4,8 +4,11 @@ import gs.calendar.appointments.model.Agenda
 import jsStyle
 import material_ui.core.ButtonColor
 import material_ui.core.ButtonVariant
+import material_ui.core.TooltipPlacement
 import material_ui.core.color
+import material_ui.core.placement
 import material_ui.core.uiButton
+import material_ui.core.uiTooltip
 import material_ui.core.variant
 import react.RBuilder
 import react.RComponent
@@ -30,16 +33,22 @@ class AgendasSelector : RComponent<WithClassName, AgendasSelector.State>() {
         state.agendas?.forEach {
             val selected = it.id == state.selectedAgenda?.id
 
-            uiButton {
-                jsStyle {
-                    margin = 8
-                }
+            uiTooltip {
                 attrs {
-                    color = if (selected) ButtonColor.INHERIT else ButtonColor.SECONDARY
-                    variant = if (selected) ButtonVariant.OUTLINED else ButtonVariant.CONTAINED
-                    onClick = { _ -> setState { selectedAgenda = it } }
+                    title = it.description ?: it.name
+                    placement = TooltipPlacement.BOTTOM
                 }
-                +it.name
+                uiButton {
+                    jsStyle {
+                        margin = 8
+                    }
+                    attrs {
+                        color = if (selected) ButtonColor.INHERIT else ButtonColor.SECONDARY
+                        variant = if (selected) ButtonVariant.OUTLINED else ButtonVariant.CONTAINED
+                        onClick = { _ -> setState { selectedAgenda = it } }
+                    }
+                    +it.name
+                }
             }
         }
     }
