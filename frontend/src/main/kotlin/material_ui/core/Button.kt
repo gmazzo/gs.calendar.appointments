@@ -32,4 +32,4 @@ abstract external class Button : RClass<Button.Props> {
 }
 
 @JsName("Button")
-external val uiButton: Button
+external val button: Button

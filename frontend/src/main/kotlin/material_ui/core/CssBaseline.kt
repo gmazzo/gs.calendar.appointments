@@ -6,4 +6,4 @@ import react.RClass
 import react.RProps
 
 @JsName("CssBaseline")
-external val uiCssBaseline: RClass<RProps>
+external val cssBaseline: RClass<RProps>

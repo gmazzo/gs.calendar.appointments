@@ -29,4 +29,4 @@ abstract external class Typography : RClass<Typography.Props> {
 }
 
 @JsName("Typography")
-external val uiTypography: Typography
+external val typography: Typography

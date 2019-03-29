@@ -4,8 +4,8 @@ import react.RBuilder
 import react.dom.div
 import react.dom.jsStyle
 
-fun RBuilder.app() {
-    header()
+fun RBuilder.app(handler: RBuilder.() -> Unit) {
+    header {}
     div("content") {
         attrs {
             jsStyle {
@@ -18,4 +18,5 @@ fun RBuilder.app() {
         }
         scheduler {}
     }
+    handler(this)
 }

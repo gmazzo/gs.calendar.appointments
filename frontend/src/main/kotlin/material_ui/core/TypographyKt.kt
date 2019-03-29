@@ -69,7 +69,7 @@ fun RBuilder.uiTypography(
     color: TypographyColor = TypographyColor.INHERIT,
     handler: RElementBuilder<Typography.Props>.() -> Unit
 ) =
-    uiTypography {
+    typography {
         attrs {
             this.variant = variant
             this.color = color

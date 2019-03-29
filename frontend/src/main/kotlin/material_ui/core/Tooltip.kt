@@ -19,4 +19,4 @@ abstract external class Tooltip : RClass<Tooltip.Props> {
 }
 
 @JsName("Tooltip")
-external val uiTooltip: Tooltip
+external val tooltip: Tooltip

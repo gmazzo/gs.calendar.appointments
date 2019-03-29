@@ -1,5 +1,8 @@
 package material_ui.core
 
+import react.RBuilder
+import react.RHandler
+
 enum class ButtonColor(val value: String) {
     DEFAULT("default"),
     INHERIT("inherit"),
@@ -40,3 +43,5 @@ var Button.Props.variant
     set(value) {
         variantValue = value.name.toLowerCase()
     }
+
+fun RBuilder.uiButton(handler: RHandler<Button.Props>) = button.invoke(handler)

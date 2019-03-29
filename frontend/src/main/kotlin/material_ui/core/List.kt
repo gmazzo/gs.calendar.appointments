@@ -5,11 +5,11 @@ package material_ui.core
 import react.RClass
 import react.RProps
 
-abstract external class Toolbar : RClass<Toolbar.Props> {
+abstract external class List : RClass<List.Props> {
 
     interface Props : RProps
 
 }
 
-@JsName("Toolbar")
-external val toolBar: Toolbar
+@JsName("List")
+external val list: List

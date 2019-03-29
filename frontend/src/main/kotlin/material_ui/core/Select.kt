@@ -21,4 +21,4 @@ abstract external class Select : RClass<Select.Props> {
 }
 
 @JsName("Select")
-external val uiSelect: Select
+external val select: Select

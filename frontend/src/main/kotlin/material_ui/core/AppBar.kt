@@ -17,4 +17,4 @@ abstract external class AppBar : RClass<AppBar.Props> {
 }
 
 @JsName("AppBar")
-external val uiAppBar: AppBar
+external val appBar: AppBar

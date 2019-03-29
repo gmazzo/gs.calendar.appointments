@@ -1,5 +1,8 @@
 package material_ui.core
 
+import react.RBuilder
+import react.RHandler
+
 enum class TooltipPlacement(val value: String) {
     BOTTOM_END("bottom-end"),
     BOTTOM_START("bottom-start"),
@@ -20,3 +23,5 @@ var Tooltip.Props.placement
     set(value) {
         placementValue = value.name.toLowerCase()
     }
+
+fun RBuilder.uiTooltip(handler: RHandler<Tooltip.Props>) = tooltip.invoke(handler)

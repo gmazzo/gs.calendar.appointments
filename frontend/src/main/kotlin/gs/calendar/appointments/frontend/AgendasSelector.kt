@@ -15,10 +15,9 @@ import react.RComponent
 import react.RHandler
 import react.RProps
 import react.RState
-import react.dom.WithClassName
 import react.setState
 
-class AgendasSelector : RComponent<WithClassName, AgendasSelector.State>() {
+class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>() {
 
     override fun componentDidMount() {
         API.listAgendas().then {
@@ -53,6 +52,8 @@ class AgendasSelector : RComponent<WithClassName, AgendasSelector.State>() {
         }
     }
 
+    interface Props : RProps
+
     data class State(
         var selectedAgenda: Agenda? = null,
         var agendas: List<Agenda>? = null
@@ -60,5 +61,5 @@ class AgendasSelector : RComponent<WithClassName, AgendasSelector.State>() {
 
 }
 
-fun RBuilder.agendasSelector(handler: RHandler<RProps>) =
+fun RBuilder.agendasSelector(handler: RHandler<AgendasSelector.Props>) =
     child(AgendasSelector::class, handler)

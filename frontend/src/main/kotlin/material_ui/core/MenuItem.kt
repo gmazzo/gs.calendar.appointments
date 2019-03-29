@@ -16,4 +16,4 @@ abstract external class MenuItem : RClass<MenuItem.Props> {
 }
 
 @JsName("MenuItem")
-external val uiMenuItem: MenuItem
+external val menuItem: MenuItem

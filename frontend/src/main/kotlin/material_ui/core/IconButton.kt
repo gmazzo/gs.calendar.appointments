@@ -5,4 +5,4 @@ package material_ui.core
 abstract external class IconButton : Button
 
 @JsName("IconButton")
-external val uiIconButton: IconButton
+external val iconButton: IconButton

@@ -14,7 +14,7 @@ import kotlin.browser.window
 
 private val momentLocalizer = moment.asLocalizer()
 
-class Scheduler : RComponent<RProps, Scheduler.State>() {
+class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
     override fun componentDidMount() {
         API.listSlots().then {
@@ -42,11 +42,13 @@ class Scheduler : RComponent<RProps, Scheduler.State>() {
         }
     }
 
+    interface Props : RProps
+
     data class State(
         var events: List<CalendarEvent>? = null
     ) : RState
 
 }
 
-fun RBuilder.scheduler(handler: (RHandler<RProps>) = {}) =
+fun RBuilder.scheduler(handler: RHandler<Scheduler.Props>) =
     child(Scheduler::class, handler)
