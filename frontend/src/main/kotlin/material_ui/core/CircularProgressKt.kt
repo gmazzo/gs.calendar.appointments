@@ -27,5 +27,12 @@ var CircularProgress.Props.variant
         variantValue = value.name.toLowerCase()
     }
 
-fun RBuilder.uiCircularProgress(handler: RHandler<CircularProgress.Props>) =
-    circularProgress.invoke(handler)
+fun RBuilder.uiCircularProgress(
+    color: CircularProgressColor = CircularProgressColor.INHERIT,
+    handler: (RHandler<CircularProgress.Props>) = {}
+) = circularProgress {
+    attrs.color = color
+
+    handler(this)
+
+}

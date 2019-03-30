@@ -50,5 +50,5 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
 }
 
-fun RBuilder.scheduler(handler: RHandler<Scheduler.Props>) =
+fun RBuilder.scheduler(handler: (RHandler<Scheduler.Props>) = {}) =
     child(Scheduler::class, handler)

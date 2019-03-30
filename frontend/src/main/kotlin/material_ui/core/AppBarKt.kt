@@ -17,4 +17,10 @@ var AppBar.Props.position
         positionValue = value.name.toLowerCase()
     }
 
-fun RBuilder.uiAppBar(handler: RHandler<AppBar.Props>) = appBar.invoke(handler)
+fun RBuilder.uiAppBar(
+    position: AppBarPosition = AppBarPosition.FIXED,
+    handler: (RHandler<AppBar.Props>) = {}
+) = appBar {
+    attrs.position = position
+    handler(this)
+}

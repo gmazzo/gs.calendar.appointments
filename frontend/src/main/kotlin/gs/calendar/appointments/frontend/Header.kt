@@ -6,7 +6,6 @@ import material_ui.core.ButtonColor
 import material_ui.core.TypographyVariant
 import material_ui.core.position
 import material_ui.core.uiAppBar
-import material_ui.core.uiDrawer
 import material_ui.core.uiIconButton
 import material_ui.core.uiToolBar
 import material_ui.core.uiTypography
@@ -42,14 +41,8 @@ class Header : RComponent<Header.Props, Header.State>() {
                     }
                     +BuildConfig.APP_NAME
                 }
+                agendasSelector { }
             }
-        }
-        uiDrawer {
-            attrs {
-                open = state.drawerOpen
-                onClose = { setState { drawerOpen = false } }
-            }
-            agendasSelector { }
         }
     }
 
@@ -61,5 +54,5 @@ class Header : RComponent<Header.Props, Header.State>() {
 
 }
 
-fun RBuilder.header(handler: RHandler<Header.Props>) =
+fun RBuilder.header(handler: (RHandler<Header.Props>) = {}) =
     child(Header::class, handler)

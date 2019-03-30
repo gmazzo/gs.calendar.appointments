@@ -5,7 +5,7 @@ import react.dom.div
 import react.dom.jsStyle
 
 fun RBuilder.app(handler: RBuilder.() -> Unit) {
-    header {}
+    header()
     div("content") {
         attrs {
             jsStyle {
@@ -16,7 +16,7 @@ fun RBuilder.app(handler: RBuilder.() -> Unit) {
                 overflow = "auto"
             }
         }
-        scheduler {}
+        scheduler()
     }
     handler(this)
 }

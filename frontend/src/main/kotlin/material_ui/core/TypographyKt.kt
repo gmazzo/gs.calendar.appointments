@@ -1,7 +1,7 @@
 package material_ui.core
 
 import react.RBuilder
-import react.RElementBuilder
+import react.RHandler
 
 enum class TypographyAlign(val value: String) {
     INHERIT("inherit"),
@@ -67,12 +67,10 @@ var Typography.Props.variant
 fun RBuilder.uiTypography(
     variant: TypographyVariant,
     color: TypographyColor = TypographyColor.INHERIT,
-    handler: RElementBuilder<Typography.Props>.() -> Unit
+    handler: (RHandler<Typography.Props>) = {}
 ) =
     typography {
-        attrs {
-            this.variant = variant
-            this.color = color
-        }
+        attrs.variant = variant
+        attrs.color = color
         handler(this)
     }

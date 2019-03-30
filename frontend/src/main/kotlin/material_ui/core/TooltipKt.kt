@@ -24,4 +24,12 @@ var Tooltip.Props.placement
         placementValue = value.name.toLowerCase()
     }
 
-fun RBuilder.uiTooltip(handler: RHandler<Tooltip.Props>) = tooltip.invoke(handler)
+fun RBuilder.uiTooltip(
+    title: String,
+    placement: TooltipPlacement = TooltipPlacement.BOTTOM,
+    handler: (RHandler<Tooltip.Props>) = {}
+) = tooltip {
+    attrs.title = title
+    attrs.placement = placement
+    handler(this)
+}

@@ -31,11 +31,9 @@ var Drawer.Props.variant
 fun RBuilder.uiDrawer(
     variant: DrawerVariant = DrawerVariant.TEMPORARY,
     anchor: DrawerAnchor = DrawerAnchor.LEFT,
-    handler: RHandler<Drawer.Props>
+    handler: (RHandler<Drawer.Props>) = {}
 ) = drawer {
-    attrs {
-        this.variant = variant
-        this.anchor = anchor
-    }
+    attrs.variant = variant
+    attrs.anchor = anchor
     handler(this)
 }

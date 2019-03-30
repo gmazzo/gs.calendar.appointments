@@ -12,7 +12,7 @@ abstract external class Select : RClass<Select.Props> {
 
         var autoWidth: Boolean
 
-        var value: String
+        var value: String?
 
         var onChange: (MouseEvent) -> Unit
 

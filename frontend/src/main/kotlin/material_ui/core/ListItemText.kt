@@ -9,6 +9,7 @@ abstract external class ListItemText : RClass<ListItemText.Props> {
 
     interface Props : RProps {
         var primary: String
+        var secondary: String
     }
 
 }

@@ -44,4 +44,16 @@ var Button.Props.variant
         variantValue = value.name.toLowerCase()
     }
 
-fun RBuilder.uiButton(handler: RHandler<Button.Props>) = button.invoke(handler)
+fun RBuilder.uiButton(
+    label: String,
+    variant: ButtonVariant = ButtonVariant.CONTAINED,
+    color: ButtonColor = ButtonColor.INHERIT,
+    handler: (RHandler<Button.Props>) = {}
+) =
+    button {
+        attrs.variant = variant
+        attrs.color = color
+
+        +label
+        handler(this)
+    }

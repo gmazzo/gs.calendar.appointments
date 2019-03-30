@@ -5,10 +5,8 @@ import react.RHandler
 
 fun RBuilder.uiIconButton(
     color: ButtonColor = ButtonColor.INHERIT,
-    handler: RHandler<Button.Props>
+    handler: (RHandler<Button.Props>) = {}
 ) = iconButton {
-    attrs {
-        this.color = color
-    }
+    attrs.color = color
     handler(this)
 }
