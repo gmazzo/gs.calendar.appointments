@@ -9,7 +9,7 @@ plugins {
 
 val appName: String by project
 val daggerVersion: String by project
-val restEasyVersion: String by project
+val restEasyVersion = "4.0.0.Beta8"
 
 dependencies {
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")

@@ -17,9 +17,10 @@ repositories {
 }
 
 val appName: String by project
-val reactVersion: String by project
+val reactVersion = "16.6.0"
 val kotlinVersion: String by project
-val kotlinReactVersion = "$reactVersion-pre.69-kotlin-$kotlinVersion"
+val kotlinWrappersVersion = "pre.69-kotlin-$kotlinVersion"
+val kotlinReactVersion = "$reactVersion-$kotlinWrappersVersion"
 
 dependencies {
     implementation(project(":model"))
@@ -28,13 +29,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
     implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
+    implementation("org.jetbrains:kotlin-styled:1.0.0-$kotlinWrappersVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
 }
 
 buildConfig {
-    packageName("${project.group}.${project.name}")
     language(BuildConfigLanguage.KOTLIN)
+    packageName("${project.group}.${project.name}")
 
     buildConfigField("String", "APP_NAME", "\"$appName\"")
 }
@@ -46,11 +48,13 @@ kotlinFrontend {
         dependency("@material-ui/core", "3.9.2")
         dependency("@material-ui/icons", "3.0.2")
         dependency("axios", "0.18.0")
+        dependency("inline-style-prefixer", "5.0.4")
         dependency("less", "3.9.0")
         dependency("moment", "2.24.0")
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
+        dependency("styled-components", "4.2.0")
 
         devDependency("karma", "4.0.1")
         devDependency("style-loader", "0.23.1")
