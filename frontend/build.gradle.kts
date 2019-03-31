@@ -9,13 +9,6 @@ plugins {
     id("com.github.gmazzo.buildconfig")
 }
 
-repositories {
-    mavenCentral()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-    maven(url = "https://dl.bintray.com/kotlinx/kotlinx")
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-js-wrappers")
-}
-
 val appName: String by project
 val reactVersion = "16.6.0"
 val kotlinVersion: String by project
@@ -29,6 +22,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
     implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
+    implementation("org.jetbrains:kotlin-redux:4.0.0-$kotlinWrappersVersion")
     implementation("org.jetbrains:kotlin-styled:1.0.0-$kotlinWrappersVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
@@ -54,6 +48,7 @@ kotlinFrontend {
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
+        dependency("redux", "4.0.1")
         dependency("styled-components", "4.2.0")
 
         devDependency("karma", "4.0.1")

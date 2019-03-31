@@ -1,4 +1,5 @@
 import react.RElementBuilder
+import kotlin.js.Promise
 
 var RElementBuilder<*>.jsStyle: dynamic
     get() {
@@ -12,3 +13,6 @@ var RElementBuilder<*>.jsStyle: dynamic
 
 inline fun RElementBuilder<*>.jsStyle(handler: dynamic.() -> Unit) =
     handler(jsStyle)
+
+fun <T, S> Promise<T>.finally(onFinally: ((T) -> S)?): Promise<S> =
+    asDynamic().finally(onFinally) as Promise<S>
