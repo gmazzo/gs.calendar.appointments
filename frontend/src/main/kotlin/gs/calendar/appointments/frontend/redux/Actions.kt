@@ -1,44 +1,43 @@
 package gs.calendar.appointments.frontend.redux
 
 import finally
+import gs.calendar.appointments.frontend.App
 import gs.calendar.appointments.model.Agenda
 import redux.RAction
 import kotlin.js.Promise
 
-fun Promise<*>.showLoading() = appStore.dispatch(StartLoading(this))
+fun Promise<*>.showLoading() = also {
+    finally { store.dispatch(StopLoading) }
+    store.dispatch(StartLoading)
+}
 
 sealed class Action : RAction {
 
-    abstract operator fun invoke(state: AppState): AppState
+    abstract operator fun invoke(state: App.State): App.State
+
+    override fun toString() = this::class.simpleName!!
 
 }
 
-class StartLoading(private val promise: Promise<*>) : Action() {
+object StartLoading : Action() {
 
-    override fun invoke(state: AppState) = state.copy(
-        loading = true,
-        currentPromise = state.currentPromise?.finally { promise.finallyStopLoading() }
-            ?: promise.finallyStopLoading()
+    override fun invoke(state: App.State) = state.copy(
+        loadingCount = state.loadingCount + 1
     )
 
-    private fun Promise<*>.finallyStopLoading() = apply {
-        finally { appStore.dispatch(StopLoading(promise)) }
-    }
+}
+
+object StopLoading : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        loadingCount = (state.loadingCount - 1).takeUnless { it < 0 } ?: throw IllegalStateException("loadingCount < 0")
+    )
 
 }
 
-class StopLoading(private val promise: Promise<*>) : Action() {
+data class ChangeAgenda(private val agenda: Agenda?) : Action() {
 
-    override fun invoke(state: AppState) = if (promise == state.currentPromise) state.copy(
-        loading = false,
-        currentPromise = null
-    ) else state
-
-}
-
-class ChangeAgenda(private val agenda: Agenda?) : Action() {
-
-    override fun invoke(state: AppState) = state.copy(
+    override fun invoke(state: App.State) = state.copy(
         currentAgenda = agenda
     )
 

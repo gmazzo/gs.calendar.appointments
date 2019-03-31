@@ -1,5 +1,7 @@
 package gs.calendar.appointments.frontend
 
+import gs.calendar.appointments.frontend.redux.showLoading
+import gs.calendar.appointments.model.Agenda
 import moment.moment
 import react.RBuilder
 import react.RComponent
@@ -16,17 +18,27 @@ private val momentLocalizer = moment.asLocalizer()
 
 class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
-    override fun componentDidMount() {
-        API.listSlots().then {
-            setState {
-                events = it.data?.map { ev ->
-                    CalendarEvent(
-                        ev.startTime!!,
-                        ev.endTime!!,
-                        ev.description!!
-                    )
+    override fun componentDidUpdate(prevProps: Props, prevState: State, snapshot: Any) {
+        props.agenda?.takeIf { it.id != prevProps.agenda?.id }?.also {
+            loadEvents()
+        }
+    }
+
+    private fun loadEvents() {
+        props.agenda?.id?.let {
+            API.listSlots(it)
+                .then {
+                    setState {
+                        events = it.data?.map { ev ->
+                            CalendarEvent(
+                                ev.startTime!!,
+                                ev.endTime!!,
+                                ev.description!!
+                            )
+                        }
+                    }
                 }
-            }
+                .showLoading()
         }
     }
 
@@ -42,7 +54,9 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
         }
     }
 
-    interface Props : RProps
+    interface Props : RProps {
+        var agenda: Agenda?
+    }
 
     data class State(
         var events: List<CalendarEvent>? = null
@@ -50,5 +64,10 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
 }
 
-fun RBuilder.scheduler(handler: (RHandler<Scheduler.Props>) = {}) =
-    child(Scheduler::class, handler)
+fun RBuilder.scheduler(
+    agenda: Agenda?,
+    handler: (RHandler<Scheduler.Props>) = {}
+) = child(Scheduler::class) {
+    attrs.agenda = agenda
+    handler(this)
+}

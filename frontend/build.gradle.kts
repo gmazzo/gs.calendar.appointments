@@ -10,6 +10,7 @@ plugins {
 }
 
 val appName: String by project
+val apiEndpoint: String? by project
 val reactVersion = "16.6.0"
 val kotlinVersion: String by project
 val kotlinWrappersVersion = "pre.69-kotlin-$kotlinVersion"
@@ -33,6 +34,7 @@ buildConfig {
     packageName("${project.group}.${project.name}")
 
     buildConfigField("String", "APP_NAME", "\"$appName\"")
+    buildConfigField("String", "API_ENDPOINT", "\"${apiEndpoint ?: "api"}\"")
 }
 
 kotlinFrontend {
