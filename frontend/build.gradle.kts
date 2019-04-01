@@ -47,6 +47,7 @@ kotlinFrontend {
         dependency("inline-style-prefixer", "5.0.4")
         dependency("less", "3.9.0")
         dependency("moment", "2.24.0")
+        dependency("notistack", "0.6.0")
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)

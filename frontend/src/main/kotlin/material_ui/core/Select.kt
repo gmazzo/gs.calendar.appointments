@@ -1,10 +1,22 @@
-@file:JsModule("@material-ui/core")
-
 package material_ui.core
 
 import org.w3c.dom.events.MouseEvent
+import react.RBuilder
 import react.RClass
+import react.RHandler
 import react.RProps
+
+private val select = module.Select.unsafeCast<Select>()
+
+fun RBuilder.select(
+    value: String? = null,
+    handler: (RHandler<Select.Props>) = {}
+) =
+    select.invoke {
+        attrs.value = value
+
+        handler(this)
+    }
 
 abstract external class Select : RClass<Select.Props> {
 
@@ -19,6 +31,3 @@ abstract external class Select : RClass<Select.Props> {
     }
 
 }
-
-@JsName("Select")
-external val select: Select

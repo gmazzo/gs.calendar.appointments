@@ -1,11 +1,18 @@
-@file:JsModule("@material-ui/icons")
-
 package material_ui.icons
 
+import react.RBuilder
 import react.RClass
+import react.RHandler
 import react.RProps
 
-abstract external class MenuIcon : RClass<RProps>
+typealias Icon = RClass<RProps>
 
-@JsName("Menu")
-external val uiMenuIcon: MenuIcon
+@JsModule("@material-ui/icons")
+external object Icons {
+
+    @JsName("Menu")
+    val MENU: Icon
+
+}
+
+fun RBuilder.menuIcon(handler: (RHandler<RProps>) = {}) = Icons.MENU(handler)

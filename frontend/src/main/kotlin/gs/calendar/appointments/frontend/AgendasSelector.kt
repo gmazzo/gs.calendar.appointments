@@ -9,10 +9,10 @@ import kotlinx.css.margin
 import kotlinx.css.px
 import material_ui.core.ButtonColor
 import material_ui.core.TooltipPlacement
-import material_ui.core.uiButton
-import material_ui.core.uiMenu
-import material_ui.core.uiMenuItem
-import material_ui.core.uiTooltip
+import material_ui.core.button
+import material_ui.core.menu
+import material_ui.core.menuItem
+import material_ui.core.tooltip
 import org.w3c.dom.Element
 import react.RBuilder
 import react.RComponent
@@ -35,7 +35,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
     override fun RBuilder.render() {
         state.agendas?.takeIf { it.isNotEmpty() }?.also { agendas ->
-            uiButton(
+            button(
                 color = ButtonColor.SECONDARY,
                 label = props.value?.name ?: ""
             ) {
@@ -49,17 +49,17 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                     setState { menuAnchor = target }
                 }
             }
-            uiMenu {
+            menu {
                 attrs.open = state.menuAnchor != null
                 attrs.anchorEl = state.menuAnchor
                 attrs.onClose = { setState { menuAnchor = null } }
 
                 agendas.forEach { agenda ->
-                    uiTooltip(
+                    tooltip(
                         title = agenda.description ?: agenda.name,
                         placement = TooltipPlacement.LEFT
                     ) {
-                        uiMenuItem {
+                        menuItem {
                             attrs.disabled = agenda.id == props.value?.id
                             attrs.onClick = {
                                 setState { menuAnchor = null }

@@ -1,9 +1,22 @@
-@file:JsModule("@material-ui/core")
-
 package material_ui.core
 
+import react.RBuilder
 import react.RClass
+import react.RHandler
 import react.RProps
+
+private val listItemText = module.ListItemText.unsafeCast<ListItemText>()
+
+fun RBuilder.listItemText(
+    primary: String,
+    secondary: String = "",
+    handler: (RHandler<ListItemText.Props>) = {}
+) = listItemText {
+    attrs.primary = primary
+    attrs.secondary = secondary
+
+    handler(this)
+}
 
 abstract external class ListItemText : RClass<ListItemText.Props> {
 
@@ -13,6 +26,3 @@ abstract external class ListItemText : RClass<ListItemText.Props> {
     }
 
 }
-
-@JsName("ListItemText")
-external val listItemText: ListItemText

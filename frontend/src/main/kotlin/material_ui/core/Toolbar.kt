@@ -1,15 +1,13 @@
-@file:JsModule("@material-ui/core")
-
 package material_ui.core
 
+import react.RBuilder
 import react.RClass
+import react.RHandler
 import react.RProps
 
-abstract external class Toolbar : RClass<Toolbar.Props> {
+private val toolBar = module.Toolbar.unsafeCast<Toolbar>()
 
-    interface Props : RProps
+fun RBuilder.toolBar(handler: (RHandler<RProps>) = {}) =
+    toolBar.invoke(handler)
 
-}
-
-@JsName("Toolbar")
-external val toolBar: Toolbar
+abstract external class Toolbar : RClass<RProps>

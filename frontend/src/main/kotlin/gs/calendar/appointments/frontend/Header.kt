@@ -9,13 +9,13 @@ import kotlinx.css.px
 import material_ui.core.AppBarPosition
 import material_ui.core.ButtonColor
 import material_ui.core.TypographyVariant
+import material_ui.core.appBar
+import material_ui.core.circularProgress
+import material_ui.core.iconButton
 import material_ui.core.position
-import material_ui.core.uiAppBar
-import material_ui.core.uiCircularProgress
-import material_ui.core.uiIconButton
-import material_ui.core.uiToolBar
-import material_ui.core.uiTypography
-import material_ui.icons.uiMenuIcon
+import material_ui.core.toolBar
+import material_ui.core.typography
+import material_ui.icons.menuIcon
 import react.RBuilder
 import react.RComponent
 import react.RProps
@@ -37,25 +37,25 @@ class Header : RComponent<Header.Props, Header.State>() {
 }
 
 fun RBuilder.header(currentAgenda: Agenda?, loading: Boolean) {
-    uiAppBar {
+    appBar {
         attrs {
             position = AppBarPosition.STATIC
         }
-        uiToolBar {
-            uiIconButton(color = ButtonColor.INHERIT) {
+        toolBar {
+            iconButton(color = ButtonColor.INHERIT) {
                 css {
                     margin(left = (-12).px, right = 20.px)
                 }
 
-                uiMenuIcon {}
+                menuIcon()
             }
-            uiTypography(TypographyVariant.H6) {
+            typography(TypographyVariant.H6) {
                 css {
                     flex(1.0)
                 }
                 +(currentAgenda?.description ?: BuildConfig.APP_NAME)
             }
-            uiCircularProgress {
+            circularProgress {
                 css {
                     margin(8.px)
                     if (!loading) {
