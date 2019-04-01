@@ -17,26 +17,8 @@ import material_ui.core.toolBar
 import material_ui.core.typography
 import material_ui.icons.menuIcon
 import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
 
-class Header : RComponent<Header.Props, Header.State>() {
-
-    override fun RBuilder.render() {
-
-    }
-
-    interface Props : RProps
-
-    data class State(
-        var loading: Boolean,
-        var currentAgenda: Agenda?
-    ) : RState
-
-}
-
-fun RBuilder.header(currentAgenda: Agenda?, loading: Boolean) {
+fun RBuilder.header(agendas: List<Agenda>?, currentAgenda: Agenda?, loading: Boolean) {
     appBar {
         attrs {
             position = AppBarPosition.STATIC
@@ -63,7 +45,7 @@ fun RBuilder.header(currentAgenda: Agenda?, loading: Boolean) {
                     }
                 }
             }
-            agendasSelector(value = currentAgenda)
+            agendasSelector(options = agendas, value = currentAgenda)
         }
     }
 }

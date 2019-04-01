@@ -2,7 +2,6 @@ package gs.calendar.appointments.frontend
 
 import css
 import gs.calendar.appointments.frontend.redux.ChangeAgenda
-import gs.calendar.appointments.frontend.redux.showLoading
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.model.Agenda
 import kotlinx.css.margin
@@ -23,18 +22,8 @@ import react.setState
 
 class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>() {
 
-    override fun componentDidMount() {
-        API.listAgendas()
-            .then {
-                setState { agendas = it.data?.toList() }
-
-                store.dispatch(ChangeAgenda(it.data?.first()))
-            }
-            .showLoading()
-    }
-
     override fun RBuilder.render() {
-        state.agendas?.takeIf { it.isNotEmpty() }?.also { agendas ->
+        props.options?.takeIf { it.isNotEmpty() }?.also { agendas ->
             button(
                 color = ButtonColor.SECONDARY,
                 label = props.value?.name ?: ""
@@ -77,19 +66,22 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
     interface Props : RProps {
         var value: Agenda?
+        var options: List<Agenda>?
     }
 
     data class State(
-        var menuAnchor: Element?,
-        var agendas: List<Agenda>? = null
+        var menuAnchor: Element?
     ) : RState
 
 }
 
 fun RBuilder.agendasSelector(
     value: Agenda?,
+    options: List<Agenda>?,
     handler: (RHandler<AgendasSelector.Props>) = {}
 ) = child(AgendasSelector::class) {
     attrs.value = value
+    attrs.options = options
+
     handler(this)
 }

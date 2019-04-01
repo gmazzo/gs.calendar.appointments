@@ -35,6 +35,15 @@ object StopLoading : Action() {
 
 }
 
+data class SetAgendas(private val agendas: List<Agenda>?) : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        agendas = agendas,
+        currentAgenda = agendas?.first()
+    )
+
+}
+
 data class ChangeAgenda(private val agenda: Agenda?) : Action() {
 
     override fun invoke(state: App.State) = state.copy(
