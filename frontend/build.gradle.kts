@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
     implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
-    implementation("org.jetbrains:kotlin-redux:4.0.0-$kotlinWrappersVersion")
+    implementation("org.jetbrains:kotlin-react-redux:5.0.7-$kotlinWrappersVersion")
     implementation("org.jetbrains:kotlin-styled:1.0.0-$kotlinWrappersVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
