@@ -22,13 +22,13 @@ external object Axios {
 
     fun <T> post(
         url: String,
-        data: Any? = definedExternally,
+        data: dynamic = definedExternally,
         config: AxiosConfig? = definedExternally
     ): Promise<AxiosResponse<T>>
 
     fun <T> put(
         url: String,
-        data: Any? = definedExternally,
+        data: dynamic = definedExternally,
         config: AxiosConfig? = definedExternally
     ): Promise<AxiosResponse<T>>
 

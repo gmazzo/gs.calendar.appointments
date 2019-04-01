@@ -2,10 +2,9 @@ package gs.calendar.appointments
 
 import com.google.api.client.util.store.FileDataStoreFactory
 import gs.calendar.appointments.api.DefaultExceptionMapper
-import gs.calendar.appointments.api.RequiredQueryParamValidator
 import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.api.auth.AuthResource
-import gs.calendar.appointments.api.booking.BookingResource
+import gs.calendar.appointments.api.slots.SlotsResource
 import io.swagger.v3.jaxrs2.SwaggerSerializers
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource
@@ -26,7 +25,7 @@ class Application : javax.ws.rs.core.Application() {
     lateinit var agendasResource: AgendasResource
 
     @Inject
-    lateinit var bookingResource: BookingResource
+    lateinit var slotsResource: SlotsResource
 
     init {
         DaggerApplicationComponent.builder()
@@ -45,7 +44,7 @@ class Application : javax.ws.rs.core.Application() {
         corsFilter,
         authResource,
         agendasResource,
-        bookingResource
+        slotsResource
     )
 
     override fun getClasses() = setOf(
@@ -55,8 +54,7 @@ class Application : javax.ws.rs.core.Application() {
 
         // providers
         SwaggerSerializers::class.java,
-        DefaultExceptionMapper::class.java,
-        RequiredQueryParamValidator::class.java
+        DefaultExceptionMapper::class.java
     )
 
 }
