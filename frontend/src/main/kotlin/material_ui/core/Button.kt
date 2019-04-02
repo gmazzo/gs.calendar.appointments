@@ -1,6 +1,5 @@
 package material_ui.core
 
-import org.w3c.dom.events.MouseEvent
 import react.RBuilder
 import react.RClass
 import react.RHandler
@@ -39,8 +38,6 @@ abstract external class Button : RClass<Button.Props> {
 
         @JsName("variant")
         var variantValue: String
-
-        var onClick: (MouseEvent) -> Unit
 
     }
 

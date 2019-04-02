@@ -12,6 +12,7 @@ import material_ui.core.button
 import material_ui.core.menu
 import material_ui.core.menuItem
 import material_ui.core.tooltip
+import onClick
 import org.w3c.dom.Element
 import react.RBuilder
 import react.RComponent
@@ -32,7 +33,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                     margin(left = 8.px)
                 }
 
-                attrs.onClick = { ev ->
+                onClick { ev ->
                     val target = ev.target as Element
 
                     setState { menuAnchor = target }
@@ -50,9 +51,9 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                     ) {
                         menuItem {
                             attrs.disabled = agenda.id == props.value?.id
-                            attrs.onClick = {
-                                setState { menuAnchor = null }
 
+                            onClick {
+                                setState { menuAnchor = null }
                                 store.dispatch(ChangeAgenda(agenda))
                             }
 

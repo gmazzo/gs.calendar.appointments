@@ -12,6 +12,7 @@ plugins {
 val appName: String by project
 val apiEndpoint: String? by project
 val reactVersion = "16.6.0"
+val reduxVersion = "4.0.0"
 val kotlinVersion: String by project
 val kotlinWrappersVersion = "pre.69-kotlin-$kotlinVersion"
 val kotlinReactVersion = "$reactVersion-$kotlinWrappersVersion"
@@ -23,7 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
     implementation("org.jetbrains:kotlin-react-dom:$kotlinReactVersion")
-    implementation("org.jetbrains:kotlin-react-redux:5.0.7-$kotlinWrappersVersion")
+    implementation("org.jetbrains:kotlin-redux:$reduxVersion-$kotlinWrappersVersion")
     implementation("org.jetbrains:kotlin-styled:1.0.0-$kotlinWrappersVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion")
@@ -51,7 +52,7 @@ kotlinFrontend {
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
-        dependency("redux", "4.0.1")
+        dependency("redux", reduxVersion)
         dependency("styled-components", "4.2.0")
 
         devDependency("karma", "4.0.1")

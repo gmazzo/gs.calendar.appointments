@@ -7,7 +7,7 @@ import react.RHandler
 import react.RProps
 import kotlin.reflect.KClass
 
-private val withSnackbar = module.withSnackbar.unsafeCast<(Any) -> Any>()
+fun <T> withSnackbar(component: T): T = module.withSnackbar(component).unsafeCast<T>()
 
 fun <P : WithSnackbar, C : RComponent<P, *>> RBuilder.withSnackbar(kclazz: KClass<C>, handler: RHandler<P>) =
     child(withSnackbar(kclazz.js), jsObject {}, handler)

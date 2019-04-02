@@ -1,6 +1,5 @@
 package material_ui.core
 
-import org.w3c.dom.events.MouseEvent
 import react.RBuilder
 import react.RClass
 import react.RHandler
@@ -24,7 +23,6 @@ abstract external class ListItem : RClass<ListItem.Props> {
         var disabled: Boolean
         var divider: Boolean
         var selected: Boolean
-        var onClick: (MouseEvent) -> Unit
     }
 
 }
