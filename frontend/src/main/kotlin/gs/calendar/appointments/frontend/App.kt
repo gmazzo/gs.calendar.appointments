@@ -10,6 +10,8 @@ import kotlinx.css.FlexDirection
 import kotlinx.css.Overflow
 import kotlinx.css.padding
 import kotlinx.css.px
+import material_ui.core.styles.WithTheme
+import material_ui.core.styles.withTheme
 import notistack.SnackbarVariant
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
@@ -18,12 +20,11 @@ import notistack.withSnackbar
 import react.RBuilder
 import react.RComponent
 import react.RHandler
-import react.RProps
 import react.RState
 import react.dom.div
 import redux.state
 
-class App : RComponent<WithSnackbar, App.State>() {
+class App : RComponent<App.Props, App.State>() {
 
     private lateinit var unsubscribe: () -> Unit
 
@@ -48,7 +49,7 @@ class App : RComponent<WithSnackbar, App.State>() {
         )
         div("content") {
             css {
-                padding(20.px)
+                padding(props.theme.spacing.unit.px * 4)
                 display = Display.flex
                 flexDirection = FlexDirection.column
                 flexGrow = 1.0
@@ -59,6 +60,8 @@ class App : RComponent<WithSnackbar, App.State>() {
         }
     }
 
+    interface Props : WithTheme, WithSnackbar
+
     data class State(
         val loadingCount: Int = 0,
         val agendas: List<Agenda>? = null,
@@ -67,4 +70,5 @@ class App : RComponent<WithSnackbar, App.State>() {
 
 }
 
-fun RBuilder.app(handler: (RHandler<RProps>) = {}) = child(withSnackbar(App::class), handler)
+fun RBuilder.app(handler: (RHandler<App.Props>) = {}) =
+    child(withTheme(withSnackbar(App::class)), handler)

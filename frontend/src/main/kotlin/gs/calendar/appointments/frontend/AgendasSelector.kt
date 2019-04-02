@@ -11,6 +11,8 @@ import material_ui.core.TooltipPlacement
 import material_ui.core.button
 import material_ui.core.menu
 import material_ui.core.menuItem
+import material_ui.core.styles.WithTheme
+import material_ui.core.styles.withTheme
 import material_ui.core.tooltip
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
@@ -32,7 +34,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                 label = props.value?.name ?: ""
             ) {
                 css {
-                    margin(left = 8.px)
+                    margin(left = props.theme.spacing.unit.px)
                 }
 
                 onClick { ev ->
@@ -68,7 +70,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
         }
     }
 
-    interface Props : WithSnackbar {
+    interface Props : WithTheme, WithSnackbar {
         var value: Agenda?
         var options: List<Agenda>?
     }
@@ -83,7 +85,7 @@ fun RBuilder.agendasSelector(
     value: Agenda?,
     options: List<Agenda>?,
     handler: (RHandler<AgendasSelector.Props>) = {}
-) = child(withSnackbar(AgendasSelector::class)) {
+) = child(withTheme(withSnackbar(AgendasSelector::class))) {
     attrs.value = value
     attrs.options = options
 

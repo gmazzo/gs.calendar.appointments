@@ -7,15 +7,12 @@ import kotlinx.css.flex
 import kotlinx.css.margin
 import kotlinx.css.px
 import material_ui.core.AppBarPosition
-import material_ui.core.ButtonColor
 import material_ui.core.TypographyVariant
 import material_ui.core.appBar
 import material_ui.core.circularProgress
-import material_ui.core.iconButton
 import material_ui.core.position
 import material_ui.core.toolBar
 import material_ui.core.typography
-import material_ui.icons.menuIcon
 import react.RBuilder
 
 fun RBuilder.header(agendas: List<Agenda>?, currentAgenda: Agenda?, loading: Boolean) {
@@ -24,13 +21,6 @@ fun RBuilder.header(agendas: List<Agenda>?, currentAgenda: Agenda?, loading: Boo
             position = AppBarPosition.STATIC
         }
         toolBar {
-            iconButton(color = ButtonColor.INHERIT) {
-                css {
-                    margin(left = (-12).px, right = 20.px)
-                }
-
-                menuIcon()
-            }
             typography(TypographyVariant.H6) {
                 css {
                     flex(1.0)
