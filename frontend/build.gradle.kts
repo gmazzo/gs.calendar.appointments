@@ -66,6 +66,7 @@ kotlinFrontend {
         bundleName = "main"
         contentPath = file("src/main/web")
         mode = "development"
+        sourceMapEnabled = true
     }
 
 }
@@ -75,6 +76,7 @@ tasks.withType(Kotlin2JsCompile::class) {
         metaInfo = true
         outputFile = "$buildDir/js/$name.js"
         sourceMap = true
+        sourceMapEmbedSources = "always"
         moduleKind = "commonjs"
         main = "call"
     }
