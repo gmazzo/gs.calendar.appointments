@@ -1,16 +1,11 @@
 package notistack
 
 import kotlinext.js.jsObject
-import react.RBuilder
-import react.RComponent
-import react.RHandler
 import react.RProps
 import kotlin.reflect.KClass
 
-fun <T> withSnackbar(component: T): T = module.withSnackbar(component).unsafeCast<T>()
-
-fun <P : WithSnackbar, C : RComponent<P, *>> RBuilder.withSnackbar(kclazz: KClass<C>, handler: RHandler<P>) =
-    child(withSnackbar(kclazz.js), jsObject {}, handler)
+fun <T : Any> withSnackbar(component: KClass<T>) =
+    module.withSnackbar(component.js).unsafeCast<JsClass<T>>().kotlin
 
 fun WithSnackbar.enqueueSnackbar(message: String, options: (WithSnackbar.Options.() -> Unit) = {}) =
     enqueueSnackbar(message, jsObject(options))

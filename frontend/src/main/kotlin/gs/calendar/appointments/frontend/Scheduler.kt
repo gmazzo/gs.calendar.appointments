@@ -3,10 +3,10 @@ package gs.calendar.appointments.frontend
 import gs.calendar.appointments.frontend.redux.showLoading
 import gs.calendar.appointments.model.Agenda
 import moment.moment
+import notistack.WithSnackbar
 import react.RBuilder
 import react.RComponent
 import react.RHandler
-import react.RProps
 import react.RState
 import react.setState
 import react_big_calendar.CalendarEvent
@@ -54,7 +54,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
         }
     }
 
-    interface Props : RProps {
+    interface Props : WithSnackbar {
         var agenda: Agenda?
     }
 

@@ -12,12 +12,14 @@ import material_ui.core.button
 import material_ui.core.menu
 import material_ui.core.menuItem
 import material_ui.core.tooltip
+import notistack.WithSnackbar
+import notistack.enqueueSnackbar
+import notistack.withSnackbar
 import onClick
 import org.w3c.dom.Element
 import react.RBuilder
 import react.RComponent
 import react.RHandler
-import react.RProps
 import react.RState
 import react.setState
 
@@ -37,6 +39,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                     val target = ev.target as Element
 
                     setState { menuAnchor = target }
+                    props.enqueueSnackbar("Snackbar!!!")
                 }
             }
             menu {
@@ -65,7 +68,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
         }
     }
 
-    interface Props : RProps {
+    interface Props : WithSnackbar {
         var value: Agenda?
         var options: List<Agenda>?
     }
@@ -80,7 +83,7 @@ fun RBuilder.agendasSelector(
     value: Agenda?,
     options: List<Agenda>?,
     handler: (RHandler<AgendasSelector.Props>) = {}
-) = child(AgendasSelector::class) {
+) = child(withSnackbar(AgendasSelector::class)) {
     attrs.value = value
     attrs.options = options
 

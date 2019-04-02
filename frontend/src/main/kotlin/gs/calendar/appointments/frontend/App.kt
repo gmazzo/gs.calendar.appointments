@@ -67,4 +67,4 @@ class App : RComponent<WithSnackbar, App.State>() {
 
 }
 
-fun RBuilder.app(handler: (RHandler<RProps>) = {}) = withSnackbar(App::class, handler)
+fun RBuilder.app(handler: (RHandler<RProps>) = {}) = child(withSnackbar(App::class), handler)
