@@ -18,6 +18,7 @@ internal class EventsServiceImpl @Inject constructor(
         .events()
         .list(agendaId)
         .setSingleEvents(flatInstances)
+        .setOrderBy("startTime")
         .execute()
         .items
         .map { it.toSlot() }
