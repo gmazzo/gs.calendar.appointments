@@ -1,13 +1,17 @@
 package gs.calendar.appointments
 
+import gs.utils.classLoader
 import io.undertow.server.handlers.resource.ClassPathResourceManager
 import io.undertow.servlet.api.DeploymentInfo
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer
 import org.jboss.resteasy.util.PortProvider
 import java.io.File
+import java.util.logging.LogManager
 import javax.ws.rs.ApplicationPath
 
 fun main() {
+    LogManager.getLogManager().readConfiguration(classLoader.getResourceAsStream(Resources.LOGGING_PROPERTIES))
+
     UndertowJaxrsServer().apply {
         deploy(Application::class.java)
         deploy(
