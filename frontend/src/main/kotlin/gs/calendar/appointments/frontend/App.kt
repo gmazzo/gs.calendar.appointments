@@ -2,8 +2,8 @@ package gs.calendar.appointments.frontend
 
 import css
 import gs.calendar.appointments.frontend.redux.SetAgendas
-import gs.calendar.appointments.frontend.redux.showLoading
 import gs.calendar.appointments.frontend.redux.store
+import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import kotlinx.css.Display
 import kotlinx.css.FlexDirection
@@ -12,10 +12,7 @@ import kotlinx.css.padding
 import kotlinx.css.px
 import material_ui.core.styles.WithTheme
 import material_ui.core.styles.withTheme
-import notistack.SnackbarVariant
 import notistack.WithSnackbar
-import notistack.enqueueSnackbar
-import notistack.variant
 import notistack.withSnackbar
 import react.RBuilder
 import react.RComponent
@@ -32,9 +29,8 @@ class App : RComponent<App.Props, App.State>() {
         unsubscribe = store.subscribe { setState(store.state) }
 
         API.listAgendas()
+            .uiLinked(props)
             .then { store.dispatch(SetAgendas(it.data?.toList())) }
-            .catch { props.enqueueSnackbar(it.toString()) { variant = SnackbarVariant.ERROR } }
-            .showLoading()
     }
 
     override fun componentWillUnmount() {
@@ -55,7 +51,6 @@ class App : RComponent<App.Props, App.State>() {
                 flexGrow = 1.0
                 overflow = Overflow.auto
             }
-
             scheduler(agenda = state.currentAgenda)
         }
     }
@@ -70,5 +65,7 @@ class App : RComponent<App.Props, App.State>() {
 
 }
 
+private val wrapped = withTheme(withSnackbar(App::class))
+
 fun RBuilder.app(handler: (RHandler<App.Props>) = {}) =
-    child(withTheme(withSnackbar(App::class)), handler)
+    child(wrapped, handler)

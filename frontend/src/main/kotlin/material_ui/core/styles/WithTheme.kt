@@ -1,22 +1,13 @@
 package material_ui.core.styles
 
+import react.RProps
+import wrapWith
 import kotlin.reflect.KClass
 
-fun <T : Any> withTheme(component: KClass<T>) =
-    module.withTheme()(component.js).unsafeCast<JsClass<T>>().kotlin
+fun <T : Any> withTheme(component: KClass<T>) = component.wrapWith(module.withTheme())
 
-external interface WithTheme {
+external interface WithTheme : RProps {
 
     val theme: Theme
-
-}
-
-external interface Theme {
-
-    val spacing: Spacing
-
-    interface Spacing {
-        val unit: Int
-    }
 
 }

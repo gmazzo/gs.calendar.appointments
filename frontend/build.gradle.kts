@@ -42,7 +42,7 @@ kotlinFrontend {
     sourceMaps = true
 
     npm {
-        dependency("@material-ui/core", "3.9.2")
+        dependency("@material-ui/core", "3.9.3")
         dependency("@material-ui/icons", "3.0.2")
         dependency("axios", "0.18.0")
         dependency("inline-style-prefixer", "5.0.4")

@@ -1,9 +1,10 @@
 package gs.calendar.appointments.frontend
 
-import gs.calendar.appointments.frontend.redux.showLoading
+import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import moment.moment
 import notistack.WithSnackbar
+import notistack.withSnackbar
 import react.RBuilder
 import react.RComponent
 import react.RHandler
@@ -18,6 +19,10 @@ private val momentLocalizer = moment.asLocalizer()
 
 class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
+    override fun componentDidMount() {
+        loadEvents()
+    }
+
     override fun componentDidUpdate(prevProps: Props, prevState: State, snapshot: Any) {
         props.agenda?.takeIf { it.id != prevProps.agenda?.id }?.also {
             loadEvents()
@@ -27,6 +32,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     private fun loadEvents() {
         props.agenda?.id?.let {
             API.listSlots(it)
+                .uiLinked(props)
                 .then {
                     setState {
                         events = it.data?.map { ev ->
@@ -38,7 +44,6 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
                         }
                     }
                 }
-                .showLoading()
         }
     }
 
@@ -64,10 +69,13 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
 }
 
+private val wrapped = withSnackbar(Scheduler::class)
+
 fun RBuilder.scheduler(
     agenda: Agenda?,
     handler: (RHandler<Scheduler.Props>) = {}
-) = child(Scheduler::class) {
+) = child(wrapped) {
     attrs.agenda = agenda
+
     handler(this)
 }

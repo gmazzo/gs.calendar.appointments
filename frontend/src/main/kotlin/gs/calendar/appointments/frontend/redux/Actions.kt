@@ -3,12 +3,18 @@ package gs.calendar.appointments.frontend.redux
 import finally
 import gs.calendar.appointments.frontend.App
 import gs.calendar.appointments.model.Agenda
+import notistack.SnackbarVariant
+import notistack.WithSnackbar
+import notistack.enqueueSnackbar
+import notistack.variant
 import redux.RAction
 import kotlin.js.Promise
 
-fun Promise<*>.showLoading() = also {
+fun <T> Promise<T>.uiLinked(props: WithSnackbar): Promise<T> {
+    catch { props.enqueueSnackbar(it.toString()) { variant = SnackbarVariant.ERROR } }
     finally { store.dispatch(StopLoading) }
     store.dispatch(StartLoading)
+    return this
 }
 
 sealed class Action : RAction {

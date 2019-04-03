@@ -15,7 +15,6 @@ import material_ui.core.styles.WithTheme
 import material_ui.core.styles.withTheme
 import material_ui.core.tooltip
 import notistack.WithSnackbar
-import notistack.enqueueSnackbar
 import notistack.withSnackbar
 import onClick
 import org.w3c.dom.Element
@@ -33,15 +32,12 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                 color = ButtonColor.SECONDARY,
                 label = props.value?.name ?: ""
             ) {
-                css {
-                    margin(left = props.theme.spacing.unit.px)
-                }
+                css { margin(left = props.theme.spacing.unit.px) }
 
                 onClick { ev ->
                     val target = ev.target as Element
 
                     setState { menuAnchor = target }
-                    props.enqueueSnackbar("Snackbar!!!")
                 }
             }
             menu {
@@ -81,11 +77,14 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
 }
 
+
+private val wrapped = withTheme(withSnackbar(AgendasSelector::class))
+
 fun RBuilder.agendasSelector(
     value: Agenda?,
     options: List<Agenda>?,
     handler: (RHandler<AgendasSelector.Props>) = {}
-) = child(withTheme(withSnackbar(AgendasSelector::class))) {
+) = child(wrapped) {
     attrs.value = value
     attrs.options = options
 
