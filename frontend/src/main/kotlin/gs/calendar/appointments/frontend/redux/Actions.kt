@@ -3,6 +3,7 @@ package gs.calendar.appointments.frontend.redux
 import finally
 import gs.calendar.appointments.frontend.App
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.User
 import notistack.SnackbarVariant
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
@@ -54,6 +55,14 @@ data class ChangeAgenda(private val agenda: Agenda?) : Action() {
 
     override fun invoke(state: App.State) = state.copy(
         currentAgenda = agenda
+    )
+
+}
+
+data class ChangeUser(private val user: User?) : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        currentUser = user
     )
 
 }
