@@ -1,11 +1,10 @@
 package notistack
 
 import kotlinext.js.jsObject
+import react.HOC
 import react.RProps
-import kotlin.reflect.KClass
 
-fun <T : Any> withSnackbar(component: KClass<T>) =
-    module.withSnackbar(component.js).unsafeCast<JsClass<T>>().kotlin
+fun <P : WithSnackbar> withSnackbar() = module.withSnackbar.unsafeCast<HOC<P, P>>()
 
 fun WithSnackbar.enqueueSnackbar(message: String, options: (WithSnackbar.Options.() -> Unit) = {}) =
     enqueueSnackbar(message, jsObject(options))

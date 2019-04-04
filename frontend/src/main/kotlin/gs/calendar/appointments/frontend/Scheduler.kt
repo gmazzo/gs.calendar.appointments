@@ -5,10 +5,12 @@ import gs.calendar.appointments.model.Agenda
 import moment.moment
 import notistack.WithSnackbar
 import notistack.withSnackbar
+import rClass
 import react.RBuilder
 import react.RComponent
 import react.RHandler
 import react.RState
+import react.invoke
 import react.setState
 import react_big_calendar.CalendarEvent
 import react_big_calendar.asLocalizer
@@ -69,12 +71,12 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
 }
 
-private val wrapped = withSnackbar(Scheduler::class)
+private val wrapped = withSnackbar<Scheduler.Props>()(Scheduler::class.rClass)
 
 fun RBuilder.scheduler(
     agenda: Agenda?,
     handler: (RHandler<Scheduler.Props>) = {}
-) = child(wrapped) {
+) = wrapped {
     attrs.agenda = agenda
 
     handler(this)

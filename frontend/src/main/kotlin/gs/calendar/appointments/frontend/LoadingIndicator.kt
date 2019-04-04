@@ -6,9 +6,11 @@ import kotlinx.css.px
 import material_ui.core.circularProgress
 import material_ui.core.styles.WithTheme
 import material_ui.core.styles.withTheme
+import rClass
 import react.RBuilder
 import react.RComponent
 import react.RState
+import react.invoke
 
 class LoadingIndicator : RComponent<LoadingIndicator.Props, RState>() {
 
@@ -26,8 +28,8 @@ class LoadingIndicator : RComponent<LoadingIndicator.Props, RState>() {
 
 }
 
-private val wrapped = withTheme(LoadingIndicator::class)
+private val wrapped = withTheme<LoadingIndicator.Props>()(LoadingIndicator::class.rClass)
 
-fun RBuilder.loadingIndicator(visible: Boolean) = child(wrapped) {
+fun RBuilder.loadingIndicator(visible: Boolean) = wrapped {
     attrs.visible = visible
 }

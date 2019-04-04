@@ -1,5 +1,6 @@
 package gs.calendar.appointments.frontend
 
+import allOf
 import css
 import gs.calendar.appointments.frontend.redux.ChangeAgenda
 import gs.calendar.appointments.frontend.redux.store
@@ -18,6 +19,7 @@ import notistack.WithSnackbar
 import notistack.withSnackbar
 import onClick
 import org.w3c.dom.Element
+import rClass
 import react.RBuilder
 import react.RComponent
 import react.RHandler
@@ -77,14 +79,13 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
 }
 
-
-private val wrapped = withTheme(withSnackbar(AgendasSelector::class))
+private val wrapped = allOf<AgendasSelector.Props>(withTheme(), withSnackbar())(AgendasSelector::class.rClass)
 
 fun RBuilder.agendasSelector(
     value: Agenda?,
     options: List<Agenda>?,
     handler: (RHandler<AgendasSelector.Props>) = {}
-) = child(wrapped) {
+) = wrapped {
     attrs.value = value
     attrs.options = options
 

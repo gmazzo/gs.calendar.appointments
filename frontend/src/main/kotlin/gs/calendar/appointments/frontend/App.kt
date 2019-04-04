@@ -1,5 +1,6 @@
 package gs.calendar.appointments.frontend
 
+import allOf
 import css
 import gs.calendar.appointments.frontend.redux.SetAgendas
 import gs.calendar.appointments.frontend.redux.store
@@ -14,6 +15,7 @@ import material_ui.core.styles.WithTheme
 import material_ui.core.styles.withTheme
 import notistack.WithSnackbar
 import notistack.withSnackbar
+import rClass
 import react.RBuilder
 import react.RComponent
 import react.RHandler
@@ -65,7 +67,6 @@ class App : RComponent<App.Props, App.State>() {
 
 }
 
-private val wrapped = withTheme(withSnackbar(App::class))
+private val wrapped = allOf<App.Props>(withTheme(), withSnackbar())(App::class.rClass)
 
-fun RBuilder.app(handler: (RHandler<App.Props>) = {}) =
-    child(wrapped, handler)
+fun RBuilder.app(handler: (RHandler<App.Props>) = {}) = wrapped(handler)
