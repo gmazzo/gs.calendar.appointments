@@ -4,10 +4,19 @@ An appointment system based on Google Calendars
 [![Build Status](https://travis-ci.com/gmazzo/gs.calendar.appointments.svg?branch=master)](https://travis-ci.com/gmazzo/gs.calendar.appointments)
 [![codecov](https://codecov.io/gh/gmazzo/gs.calendar.appointments/branch/master/graph/badge.svg)](https://codecov.io/gh/gmazzo/gs.calendar.appointments)
 
+## Overview
+This a sample project for demostrate the power of Kotlin language with a simple goal: scheduling appointments on pre-given time slots of availaibility
+I've used Kotlin everywere here:
+- KTS for Gradle's scripts (bye bye Groovy)
+- Kotlin's multuplatform for sharing DTO models between Java and JavaScript.
+- Dagger for tide everying up
+- RestEasy for API binding (JAX-RS spec)
+- React, Redux and Material-UI, full Kotlin
+
 ## Modules
 - model: platform agnostic model classes (for JVM and JS)
 - core: main module to interact with Google Calendar API that provides an abstraction with business logic
-- backend: a RestEasy JAX-RS server which exposes the API and the frontend module (bundled as Java resources)
+- backend: a JAX-RS server which exposes the API and the frontend module (bundled as Java resources)
 - frontend: a React application written in pure Kotlin! It relies on well known frameworks like Redux and Material-UI.
 
 ## Starting tips
