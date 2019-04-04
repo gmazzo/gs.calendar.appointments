@@ -75,3 +75,6 @@ Note: it may take a while to build, basically because it need to build and bundl
 ./gradlew frontend:run -t -PapiEndpoint=http://localhost:8081/api
 ```
 Once running, visit http://localhost:8088/ to open the app
+
+## What to Expect?
+<img width="852" src="https://user-images.githubusercontent.com/513566/55527104-fac2b880-566d-11e9-9885-2bff97c82757.png">
