@@ -1,6 +1,9 @@
 # gs.calendar.appointments
 An appointment system based on Google Calendars
 
+[![Build Status](https://travis-ci.com/gmazzo/gs.calendar.appointments.svg?branch=master)](https://travis-ci.com/gmazzo/gs.calendar.appointments)
+[![codecov](https://codecov.io/gh/gmazzo/gs.calendar.appointments/branch/master/graph/badge.svg)](https://codecov.io/gh/gmazzo/gs.calendar.appointments)
+
 ## Modules
 - model: platform agnostic model classes (for JVM and JS)
 - core: main module to interact with Google Calendar API that provides an abstraction with business logic
