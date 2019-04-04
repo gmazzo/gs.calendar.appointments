@@ -67,19 +67,19 @@ enum class ButtonVariant(val value: String) {
 }
 
 var Button.Props.color
-    get() = ButtonColor.valueOf(colorValue.toUpperCase())
+    get() = colorValue.let { ButtonColor.values().find { v -> v.value == it }!! }
     set(value) {
-        colorValue = value.name.toLowerCase()
+        colorValue = value.value
     }
 
 var Button.Props.size
-    get() = ButtonSize.valueOf(sizeValue.toUpperCase())
+    get() = sizeValue.let { ButtonSize.values().find { v -> v.value == it }!! }
     set(value) {
-        sizeValue = value.name.toLowerCase()
+        sizeValue = value.value
     }
 
 var Button.Props.variant
-    get() = ButtonVariant.valueOf(variantValue.toUpperCase())
+    get() = variantValue.let { ButtonVariant.values().find { v -> v.value == it }!! }
     set(value) {
-        variantValue = value.name.toLowerCase()
+        variantValue = value.value
     }

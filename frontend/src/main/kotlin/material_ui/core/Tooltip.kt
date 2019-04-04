@@ -47,7 +47,7 @@ enum class TooltipPlacement(val value: String) {
 }
 
 var Tooltip.Props.placement
-    get() = TooltipPlacement.valueOf(placementValue.toUpperCase())
+    get() = placementValue.let { TooltipPlacement.values().find { v -> v.value == it }!! }
     set(value) {
-        placementValue = value.name.toLowerCase()
+        placementValue = value.value
     }

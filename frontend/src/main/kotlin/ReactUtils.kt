@@ -1,5 +1,8 @@
 import kotlinx.css.CSSBuilder
 import kotlinx.css.RuleSet
+import notistack.SnackbarVariant
+import notistack.WithSnackbar
+import notistack.enqueueSnackbar
 import org.w3c.dom.events.MouseEvent
 import react.HOC
 import react.RClass
@@ -32,3 +35,9 @@ fun RElementBuilder<*>.onClick(onClick: (MouseEvent) -> Unit) {
 
 fun <T, S> Promise<T>.finally(onFinally: ((T) -> S)?): Promise<S> =
     asDynamic().finally(onFinally) as Promise<S>
+
+fun Throwable.snackbar(props: WithSnackbar) {
+    console.log(this)
+
+    props.enqueueSnackbar(toString(), variant = SnackbarVariant.ERROR)
+}

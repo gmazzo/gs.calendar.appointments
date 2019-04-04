@@ -6,14 +6,27 @@ import react.RProps
 
 fun <P : WithSnackbar> withSnackbar() = module.withSnackbar.unsafeCast<HOC<P, P>>()
 
-fun WithSnackbar.enqueueSnackbar(message: String, options: (WithSnackbar.Options.() -> Unit) = {}) =
-    enqueueSnackbar(message, jsObject(options))
+fun WithSnackbar.enqueueSnackbar(
+    message: String,
+    variant: SnackbarVariant? = null,
+    persist: Boolean? = null,
+    preventDuplicate: Boolean? = null,
+    autoHideDuration: Int? = null,
+    options: (WithSnackbar.Options.() -> Unit) = {}
+) =
+    enqueueSnackbar(message, jsObject {
+        variant?.let { this.variant = it }
+        persist?.let { this.persist = it }
+        preventDuplicate?.let { this.preventDuplicate = it }
+        autoHideDuration?.let { this.autoHideDuration = it }
+        options(this)
+    })
 
 external interface WithSnackbar : RProps {
 
-    val enqueueSnackbar: (message: String, options: Options?) -> String
+    fun enqueueSnackbar(message: String, options: Options?): SnackbarKey
 
-    val closeSnackbar: (key: String) -> Unit
+    fun closeSnackbar(key: SnackbarKey)
 
     interface Options {
 
@@ -30,6 +43,8 @@ external interface WithSnackbar : RProps {
 
 }
 
+typealias SnackbarKey = String
+
 enum class SnackbarVariant(val value: String) {
     DEFAULT("default"),
     ERROR("error"),
@@ -39,7 +54,7 @@ enum class SnackbarVariant(val value: String) {
 }
 
 var WithSnackbar.Options.variant
-    get() = SnackbarVariant.valueOf(variantValue.toUpperCase())
+    get() = variantValue.let { SnackbarVariant.values().find { v -> v.value == it }!! }
     set(value) {
-        variantValue = value.name.toLowerCase()
+        variantValue = value.value
     }

@@ -46,13 +46,13 @@ enum class CircularProgressVariant(val value: String) {
 }
 
 var CircularProgress.Props.color
-    get() = CircularProgressColor.valueOf(colorValue.toUpperCase())
+    get() = colorValue.let { CircularProgressColor.values().find { v -> v.value == it }!! }
     set(value) {
-        colorValue = value.name.toLowerCase()
+        colorValue = value.value
     }
 
 var CircularProgress.Props.variant
-    get() = CircularProgressVariant.valueOf(variantValue.toUpperCase())
+    get() = variantValue.let { CircularProgressVariant.values().find { v -> v.value == it }!! }
     set(value) {
-        variantValue = value.name.toLowerCase()
+        variantValue = value.value
     }

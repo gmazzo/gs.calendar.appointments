@@ -37,7 +37,7 @@ enum class AppBarPosition(val value: String) {
 }
 
 var AppBar.Props.position
-    get() = AppBarPosition.valueOf(positionValue.toUpperCase())
+    get() = positionValue.let { AppBarPosition.values().find { v -> v.value == it }!! }
     set(value) {
-        positionValue = value.name.toLowerCase()
+        positionValue = value.value
     }

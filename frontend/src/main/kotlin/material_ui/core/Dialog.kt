@@ -14,7 +14,7 @@ fun RBuilder.dialog(
     handler: (RHandler<Dialog.Props>) = {}
 ) = dialog.invoke {
     attrs.open = open
-    attrs.onClose = onClose
+    onClose?.let { attrs.onClose = it }
 
     handler(this)
 }
@@ -25,7 +25,7 @@ external interface Dialog : RClass<Dialog.Props> {
 
         var open: Boolean
 
-        var onClose: ((MouseEvent) -> Unit)?
+        var onClose: (MouseEvent) -> Unit
 
     }
 

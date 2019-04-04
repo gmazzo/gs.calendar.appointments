@@ -50,15 +50,13 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     }
 
     override fun RBuilder.render() {
-        bigCalendar {
-            attrs {
-                localizer = momentLocalizer
-                culture = window.navigator.language
-                events = state.events?.toTypedArray() ?: emptyArray()
-                startAccessor = "start"
-                endAccessor = "end"
-            }
-        }
+        bigCalendar(
+            localizer = momentLocalizer,
+            culture = window.navigator.language,
+            events = state.events?.toTypedArray() ?: emptyArray(),
+            startAccessor = "start",
+            endAccessor = "end"
+        )
     }
 
     interface Props : WithSnackbar {

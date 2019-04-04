@@ -50,13 +50,13 @@ enum class DrawerVariant(val value: String) {
 }
 
 var Drawer.Props.anchor
-    get() = DrawerAnchor.valueOf(anchorValue.toUpperCase())
+    get() = anchorValue.let { DrawerAnchor.values().find { v -> v.value == it }!! }
     set(value) {
-        anchorValue = value.name.toLowerCase()
+        anchorValue = value.value
     }
 
 var Drawer.Props.variant
-    get() = DrawerVariant.valueOf(variantValue.toUpperCase())
+    get() = variantValue.let { DrawerVariant.values().find { v -> v.value == it }!! }
     set(value) {
-        variantValue = value.name.toLowerCase()
+        variantValue = value.value
     }

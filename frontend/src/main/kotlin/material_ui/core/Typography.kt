@@ -86,19 +86,19 @@ enum class TypographyVariant(val value: String) {
 }
 
 var Typography.Props.align
-    get() = TypographyAlign.valueOf(alignValue.toUpperCase())
+    get() = alignValue.let { TypographyAlign.values().find { v -> v.value == it }!! }
     set(value) {
-        alignValue = value.name.toLowerCase()
+        alignValue = value.value
     }
 
 var Typography.Props.color
-    get() = TypographyColor.valueOf(colorValue.toUpperCase())
+    get() = colorValue.let { TypographyColor.values().find { v -> v.value == it }!! }
     set(value) {
-        colorValue = value.name.toLowerCase()
+        colorValue = value.value
     }
 
 var Typography.Props.variant
-    get() = TypographyVariant.valueOf(variantValue.toUpperCase())
+    get() = variantValue.let { TypographyVariant.values().find { v -> v.value == it }!! }
     set(value) {
-        variantValue = value.name.toLowerCase()
+        variantValue = value.value
     }

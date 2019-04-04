@@ -13,7 +13,7 @@ fun RBuilder.select(
     handler: (RHandler<Select.Props>) = {}
 ) =
     select.invoke {
-        attrs.value = value
+        value?.let { attrs.value = it }
 
         handler(this)
     }
@@ -24,7 +24,7 @@ abstract external class Select : RClass<Select.Props> {
 
         var autoWidth: Boolean
 
-        var value: String?
+        var value: String
 
         var onChange: (MouseEvent) -> Unit
 
