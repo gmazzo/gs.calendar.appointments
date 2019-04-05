@@ -17,8 +17,6 @@ import react_google_login.googleLogin
 
 fun RBuilder.loginDialog(visible: Boolean, props: WithSnackbar) {
     fun onLoggedIn(response: GoogleLogin.SuccessResponse) {
-        console.info(response)
-
         val user = response.profileObj.let { User(it.name, it.email, it.imageUrl) }
 
         store.dispatch(ChangeUser(user))

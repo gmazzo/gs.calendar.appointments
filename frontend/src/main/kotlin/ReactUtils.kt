@@ -13,7 +13,6 @@ import react.dom.RDOMBuilder
 import react.dom.jsStyle
 import react.invoke
 import styled.toStyle
-import kotlin.js.Promise
 import kotlin.reflect.KClass
 
 val <P : RProps, T : RComponent<P, *>> KClass<T>.rClass get() = js.unsafeCast<RClass<P>>()
@@ -32,9 +31,6 @@ fun RDOMBuilder<*>.css(handler: RuleSet) {
 fun RElementBuilder<*>.onClick(onClick: (MouseEvent) -> Unit) {
     attrs.asDynamic().onClick = onClick
 }
-
-fun <T, S> Promise<T>.finally(onFinally: ((T) -> S)?): Promise<S> =
-    asDynamic().finally(onFinally) as Promise<S>
 
 fun Throwable.snackbar(props: WithSnackbar) {
     console.log(this)
