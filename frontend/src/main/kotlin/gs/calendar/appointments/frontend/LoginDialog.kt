@@ -19,11 +19,7 @@ fun RBuilder.loginDialog(visible: Boolean, props: WithSnackbar) {
     fun onLoggedIn(response: GoogleLogin.SuccessResponse) {
         console.info(response)
 
-        val user = response.profileObj.let {
-            // FIXME User can't be referenced directly
-            // User(it.name, it.email)
-            it.unsafeCast<User>()
-        }
+        val user = response.profileObj.let { User(it.name, it.email, it.imageUrl) }
 
         store.dispatch(ChangeUser(user))
         props.enqueueSnackbar("Logged as ${user.name} <${user.email}>")
