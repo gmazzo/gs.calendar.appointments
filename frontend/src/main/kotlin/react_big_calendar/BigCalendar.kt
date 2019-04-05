@@ -1,5 +1,6 @@
 package react_big_calendar
 
+import gs.calendar.appointments.model.Slot
 import moment.Moment
 import react.RBuilder
 import react.RClass
@@ -21,6 +22,9 @@ fun RBuilder.bigCalendar(
     events: Array<CalendarEvent>,
     startAccessor: String,
     endAccessor: String,
+    popup: Boolean? = null,
+    onSelectEvent: ((CalendarEvent) -> Unit)? = null,
+    onSelectSlot: ((start: Date, end: Date) -> Unit)? = null,
     handler: (RHandler<BigCalendar.Props>) = {}
 ) = bigCalendar {
     attrs.localizer = localizer
@@ -28,6 +32,9 @@ fun RBuilder.bigCalendar(
     attrs.events = events
     attrs.startAccessor = startAccessor
     attrs.endAccessor = endAccessor
+    popup?.let { attrs.popup = popup }
+    onSelectEvent?.let { attrs.onSelectEvent = onSelectEvent }
+    onSelectSlot?.let { attrs.onSelectSlot = onSelectSlot }
 
     handler(this)
 }
@@ -50,11 +57,15 @@ abstract external class BigCalendar : RClass<BigCalendar.Props> {
         var events: Array<CalendarEvent>
         var startAccessor: String
         var endAccessor: String
+        var popup: Boolean
+        var onSelectEvent: (CalendarEvent) -> Unit
+        var onSelectSlot: (start: Date, end: Date) -> Unit
     }
 
 }
 
 data class CalendarEvent(
+    val slot: Slot,
     val start: Date,
     val end: Date,
     val title: String

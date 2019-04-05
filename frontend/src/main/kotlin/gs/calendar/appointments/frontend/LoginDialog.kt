@@ -31,9 +31,9 @@ private val wrapped = withSnackbar<Props>()() { props ->
     }
 
     dialog(open = props.currentUser == null) {
-        dialogTitle(title = "Account required")
+        dialogTitle("Account required")
         dialogContent {
-            dialogContentText(text = "Sign-in with your Google account to book appointments")
+            dialogContentText("Sign-in with your Google account to book appointments")
         }
         dialogActions {
             googleLogin(

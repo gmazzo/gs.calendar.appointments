@@ -7,6 +7,7 @@ import gs.calendar.appointments.frontend.redux.SetAgendas
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.User
 import kotlinx.css.Display
 import kotlinx.css.FlexDirection
@@ -58,6 +59,7 @@ class App : RComponent<App.Props, App.State>() {
             scheduler(agenda = state.currentAgenda)
         }
         loginDialog(currentUser = state.currentUser)
+        appointment(slot = state.currentSlot)
     }
 
     interface Props : WithTheme, WithSnackbar
@@ -65,8 +67,9 @@ class App : RComponent<App.Props, App.State>() {
     data class State(
         val loadingCount: Int = 0,
         val agendas: List<Agenda>? = null,
+        val currentUser: User? = null,
         val currentAgenda: Agenda? = null,
-        val currentUser: User? = null
+        val currentSlot: Slot? = null
     ) : RState
 
 }

@@ -9,7 +9,7 @@ import react.RProps
 private val dialog = module.Dialog.unsafeCast<Dialog>()
 
 fun RBuilder.dialog(
-    `open`: Boolean = false,
+    `open`: Boolean = true,
     onClose: ((MouseEvent) -> Unit)? = null,
     handler: (RHandler<Dialog.Props>) = {}
 ) = dialog.invoke {

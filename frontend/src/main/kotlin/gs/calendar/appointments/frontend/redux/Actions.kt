@@ -3,6 +3,7 @@ package gs.calendar.appointments.frontend.redux
 import finally
 import gs.calendar.appointments.frontend.App
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.User
 import notistack.WithSnackbar
 import redux.RAction
@@ -40,6 +41,14 @@ object StopLoading : Action() {
 
 }
 
+data class ChangeUser(private val user: User?) : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        currentUser = user
+    )
+
+}
+
 data class SetAgendas(private val agendas: List<Agenda>?) : Action() {
 
     override fun invoke(state: App.State) = state.copy(
@@ -49,18 +58,19 @@ data class SetAgendas(private val agendas: List<Agenda>?) : Action() {
 
 }
 
-data class ChangeAgenda(private val agenda: Agenda?) : Action() {
+data class SelectAgenda(private val agenda: Agenda?) : Action() {
 
     override fun invoke(state: App.State) = state.copy(
-        currentAgenda = agenda
+        currentAgenda = agenda,
+        currentSlot = null
     )
 
 }
 
-data class ChangeUser(private val user: User?) : Action() {
+data class SelectSlot(private val slot: Slot?) : Action() {
 
     override fun invoke(state: App.State) = state.copy(
-        currentUser = user
+        currentSlot = slot
     )
 
 }

@@ -2,7 +2,7 @@ package gs.calendar.appointments.frontend.header
 
 import allOf
 import css
-import gs.calendar.appointments.frontend.redux.ChangeAgenda
+import gs.calendar.appointments.frontend.redux.SelectAgenda
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.model.Agenda
 import kotlinx.css.margin
@@ -57,7 +57,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
                             onClick {
                                 setState { menuAnchor = null }
-                                store.dispatch(ChangeAgenda(agenda))
+                                store.dispatch(SelectAgenda(agenda))
                             }
 
                             +agenda.name

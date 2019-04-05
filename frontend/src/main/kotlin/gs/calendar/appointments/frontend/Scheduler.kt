@@ -1,5 +1,7 @@
 package gs.calendar.appointments.frontend
 
+import gs.calendar.appointments.frontend.redux.SelectSlot
+import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import moment.moment
@@ -37,11 +39,12 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
                 .uiLinked(props)
                 .then {
                     setState {
-                        events = it.data?.map { ev ->
+                        events = it.data?.map { slot ->
                             CalendarEvent(
-                                ev.startTime!!,
-                                ev.endTime!!,
-                                ev.description!!
+                                slot = slot,
+                                start = slot.startTime!!,
+                                end = slot.endTime!!,
+                                title = slot.description
                             )
                         }
                     }
@@ -55,7 +58,8 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             culture = window.navigator.language,
             events = state.events?.toTypedArray() ?: emptyArray(),
             startAccessor = "start",
-            endAccessor = "end"
+            endAccessor = "end",
+            onSelectEvent = { store.dispatch(SelectSlot(it.slot)) }
         )
     }
 
