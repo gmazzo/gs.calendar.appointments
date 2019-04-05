@@ -7,7 +7,7 @@ data class Slot(
     val endTime: Date?,
     val location: String?,
     val extraInfo: String?,
-    val attendees: Set<String>,
+    val attendees: List<User>,
     val capacity: Int
 ) {
 

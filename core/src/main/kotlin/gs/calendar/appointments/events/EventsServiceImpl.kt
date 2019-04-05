@@ -6,6 +6,7 @@ import com.google.api.services.calendar.model.EventAttendee
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
+import gs.calendar.appointments.model.User
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Provider
@@ -52,7 +53,7 @@ internal class EventsServiceImpl @Inject constructor(
             endTime = end?.dateTime?.value?.let(::Date),
             location = location,
             extraInfo = description,
-            attendees = attendees?.map(EventAttendee::getEmail)?.toSet() ?: emptySet(),
+            attendees = attendees?.map { it.asUser() } ?: emptyList(),
             capacity = attendeesCapacity
         )
 
@@ -65,5 +66,10 @@ internal class EventsServiceImpl @Inject constructor(
                 }
             }
         }
+
+    private fun EventAttendee.asUser() = User(
+        name = displayName,
+        email = email
+    )
 
 }

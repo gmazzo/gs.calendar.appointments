@@ -15,7 +15,7 @@ fun RBuilder.googleLogin(
     onRequest: (() -> Unit)? = null,
     onSuccess: (response: GoogleLogin.SuccessResponse) -> Unit,
     onFailure: (response: GoogleLogin.FailureResponse) -> Unit,
-    isSignedIn: Boolean? = true,
+    isSignedIn: Boolean? = null,
     handler: (RHandler<GoogleLogin.Props>) = {}
 ) = googleLogin {
     attrs.clientId = clientId

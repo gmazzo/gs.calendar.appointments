@@ -2,6 +2,7 @@ package gs.calendar.appointments.frontend
 
 import allOf
 import css
+import gs.calendar.appointments.frontend.header.header
 import gs.calendar.appointments.frontend.redux.SetAgendas
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.frontend.redux.uiLinked
@@ -56,7 +57,7 @@ class App : RComponent<App.Props, App.State>() {
             }
             scheduler(agenda = state.currentAgenda)
         }
-        loginDialog(visible = state.currentUser == null, props = props)
+        loginDialog(currentUser = state.currentUser)
     }
 
     interface Props : WithTheme, WithSnackbar

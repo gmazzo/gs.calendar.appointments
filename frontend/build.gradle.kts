@@ -52,7 +52,7 @@ kotlinFrontend {
         dependency("react", reactVersion)
         dependency("react-big-calendar", "0.20.4")
         dependency("react-dom", reactVersion)
-        dependency("react-google-login", "5.0.3")
+        dependency("react-google-login", "5.0.4")
         dependency("react-redux", reactReduxVersion)
         dependency("redux", "4.0.1")
         dependency("styled-components", "4.2.0")

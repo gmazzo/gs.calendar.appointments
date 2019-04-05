@@ -1,4 +1,4 @@
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.header
 
 import allOf
 import css
@@ -79,7 +79,9 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
 
 }
 
-private val wrapped = allOf<AgendasSelector.Props>(withTheme(), withSnackbar())(AgendasSelector::class.rClass)
+private val wrapped = allOf<AgendasSelector.Props>(withTheme(), withSnackbar())(
+    AgendasSelector::class.rClass
+)
 
 fun RBuilder.agendasSelector(
     value: Agenda?,

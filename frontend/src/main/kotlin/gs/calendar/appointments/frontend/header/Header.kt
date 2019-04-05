@@ -1,6 +1,7 @@
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.header
 
 import css
+import gs.calendar.appointments.frontend.BuildConfig
 import gs.calendar.appointments.model.Agenda
 import kotlinx.css.flex
 import material_ui.core.AppBarPosition

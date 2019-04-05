@@ -11,11 +11,18 @@ import material_ui.core.dialogTitle
 import notistack.SnackbarVariant
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
+import notistack.withSnackbar
 import react.RBuilder
+import react.invoke
 import react_google_login.GoogleLogin
 import react_google_login.googleLogin
 
-fun RBuilder.loginDialog(visible: Boolean, props: WithSnackbar) {
+private interface Props : WithSnackbar {
+    var currentUser: User?
+}
+
+private val wrapped = withSnackbar<Props>()() { props ->
+
     fun onLoggedIn(response: GoogleLogin.SuccessResponse) {
         val user = response.profileObj.let { User(it.name, it.email, it.imageUrl) }
 
@@ -23,7 +30,7 @@ fun RBuilder.loginDialog(visible: Boolean, props: WithSnackbar) {
         props.enqueueSnackbar("Logged as ${user.name} <${user.email}>")
     }
 
-    dialog(open = visible) {
+    dialog(open = props.currentUser == null) {
         dialogTitle(title = "Account required")
         dialogContent {
             dialogContentText(text = "Sign-in with your Google account to book appointments")
@@ -41,4 +48,8 @@ fun RBuilder.loginDialog(visible: Boolean, props: WithSnackbar) {
             )
         }
     }
+}
+
+fun RBuilder.loginDialog(currentUser: User?) = wrapped {
+    attrs.currentUser = currentUser
 }
