@@ -54,6 +54,7 @@ class Application : javax.ws.rs.core.Application() {
 
         // providers
         SwaggerSerializers::class.java,
+        JacksonConfigurator::class.java,
         DefaultExceptionMapper::class.java
     )
 
