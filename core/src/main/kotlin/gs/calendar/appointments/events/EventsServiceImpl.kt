@@ -29,18 +29,20 @@ internal class EventsServiceImpl @Inject constructor(
         .items
         .map { it.toSlot() }
 
-    override fun invite(agendaId: AgendaId, slotId: SlotId, email: String) = capendarApi.get()
+    override fun invite(agendaId: AgendaId, slotId: SlotId, user: User) = capendarApi.get()
         .events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
             capendarApi.get()
                 .events()
-                .patch(agendaId, slotId, event.apply {
-                    attendees = (attendees ?: mutableListOf()).apply {
-                        add(EventAttendee().also {
-                            it.email = email
-                            it.responseStatus = "accepted"
+                .patch(agendaId, slotId, event.also { ev ->
+                    ev.attendees = (ev.attendees ?: mutableListOf()).also {
+                        it.add(EventAttendee().apply {
+                            id = user.id // FIXME this causes a 403 response???
+                            displayName = user.name
+                            email = user.email
+                            responseStatus = "accepted"
                         })
                     }
                 })
@@ -74,23 +76,23 @@ internal class EventsServiceImpl @Inject constructor(
     private fun Iterable<EventAttendee>.resolveUsers() = runBlocking(Dispatchers.IO) {
         val api = peopleApi.get().People()
 
-        fun EventAttendee.retrievePhotoAsync() = id?.let {
+        fun EventAttendee.profileAsync() = id?.let {
             async {
                 api.get(it)
                     ?.setPersonFields("photos")
                     ?.execute()
-                    ?.photos
-                    ?.firstOrNull()
-                    ?.let { it.url }
             }
         }
 
-        map { it to it.retrievePhotoAsync() }
-            .map { (ev, photo) ->
+        map { it to it.profileAsync() }
+            .map {
+                val atendee = it.first
+                val profile = it.second?.await()
+
                 User(
-                    name = ev.displayName,
-                    email = ev.email,
-                    imageUrl = photo?.await()
+                    name = atendee.displayName ?: profile?.names?.firstOrNull()?.displayName,
+                    email = atendee.email,
+                    imageUrl = profile?.photos?.firstOrNull()?.url
                 )
             }
     }

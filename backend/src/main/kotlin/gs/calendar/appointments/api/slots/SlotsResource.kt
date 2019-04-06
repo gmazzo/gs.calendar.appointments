@@ -5,6 +5,7 @@ import gs.calendar.appointments.api.PARAM_SLOT
 import gs.calendar.appointments.events.EventsService
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.SlotId
+import gs.calendar.appointments.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.Consumes
@@ -32,10 +33,8 @@ class SlotsResource @Inject constructor(
     fun book(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
         @PathParam(PARAM_SLOT) slotId: SlotId,
-        body: BookRequest
+        bookingUser: User
     ) =
-        service.invite(agendaId, slotId, body.email)
-
-    data class BookRequest(val email: String)
+        service.invite(agendaId, slotId, bookingUser)
 
 }

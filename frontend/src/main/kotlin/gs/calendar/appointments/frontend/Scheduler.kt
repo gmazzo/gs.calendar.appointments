@@ -39,7 +39,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
                 .uiLinked(props)
                 .then {
                     setState {
-                        events = it.data?.map { slot ->
+                        events = it.map { slot ->
                             CalendarEvent(
                                 slot = slot,
                                 start = slot.startTime!!,

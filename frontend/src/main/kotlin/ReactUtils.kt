@@ -32,8 +32,8 @@ fun RElementBuilder<*>.onClick(onClick: (MouseEvent) -> Unit) {
     attrs.asDynamic().onClick = onClick
 }
 
-fun Throwable.snackbar(props: WithSnackbar) {
+fun Throwable.snackbar(withSnackbar: WithSnackbar) {
     console.log(this)
 
-    props.enqueueSnackbar(toString(), variant = SnackbarVariant.ERROR)
+    withSnackbar.enqueueSnackbar(toString(), variant = SnackbarVariant.ERROR)
 }

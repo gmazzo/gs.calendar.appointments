@@ -72,6 +72,7 @@ abstract external class GoogleLogin : RClass<GoogleLogin.Props> {
     }
 
     interface Profile {
+        val googleId: String
         val name: String
         val email: String
         val imageUrl: String

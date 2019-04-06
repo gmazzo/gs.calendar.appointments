@@ -10,8 +10,8 @@ import redux.RAction
 import snackbar
 import kotlin.js.Promise
 
-fun <T> Promise<T>.uiLinked(props: WithSnackbar): Promise<T> {
-    catch { it.snackbar(props) }
+fun <T> Promise<T>.uiLinked(withSnackbar: WithSnackbar): Promise<T> {
+    catch { it.snackbar(withSnackbar) }
     finally { store.dispatch(StopLoading) }
     store.dispatch(StartLoading)
     return this

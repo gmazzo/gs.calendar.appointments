@@ -19,6 +19,7 @@ dependencies {
     implementation("com.google.dagger:dagger:$daggerVersion")
     implementation("io.swagger.core.v3:swagger-jaxrs2:2.0.7")
     implementation("javax.servlet:javax.servlet-api:4.0.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     implementation("org.jboss.resteasy:resteasy-jackson2-provider:$restEasyVersion")
     implementation("org.jboss.resteasy:resteasy-undertow:$restEasyVersion")
 }

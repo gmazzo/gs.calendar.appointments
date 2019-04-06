@@ -35,7 +35,7 @@ class App : RComponent<App.Props, App.State>() {
 
         API.listAgendas()
             .uiLinked(props)
-            .then { store.dispatch(SetAgendas(it.data?.toList())) }
+            .then { store.dispatch(SetAgendas(it.toList())) }
     }
 
     override fun componentWillUnmount() {
@@ -58,8 +58,16 @@ class App : RComponent<App.Props, App.State>() {
             }
             scheduler(agenda = state.currentAgenda)
         }
-        loginDialog(currentUser = state.currentUser)
-        appointment(slot = state.currentSlot)
+        loginDialog(
+            currentUser = state.currentUser,
+            withSnackbar = props
+        )
+        appointmentDetails(
+            agenda = state.currentAgenda,
+            slot = state.currentSlot,
+            user = state.currentUser,
+            withSnackbar = props
+        )
     }
 
     interface Props : WithTheme, WithSnackbar
