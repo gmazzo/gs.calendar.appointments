@@ -19,7 +19,6 @@ val kotlinReactVersion = "$reactVersion-$kotlinWrappersVersion"
 
 dependencies {
     implementation(project(":model"))
-    implementation(kotlin("stdlib-js"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.6.12")
     implementation("org.jetbrains:kotlin-react:$kotlinReactVersion")
