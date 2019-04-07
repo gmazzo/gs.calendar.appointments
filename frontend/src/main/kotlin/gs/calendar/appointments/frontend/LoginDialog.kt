@@ -24,8 +24,7 @@ fun RBuilder.loginDialog(currentUser: User?, withSnackbar: WithSnackbar) {
         }
         dialogActions {
             googleLogin(
-                // TODO move this to a build property
-                clientId = "752118259594-201e8779d52re6d2lr2pkrca4fjt2tbj.apps.googleusercontent.com",
+                clientId = BuildConfig.API_CLIENT_ID,
                 buttonText = "Google Login",
                 isSignedIn = true,
                 onRequest = { StartLoading.dispatch() },

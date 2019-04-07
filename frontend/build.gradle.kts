@@ -35,6 +35,11 @@ buildConfig {
 
     buildConfigField("String", "APP_NAME", "\"$appName\"")
     buildConfigField("String", "API_ENDPOINT", "\"${apiEndpoint ?: "api"}\"")
+    buildConfigField(
+        "String",
+        "API_CLIENT_ID",
+        "\"752118259594-201e8779d52re6d2lr2pkrca4fjt2tbj.apps.googleusercontent.com\""
+    )
 }
 
 kotlinFrontend {
