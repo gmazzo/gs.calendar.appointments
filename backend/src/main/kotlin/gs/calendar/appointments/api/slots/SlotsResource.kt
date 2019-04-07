@@ -35,6 +35,6 @@ class SlotsResource @Inject constructor(
         @PathParam(PARAM_SLOT) slotId: SlotId,
         bookingUser: User
     ) =
-        service.invite(agendaId, slotId, bookingUser)
+        service.register(agendaId, slotId, bookingUser)
 
 }

@@ -23,16 +23,24 @@ I've used Kotlin everywere here:
 - **webapp-bundle**: the backend module, bundled with the frontend module as Java resources. This should be your entry point if you want to run the app as a standalone whole
 
 ## Starting tips
-### Configuring the project for your credentials
-1. Setup the **admin** user
-1.1. Locate the `build.gradle.kts` file in `backend` module
-1.1. Change the `buildConfigField:ADMIN_USER_ID` entry with your GMail's email.
-1. (optional) Replace the `google_client_secrets.json` with your own project on Google Cloud Platform. Make sure it has the **Calendar API enabled** if you do so.
-1. Run the `backend` module (see below how to do it)
-1. Visit http://localhost:8081/api/auth
-1. Login with your account to allow the app to access your calendars. 
+### Setup the Google Cloud Project
+1. Go to [Google Cloud Platform Console](https://console.cloud.google.com/apis)
+1. Sign in and create an API Project
+1. Enable the [Google Calendar API](https://console.cloud.google.com/apis/api/calendar-json.googleapis.com)
+1. Create a Service Account
+1.1 Go to [Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
+1.1 Choose *Create Service Account*
+1.1 Enter an ID and confirm
+1.1 Take note of your **Service Account's email address**
+1.1 Create a key-pair credentials for your new service account, in JSON format
+1.1 Download the credentials and replace the `google_client_secrets.json` in `backend` module's resources (under `src/main/resources`).
+1. Create at least one agenda
+1.1 Create a new (Google Calendar)[https://calendar.google.com/calendar/r/settings/createcalendar]
+1.1 Share it with the **Service Account's email address** you just created. This will make it available at the app
+1.1 Make sure it has **write access** to the Calendar's events when you share it
+1. Run the `backend` or the `webapp-bundle` module to check if everything is working as expected.
 
-If succeed, you should be redirected to http://localhost:8081/api/agendas and see something like this:
+If succeed, you should see something like this at http://localhost:8081/api/agendas:
 ```json
 [
   {
@@ -52,11 +60,6 @@ If succeed, you should be redirected to http://localhost:8081/api/agendas and se
     "available": true
   }
 ]
-```
-Note: the app, will not pick your personal calendar (the one linked to your account by default). 
-You can change this behaviour by removing the fiter from the `AgendasServiceImpl` in `core` module:
-```kotlin
-.filter { it.primary != true }
 ```
 
 I encourge you to create new calendars from https://calendar.google.com and add some test events on it!

@@ -31,7 +31,6 @@ application {
 buildConfig {
     buildConfigField("String", "APP_NAME", "\"$appName\"")
     buildConfigField("String", "API_CONTEXT", "\"api\"")
-    buildConfigField("String", "ADMIN_USER_ID", "\"gmazzo65@gmail.com\"")
     buildConfigField(
         type = "java.io.File",
         name = "DATA_STORE_FILE",

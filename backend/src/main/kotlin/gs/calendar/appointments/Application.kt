@@ -3,7 +3,6 @@ package gs.calendar.appointments
 import com.google.api.client.util.store.FileDataStoreFactory
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.agendas.AgendasResource
-import gs.calendar.appointments.api.auth.AuthResource
 import gs.calendar.appointments.api.slots.SlotsResource
 import io.swagger.v3.jaxrs2.SwaggerSerializers
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
@@ -19,9 +18,6 @@ class Application : javax.ws.rs.core.Application() {
     lateinit var corsFilter: CorsFilter
 
     @Inject
-    lateinit var authResource: AuthResource
-
-    @Inject
     lateinit var agendasResource: AgendasResource
 
     @Inject
@@ -31,7 +27,6 @@ class Application : javax.ws.rs.core.Application() {
         DaggerApplicationComponent.builder()
             .coreComponent(
                 DaggerCoreComponent.builder()
-                    .adminUserId(BuildConfig.ADMIN_USER_ID)
                     .clientSecrets(javaClass.getResource("/" + Resources.GOOGLE_CLIENT_SECRETS_JSON))
                     .dataStoreFactory(FileDataStoreFactory(BuildConfig.DATA_STORE_FILE))
                     .build()
@@ -42,7 +37,6 @@ class Application : javax.ws.rs.core.Application() {
 
     override fun getSingletons() = setOf(
         corsFilter,
-        authResource,
         agendasResource,
         slotsResource
     )

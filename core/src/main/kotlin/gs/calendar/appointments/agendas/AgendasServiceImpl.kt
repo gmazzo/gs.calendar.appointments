@@ -5,23 +5,21 @@ import com.google.api.services.calendar.model.CalendarListEntry
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.AgendaId
 import javax.inject.Inject
-import javax.inject.Provider
 
 internal class AgendasServiceImpl @Inject constructor(
-    private val api: Provider<Calendar>
+    private val api: Calendar
 ) : AgendasService {
 
-    override fun list(includeHidden: Boolean) = api.get()
+    override fun list(includeHidden: Boolean) = api
         .calendarList()
         .list()
         .setMinAccessRole("writer")
         .setShowHidden(includeHidden)
         .execute()
         .items
-        .filter { it.primary != true }
         .map { it.toAgenda() }
 
-    override fun enable(agendaId: AgendaId, enabled: Boolean) = api.get()
+    override fun enable(agendaId: AgendaId, enabled: Boolean) = api
         .calendarList()
         .patch(agendaId, CalendarListEntry().setHidden(enabled))
         .execute()

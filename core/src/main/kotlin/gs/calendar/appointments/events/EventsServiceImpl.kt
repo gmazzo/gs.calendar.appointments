@@ -3,67 +3,42 @@ package gs.calendar.appointments.events
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventAttendee
-import com.google.api.services.people.v1.PeopleService
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Provider
 
 internal class EventsServiceImpl @Inject constructor(
-    private val capendarApi: Provider<Calendar>,
-    private val peopleApi: Provider<PeopleService>
+    private val api: Calendar
 ) : EventsService {
 
-    override fun list(agendaId: String, flatInstances: Boolean) = capendarApi.get()
+    override fun list(agendaId: String, flatInstances: Boolean) = api
         .events()
         .list(agendaId)
         .setSingleEvents(flatInstances)
         .setOrderBy("startTime")
         .execute()
         .items
-        .map { it.toSlot() }
+        .map { it.asSlot() }
 
-    override fun invite(agendaId: AgendaId, slotId: SlotId, user: User) = capendarApi.get()
+    override fun register(agendaId: AgendaId, slotId: SlotId, user: User) = api
         .events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
-            capendarApi.get()
+            api
                 .events()
                 .patch(agendaId, slotId, event.also { ev ->
-                    ev.attendees = (ev.attendees ?: mutableListOf()).also {
-                        it.add(EventAttendee().apply {
-                            id = user.id // FIXME this causes a 403 response???
-                            displayName = user.name
-                            email = user.email
-                            responseStatus = "accepted"
-                        })
-                    }
+                    ev.attendees = (ev.registeredAttendees ?: emptyList()) + user.asEventAttendee()
                 })
-                .setSendUpdates("all")
+                .setSendUpdates("externalOnly")
                 .execute()
-                .let { it.toSlot() }
+                .let { it.asSlot() }
         }
 
-    private fun Event.toSlot() =
-        Slot(
-            id = id,
-            description = summary,
-            startTime = start?.dateTime?.value?.let(::Date),
-            endTime = end?.dateTime?.value?.let(::Date),
-            location = location,
-            extraInfo = description,
-            attendees = attendees?.resolveUsers() ?: emptyList(),
-            capacity = attendeesCapacity
-        )
-
-    private var Event.attendeesCapacity: Int
+    private var Event.capacity: Int
         get() = extendedProperties?.shared?.get("attendees.capacity")?.toInt() ?: 1
         set(value) {
             extendedProperties = (extendedProperties ?: Event.ExtendedProperties()).apply {
@@ -73,28 +48,29 @@ internal class EventsServiceImpl @Inject constructor(
             }
         }
 
-    private fun Iterable<EventAttendee>.resolveUsers() = runBlocking(Dispatchers.IO) {
-        val api = peopleApi.get().People()
+    private val Event.registeredAttendees: List<EventAttendee>?
+        get() = attendees?.filter { it.responseStatus != "declined" }
 
-        fun EventAttendee.profileAsync() = id?.let {
-            async {
-                api.get(it)
-                    ?.setPersonFields("photos")
-                    ?.execute()
-            }
-        }
+    private fun Event.asSlot() = Slot(
+        id = id,
+        description = summary,
+        startTime = start?.dateTime?.value?.let(::Date),
+        endTime = end?.dateTime?.value?.let(::Date),
+        location = location,
+        extraInfo = description,
+        attendees = registeredAttendees?.map { it.asUser() } ?: emptyList(),
+        capacity = capacity
+    )
 
-        map { it to it.profileAsync() }
-            .map {
-                val atendee = it.first
-                val profile = it.second?.await()
+    private fun EventAttendee.asUser() = User(
+        name = displayName,
+        email = email
+    )
 
-                User(
-                    name = atendee.displayName ?: profile?.names?.firstOrNull()?.displayName,
-                    email = atendee.email,
-                    imageUrl = profile?.photos?.firstOrNull()?.url
-                )
-            }
+    private fun User.asEventAttendee() = EventAttendee().also {
+        it.displayName = name
+        it.email = email
+        it.responseStatus = "accepted"
     }
 
 }

@@ -9,6 +9,6 @@ interface EventsService {
 
     fun list(agendaId: AgendaId, flatInstances: Boolean): List<Slot>
 
-    fun invite(agendaId: AgendaId, slotId: SlotId, user: User): Slot
+    fun register(agendaId: AgendaId, slotId: SlotId, user: User): Slot
 
 }
