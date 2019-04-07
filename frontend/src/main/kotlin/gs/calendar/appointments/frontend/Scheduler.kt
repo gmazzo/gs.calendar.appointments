@@ -1,7 +1,7 @@
 package gs.calendar.appointments.frontend
 
 import gs.calendar.appointments.frontend.redux.SelectSlot
-import gs.calendar.appointments.frontend.redux.store
+import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import moment.moment
@@ -59,7 +59,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             events = state.events?.toTypedArray() ?: emptyArray(),
             startAccessor = "start",
             endAccessor = "end",
-            onSelectEvent = { store.dispatch(SelectSlot(it.slot)) }
+            onSelectEvent = { SelectSlot(it.slot).dispatch() }
         )
     }
 

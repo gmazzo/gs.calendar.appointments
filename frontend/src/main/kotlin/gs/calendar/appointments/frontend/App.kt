@@ -4,6 +4,7 @@ import allOf
 import css
 import gs.calendar.appointments.frontend.header.header
 import gs.calendar.appointments.frontend.redux.SetAgendas
+import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
@@ -35,7 +36,7 @@ class App : RComponent<App.Props, App.State>() {
 
         API.listAgendas()
             .uiLinked(props)
-            .then { store.dispatch(SetAgendas(it.toList())) }
+            .then { SetAgendas(it.toList()).dispatch() }
     }
 
     override fun componentWillUnmount() {

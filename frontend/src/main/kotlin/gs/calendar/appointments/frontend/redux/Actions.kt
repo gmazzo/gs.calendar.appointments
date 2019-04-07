@@ -12,10 +12,12 @@ import kotlin.js.Promise
 
 fun <T> Promise<T>.uiLinked(withSnackbar: WithSnackbar): Promise<T> {
     catch { it.snackbar(withSnackbar) }
-    finally { store.dispatch(StopLoading) }
+    finally { StopLoading.dispatch() }
     store.dispatch(StartLoading)
     return this
 }
+
+fun Action.dispatch() = store.dispatch(this)
 
 sealed class Action : RAction {
 

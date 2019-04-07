@@ -2,7 +2,7 @@ package gs.calendar.appointments.frontend
 
 import gs.calendar.appointments.frontend.redux.SelectAgenda
 import gs.calendar.appointments.frontend.redux.SelectSlot
-import gs.calendar.appointments.frontend.redux.store
+import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.Slot
@@ -20,7 +20,7 @@ import react.RBuilder
 
 fun RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, withSnackbar: WithSnackbar) {
     if (agenda != null && slot != null) {
-        dialog(onClose = { store.dispatch(SelectSlot(null)) }) {
+        dialog(onClose = { SelectSlot(null).dispatch() }) {
             dialogTitle(slot.description)
             dialogContent {
                 slot.extraInfo?.let { dialogContentText(it) }
@@ -30,7 +30,7 @@ fun RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, withS
                             onClick {
                                 API.book(agenda.id, slot.id, user)
                                     .uiLinked(withSnackbar)
-                                    .then { store.dispatch(SelectAgenda(agenda)) } // reloads the agenda
+                                    .then { SelectAgenda(agenda).dispatch() } // reloads the agenda
                             }
                         }
                     }
