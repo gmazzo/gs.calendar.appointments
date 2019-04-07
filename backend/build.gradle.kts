@@ -49,25 +49,11 @@ tasks.withType(KotlinCompile::class).all {
     }
 }
 
-val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
-    val frontend = evaluationDependsOn(":frontend")
-    val frontendBundleTask = frontend.tasks["bundle"]
-    val outputDir = file("$buildDir/frontend/public")
-
-    dependsOn(frontendBundleTask)
-    from(frontend.file("${frontend.buildDir}/bundle"))
-    from(frontend.file("src/main/web"))
-    into(outputDir)
-
-    sourceSets["main"].resources.srcDir(outputDir.parentFile)
-}
-
 val generateBuildConfig by tasks
 
 task("generateResourcesConstants") {
     val resConfig = buildConfig.forClass("Resources")
 
-    dependsOn(copyFrontendBuild)
     doFirst {
         sourceSets["main"].resources.asFileTree
             .visit(Action<FileVisitDetails> {

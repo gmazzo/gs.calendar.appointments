@@ -7,7 +7,9 @@ import org.jboss.resteasy.util.PortProvider
 import java.io.File
 import javax.ws.rs.ApplicationPath
 
-fun main() {
+fun main() = startServer(null, null)
+
+fun startServer(staticContent: String?, welcomePage: String?) {
     UndertowJaxrsServer().apply {
         deploy(Application::class.java)
         deploy(
@@ -15,16 +17,23 @@ fun main() {
                 .setDeploymentName(BuildConfig.APP_NAME)
                 .setContextPath("/")
                 .setClassLoader(javaClass.classLoader)
-                .setResourceManager(ClassPathResourceManager(javaClass.classLoader, Resources.PUBLIC))
-                .addWelcomePage(File(Resources.PUBLIC_INDEX_HTML).relativeTo(File(Resources.PUBLIC)).path)
+                .apply {
+                    if (staticContent != null) {
+                        resourceManager = ClassPathResourceManager(javaClass.classLoader, staticContent)
+
+                        if (welcomePage != null) {
+                            addWelcomePage(File(welcomePage).relativeTo(File(staticContent)).path)
+                        }
+                    }
+                }
         )
         start()
     }
 
-    printWelcomeMessage()
+    printWelcomeMessage(welcomePage != null)
 }
 
-private fun printWelcomeMessage() {
+private fun printWelcomeMessage(hasFrontend: Boolean) {
     val appPath = Application::class.java
         .getAnnotation(ApplicationPath::class.java)
         ?.let { it.value + "/" }
@@ -32,6 +41,8 @@ private fun printWelcomeMessage() {
 
     val url = "http://${PortProvider.getHost()}:${PortProvider.getPort()}"
 
-    println("Visit $url to open the App")
+    if (hasFrontend) {
+        println("Visit $url to open the App")
+    }
     println("Visit https://petstore.swagger.io/?url=$url/${appPath}openapi.json to explore the API")
 }

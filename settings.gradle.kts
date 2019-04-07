@@ -26,4 +26,4 @@ pluginManagement {
     }
 }
 
-include("model", "core", "backend", "frontend")
+include("model", "core", "backend", "frontend", "webapp-bundle")

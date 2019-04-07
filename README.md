@@ -18,8 +18,9 @@ I've used Kotlin everywere here:
 ## Modules
 - **model**: platform agnostic model classes (for JVM and JS)
 - **core**: main module to interact with Google Calendar API that provides an abstraction with business logic
-- **backend**: a JAX-RS server which exposes the API and the frontend module (bundled as Java resources)
+- **backend**: a JAX-RS server which exposes the API
 - **frontend**: a React application written in pure Kotlin! It relies on well known frameworks like Redux and Material-UI.
+- **webapp-bundle**: the backend module, bundled with the frontend module as Java resources. This should be your entry point if you want to run the app as a standalone whole
 
 ## Starting tips
 ### Configuring the project for your credentials
@@ -65,16 +66,23 @@ I encourge you to create new calendars from https://calendar.google.com and add 
 ./gradlew backend:run
 ```
 Once running:
-- visit http://localhost:8081 to open the app 
 - visit https://petstore.swagger.io/?url=http://localhost:8081/api/openapi.json to explore the API
-
-Note: it may take a while to build, basically because it need to build and bundle the *frontend* module as well.
 
 ### Running the frontend (as standalone, for dev purposes)
 ```sh
 ./gradlew frontend:run -t -PapiEndpoint=http://localhost:8081/api
 ```
 Once running, visit http://localhost:8088/ to open the app
+
+### Running the whole webapp (frontend and backend)
+```sh
+./gradlew webapp-bundle:run
+```
+Once running:
+- visit http://localhost:8081 to open the app 
+- visit https://petstore.swagger.io/?url=http://localhost:8081/api/openapi.json to explore the API
+
+Note: it may take a while to build, basically because it need to build and bundle the *frontend* module as well.
 
 ## What to Expect?
 <img width="852" src="https://user-images.githubusercontent.com/513566/55527104-fac2b880-566d-11e9-9885-2bff97c82757.png">
