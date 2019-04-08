@@ -20,9 +20,11 @@ val <P : RProps, T : RComponent<P, *>> KClass<T>.rClass get() = js.unsafeCast<RC
 fun <P : RProps> allOf(vararg hocs: HOC<P, P>): (component: RClass<P>) -> RClass<P> =
     { hocs.fold(it) { acc, hoc -> hoc.invoke(acc) } }
 
-fun RElementBuilder<*>.css(handler: RuleSet) {
-    attrs.asDynamic().style = CSSBuilder().apply(handler).toStyle()
+fun RProps.css(handler: RuleSet) {
+    asDynamic().style = CSSBuilder().apply(handler).toStyle()
 }
+
+fun RElementBuilder<*>.css(handler: RuleSet) = attrs.css(handler)
 
 fun RDOMBuilder<*>.css(handler: RuleSet) {
     attrs.jsStyle = CSSBuilder().apply(handler).toStyle()

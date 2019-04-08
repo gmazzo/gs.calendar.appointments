@@ -8,10 +8,16 @@ import react.RProps
 private val listItem = module.ListItem.unsafeCast<ListItem>()
 
 fun RBuilder.listItem(
-    button: Boolean = true,
+    button: Boolean? = null,
+    disabled: Boolean? = null,
+    divider: Boolean? = null,
+    selected: Boolean? = null,
     handler: (RHandler<ListItem.Props>) = {}
 ) = listItem.invoke {
-    attrs.button = button
+    button?.let { attrs.button = it }
+    disabled?.let { attrs.disabled = it }
+    divider?.let { attrs.divider = it }
+    selected?.let { attrs.selected = it }
 
     handler(this)
 }

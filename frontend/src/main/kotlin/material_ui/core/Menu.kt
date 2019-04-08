@@ -5,6 +5,7 @@ import org.w3c.dom.events.MouseEvent
 import react.RBuilder
 import react.RClass
 import react.RHandler
+import react.RProps
 
 private val menu = module.Menu.unsafeCast<Menu>()
 
@@ -25,6 +26,11 @@ fun RBuilder.menu(
 
 abstract external class Menu : RClass<Menu.Props> {
 
-    interface Props : PopoverProps
+    interface Props : PopoverProps {
+
+        @JsName("MenuListProps")
+        var menuListProps: RProps
+
+    }
 
 }

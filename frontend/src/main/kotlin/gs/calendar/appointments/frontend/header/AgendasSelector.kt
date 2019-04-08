@@ -50,9 +50,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                         title = agenda.description ?: agenda.name,
                         placement = TooltipPlacement.LEFT
                     ) {
-                        menuItem {
-                            attrs.disabled = agenda.id == props.value?.id
-
+                        menuItem(disabled = agenda.id == props.value?.id) {
                             onClick {
                                 setState { menuAnchor = null }
                                 SelectAgenda(agenda).dispatch()
