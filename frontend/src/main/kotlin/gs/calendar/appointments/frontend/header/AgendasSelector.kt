@@ -42,11 +42,9 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
                     setState { menuAnchor = target }
                 }
             }
-            menu {
-                attrs.open = state.menuAnchor != null
-                attrs.anchorEl = state.menuAnchor
-                attrs.onClose = { setState { menuAnchor = null } }
-
+            menu(open = state.menuAnchor != null,
+                anchorEl = state.menuAnchor,
+                onClose = { setState { menuAnchor = null } }) {
                 agendas.forEach { agenda ->
                     tooltip(
                         title = agenda.description ?: agenda.name,

@@ -1,5 +1,6 @@
 package gs.calendar.appointments.frontend
 
+import css
 import gs.calendar.appointments.frontend.redux.SelectAgenda
 import gs.calendar.appointments.frontend.redux.SelectSlot
 import gs.calendar.appointments.frontend.redux.dispatch
@@ -7,6 +8,8 @@ import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.User
+import kotlinx.css.padding
+import kotlinx.css.px
 import material_ui.core.ButtonColor
 import material_ui.core.button
 import material_ui.core.dialog
@@ -23,6 +26,11 @@ fun RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, withS
         dialog(onClose = { SelectSlot(null).dispatch() }) {
             dialogTitle(slot.description)
             dialogContent {
+                css {
+                    minWidth = 300.px
+                    padding(0.px)
+                }
+
                 slot.extraInfo?.let { dialogContentText(it) }
                 dialogActions {
                     if (user != null) {

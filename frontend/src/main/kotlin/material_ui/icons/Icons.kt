@@ -13,6 +13,12 @@ external object Icons {
     @JsName("Menu")
     val MENU: Icon
 
+    @JsName("AccountCircle")
+    val ACCOUNT_CIRCLE: Icon
+
 }
 
-fun RBuilder.menuIcon(handler: (RHandler<RProps>) = {}) = Icons.MENU(handler)
+fun RBuilder.icon(
+    icon: Icon,
+    handler: (RHandler<RProps>) = {}
+) = icon(handler)

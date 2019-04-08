@@ -47,6 +47,7 @@ class App : RComponent<App.Props, App.State>() {
         header(
             agendas = state.agendas,
             currentAgenda = state.currentAgenda,
+            currentUser = state.currentUser,
             loading = state.loadingCount > 0
         )
         div("content") {

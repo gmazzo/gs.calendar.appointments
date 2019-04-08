@@ -3,6 +3,7 @@ package gs.calendar.appointments.frontend.header
 import css
 import gs.calendar.appointments.frontend.BuildConfig
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.User
 import kotlinx.css.flex
 import material_ui.core.AppBarPosition
 import material_ui.core.TypographyVariant
@@ -15,6 +16,7 @@ import react.RBuilder
 fun RBuilder.header(
     agendas: List<Agenda>?,
     currentAgenda: Agenda?,
+    currentUser: User?,
     loading: Boolean
 ) {
     appBar {
@@ -30,6 +32,9 @@ fun RBuilder.header(
             }
             loadingIndicator(visible = loading)
             agendasSelector(options = agendas, value = currentAgenda)
+            if (currentUser != null) {
+                accountMenu(user = currentUser)
+            }
         }
     }
 }
