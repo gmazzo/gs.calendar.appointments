@@ -1,6 +1,10 @@
 package gs.calendar.appointments.frontend.header
 
+import allOf
 import css
+import gs.calendar.appointments.frontend.redux.ChangeUser
+import gs.calendar.appointments.frontend.redux.dispatch
+import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.User
 import kotlinext.js.jsObject
 import kotlinx.css.Color
@@ -21,6 +25,8 @@ import material_ui.core.tooltip
 import material_ui.core.typography
 import material_ui.icons.Icons
 import material_ui.icons.icon
+import notistack.WithSnackbar
+import notistack.withSnackbar
 import onClick
 import org.w3c.dom.Element
 import rClass
@@ -29,8 +35,9 @@ import react.RComponent
 import react.RHandler
 import react.RState
 import react.dom.strong
-import react.invoke
 import react.setState
+import kotlin.browser.window
+import kotlin.js.Promise
 
 class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
 
@@ -75,13 +82,20 @@ class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
                 }
             }
             menuItem {
-                onClick { setState { menuAnchor = null } }
+                onClick {
+                    setState { menuAnchor = null }
+
+                    window.asDynamic().gapi.auth2.getAuthInstance()
+                        .signOut().unsafeCast<Promise<*>>()
+                        .uiLinked(props)
+                        .then { ChangeUser(null).dispatch() }
+                }
                 +"Logout"
             }
         }
     }
 
-    interface Props : WithTheme {
+    interface Props : WithTheme, WithSnackbar {
         var user: User
     }
 
@@ -91,7 +105,7 @@ class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
 
 }
 
-private val wrapped = withTheme<AccountMenu.Props>()(AccountMenu::class.rClass)
+private val wrapped = allOf<AccountMenu.Props>(withTheme(), withSnackbar())(AccountMenu::class.rClass)
 
 fun RBuilder.accountMenu(
     user: User,

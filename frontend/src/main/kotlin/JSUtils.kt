@@ -1,3 +1,4 @@
+import kotlinext.js.asJsObject
 import kotlin.js.Date
 import kotlin.js.Promise
 
@@ -8,5 +9,6 @@ val Date.sanitized
         else -> this
     }
 
-fun <T, S> Promise<T>.finally(onFinally: ((T) -> S)?): Promise<S> =
-    asDynamic().finally(onFinally) as Promise<S>
+fun <T : Promise<*>> T.finally(onFinally: () -> Unit): T =
+    if (asJsObject().hasOwnProperty("finally")) asDynamic().finally(onFinally).unsafeCast<T>()
+    else apply { then { onFinally() }; catch { onFinally() } }
