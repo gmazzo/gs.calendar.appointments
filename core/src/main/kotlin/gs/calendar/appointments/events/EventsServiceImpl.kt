@@ -53,11 +53,11 @@ internal class EventsServiceImpl @Inject constructor(
 
     private fun Event.asSlot() = Slot(
         id = id,
-        description = summary,
+        name = summary,
         startTime = start?.dateTime?.value?.let(::Date),
         endTime = end?.dateTime?.value?.let(::Date),
         location = location,
-        extraInfo = description,
+        description = description,
         attendees = registeredAttendees?.map { it.asUser() } ?: emptyList(),
         capacity = capacity
     )

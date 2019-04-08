@@ -44,7 +44,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
                                 slot = slot,
                                 start = slot.startTime!!,
                                 end = slot.endTime!!,
-                                title = slot.description
+                                title = slot.name
                             )
                         }
                     }

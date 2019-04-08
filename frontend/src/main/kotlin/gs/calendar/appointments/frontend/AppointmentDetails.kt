@@ -24,14 +24,14 @@ import react.RBuilder
 fun RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, withSnackbar: WithSnackbar) {
     if (agenda != null && slot != null) {
         dialog(onClose = { SelectSlot(null).dispatch() }) {
-            dialogTitle(slot.description)
+            dialogTitle(slot.name)
             dialogContent {
                 css {
                     minWidth = 300.px
                     padding(0.px)
                 }
 
-                slot.extraInfo?.let { dialogContentText(it) }
+                slot.description?.let { dialogContentText(it) }
                 dialogActions {
                     if (user != null) {
                         button(label = "Book", color = ButtonColor.PRIMARY) {
