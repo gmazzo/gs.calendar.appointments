@@ -15,6 +15,9 @@ I've used Kotlin everywere here:
 - RestEasy for API binding (JAX-RS spec)
 - React, Redux and Material-UI, full Kotlin
 
+## What to Expect?
+![screenshot](https://user-images.githubusercontent.com/513566/55768951-e9522580-5a4c-11e9-93ae-688c8df0f7d4.png)
+
 ## Modules
 - **model**: platform agnostic model classes (for JVM and JS)
 - **core**: main module to interact with Google Calendar API that provides an abstraction with business logic
@@ -96,6 +99,3 @@ Once running:
 - visit https://petstore.swagger.io/?url=http://localhost:8081/api/openapi.json to explore the API
 
 Note: it may take a while to build, basically because it need to build and bundle the *frontend* module as well.
-
-## What to Expect?
-![screenshot](https://user-images.githubusercontent.com/513566/55768951-e9522580-5a4c-11e9-93ae-688c8df0f7d4.png)
