@@ -11,7 +11,10 @@ pluginManagement {
                 requested.id.id == "kotlin2js" ->
                     useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
-                requested.id.id.startsWith("org.jetbrains.kotlin.") ->
+                requested.id.id == "kotlinx-serialization" ->
+                    useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
+
+                requested.id.id.startsWith("org.jetbrains.kotlin") ->
                     useVersion(kotlinVersion)
 
                 requested.id.id == "com.github.gmazzo.buildconfig" ->
@@ -22,7 +25,8 @@ pluginManagement {
     repositories {
         mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")
-        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+        maven ( url= "https://kotlin.bintray.com/kotlinx" )
+        maven(url = "https://kotlin.bintray.com/kotlin-eap")
     }
 }
 

@@ -2,8 +2,8 @@ allprojects {
 
     repositories {
         jcenter()
-        maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers")
         maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://kotlin.bintray.com/kotlin-js-wrappers")
     }
 
     group = "gs.calendar.appointments"

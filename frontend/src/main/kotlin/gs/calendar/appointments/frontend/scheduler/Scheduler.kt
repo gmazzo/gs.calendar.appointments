@@ -7,8 +7,6 @@ import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.User
-import gs.calendar.appointments.model.available
-import gs.calendar.appointments.model.hasAttendee
 import kotlinext.js.jsObject
 import kotlinx.css.Color
 import kotlinx.css.properties.TextDecorationLine
@@ -78,7 +76,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
     private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
         val available = event.slot.available
-        val hasSelf = event.slot.hasAttendee(props.user)
+        val hasSelf = props.user in event.slot.attendees
 
         css {
             when {

@@ -1,15 +1,19 @@
 package gs.calendar.appointments
 
 import com.google.api.client.util.store.FileDataStoreFactory
+import com.jakewharton.rs.kotlinx.serialization.asMessageBodyReader
+import com.jakewharton.rs.kotlinx.serialization.asMessageBodyWriter
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.api.slots.SlotsResource
 import io.swagger.v3.jaxrs2.SwaggerSerializers
 import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource
+import kotlinx.serialization.json.Json
 import org.jboss.resteasy.plugins.interceptors.CorsFilter
 import javax.inject.Inject
 import javax.ws.rs.ApplicationPath
+import javax.ws.rs.core.MediaType
 
 @ApplicationPath(BuildConfig.API_CONTEXT)
 class Application : javax.ws.rs.core.Application() {
@@ -36,6 +40,8 @@ class Application : javax.ws.rs.core.Application() {
     }
 
     override fun getSingletons() = setOf(
+        Json.asMessageBodyReader(MediaType.APPLICATION_JSON_TYPE),
+        Json.asMessageBodyWriter(MediaType.APPLICATION_JSON_TYPE),
         corsFilter,
         agendasResource,
         slotsResource
@@ -48,7 +54,6 @@ class Application : javax.ws.rs.core.Application() {
 
         // providers
         SwaggerSerializers::class.java,
-        JacksonConfigurator::class.java,
         DefaultExceptionMapper::class.java
     )
 
