@@ -23,9 +23,15 @@ object API {
         .put<Slot>("$API_ENDPOINT/slots/$agendaId/$slotId", user)
         .then { it.data!!.sanitize() }
 
+    /**
+     * Required because the JSON is being "casted" directly to the given types, without any deserialization process
+     */
     private fun Slot.sanitize() = apply {
-        asDynamic().startTime = startTime?.sanitized
-        asDynamic().endTime = endTime?.sanitized
+        with(asDynamic()) {
+            this.startTime = startTime?.sanitized
+            this.endTime = endTime?.sanitized
+            this.attendees = attendees.sanitized
+        }
     }
 
 }

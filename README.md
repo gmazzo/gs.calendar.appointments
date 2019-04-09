@@ -98,4 +98,4 @@ Once running:
 Note: it may take a while to build, basically because it need to build and bundle the *frontend* module as well.
 
 ## What to Expect?
-<img width="852" src="https://user-images.githubusercontent.com/513566/55527104-fac2b880-566d-11e9-9885-2bff97c82757.png">
+![screenshot](https://user-images.githubusercontent.com/513566/55768951-e9522580-5a4c-11e9-93ae-688c8df0f7d4.png)

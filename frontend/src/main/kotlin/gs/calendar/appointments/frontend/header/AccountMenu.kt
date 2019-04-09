@@ -11,6 +11,7 @@ import kotlinx.css.Color
 import kotlinx.css.Display
 import kotlinx.css.FlexDirection
 import kotlinx.css.LinearDimension
+import kotlinx.css.padding
 import kotlinx.css.px
 import material_ui.core.TooltipPlacement
 import material_ui.core.TypographyVariant
@@ -60,7 +61,7 @@ class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
         menu(open = state.menuAnchor != null,
             anchorEl = state.menuAnchor,
             onClose = { setState { menuAnchor = null } }) {
-            attrs.menuListProps = jsObject { css { paddingTop = 0.px } }
+            attrs.menuListProps = jsObject { css { padding(vertical = 0.px) } }
 
             menuItem(divider = true, disabled = true) {
                 css {

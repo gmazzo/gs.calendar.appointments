@@ -6,6 +6,7 @@ import react.RBuilder
 import react.RClass
 import react.RHandler
 import react.RProps
+import react.dom.WithClassName
 import kotlin.js.Date
 
 @JsModule("react-big-calendar")
@@ -22,7 +23,10 @@ fun RBuilder.bigCalendar(
     events: Array<CalendarEvent>,
     startAccessor: String,
     endAccessor: String,
+    components: CalendarComponents<*>? = null,
+    eventPropGetter: ((CalendarEvent) -> RProps)? = null,
     popup: Boolean? = null,
+    defaultView: CalendarDefaultView? = null,
     onSelectEvent: ((CalendarEvent) -> Unit)? = null,
     onSelectSlot: ((start: Date, end: Date) -> Unit)? = null,
     handler: (RHandler<BigCalendar.Props>) = {}
@@ -32,9 +36,12 @@ fun RBuilder.bigCalendar(
     attrs.events = events
     attrs.startAccessor = startAccessor
     attrs.endAccessor = endAccessor
-    popup?.let { attrs.popup = popup }
-    onSelectEvent?.let { attrs.onSelectEvent = onSelectEvent }
-    onSelectSlot?.let { attrs.onSelectSlot = onSelectSlot }
+    components?.let { attrs.components = it }
+    eventPropGetter?.let { attrs.eventPropGetter = it }
+    popup?.let { attrs.popup = it }
+    defaultView?.let { attrs.defaultView = it }
+    onSelectEvent?.let { attrs.onSelectEvent = it }
+    onSelectSlot?.let { attrs.onSelectSlot = it }
 
     handler(this)
 }
@@ -57,9 +64,17 @@ abstract external class BigCalendar : RClass<BigCalendar.Props> {
         var events: Array<CalendarEvent>
         var startAccessor: String
         var endAccessor: String
+        var components: CalendarComponents<*>?
+        var eventPropGetter: ((CalendarEvent) -> RProps)?
         var popup: Boolean
         var onSelectEvent: (CalendarEvent) -> Unit
         var onSelectSlot: (start: Date, end: Date) -> Unit
+        @JsName("defaultView")
+        var defaultViewValue: String
+    }
+
+    interface EventProps : WithClassName {
+        val event: CalendarEvent
     }
 
 }
@@ -70,3 +85,22 @@ data class CalendarEvent(
     val end: Date,
     val title: String
 )
+
+data class CalendarComponents<T : BigCalendar.EventProps>(
+    val event: RClass<T>? = undefined,
+    val eventWrapper: RClass<T>? = undefined
+)
+
+enum class CalendarDefaultView(val value: String) {
+    MONTH("month"),
+    WEEK("week"),
+    WORK_WEEK("work_week"),
+    DAY("day"),
+    AGENDA("agenda")
+}
+
+var BigCalendar.Props.defaultView
+    get() = defaultViewValue.let { CalendarDefaultView.values().find { v -> v.value == it }!! }
+    set(value) {
+        defaultViewValue = value.value
+    }

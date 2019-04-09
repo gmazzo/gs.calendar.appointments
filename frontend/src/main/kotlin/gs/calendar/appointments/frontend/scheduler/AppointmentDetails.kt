@@ -1,6 +1,7 @@
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.scheduler
 
 import css
+import gs.calendar.appointments.frontend.API
 import gs.calendar.appointments.frontend.redux.SelectAgenda
 import gs.calendar.appointments.frontend.redux.SelectSlot
 import gs.calendar.appointments.frontend.redux.dispatch

@@ -1,9 +1,18 @@
-package gs.calendar.appointments.frontend
+package gs.calendar.appointments.frontend.scheduler
 
+import css
+import gs.calendar.appointments.frontend.API
 import gs.calendar.appointments.frontend.redux.SelectSlot
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.User
+import gs.calendar.appointments.model.available
+import gs.calendar.appointments.model.hasAttendee
+import kotlinext.js.jsObject
+import kotlinx.css.Color
+import kotlinx.css.properties.TextDecorationLine
+import kotlinx.css.properties.textDecoration
 import moment.moment
 import notistack.WithSnackbar
 import notistack.withSnackbar
@@ -14,6 +23,7 @@ import react.RHandler
 import react.RState
 import react.invoke
 import react.setState
+import react_big_calendar.CalendarComponents
 import react_big_calendar.CalendarEvent
 import react_big_calendar.asLocalizer
 import react_big_calendar.bigCalendar
@@ -59,12 +69,33 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             events = state.events?.toTypedArray() ?: emptyArray(),
             startAccessor = "start",
             endAccessor = "end",
+            popup = true,
+            components = CalendarComponents(eventWrapper = AppointmentView::class.rClass),
+            eventPropGetter = ::eventPropGetter,
             onSelectEvent = { SelectSlot(it.slot).dispatch() }
         )
     }
 
+    private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
+        val available = event.slot.available
+        val hasSelf = event.slot.hasAttendee(props.user)
+
+        css {
+            when {
+                hasSelf -> Color.darkGreen
+                !available -> Color.darkRed
+                else -> null
+            }?.let { backgroundColor = it }
+
+            if (!hasSelf && !available) {
+                textDecoration(TextDecorationLine.lineThrough)
+            }
+        }
+    }
+
     interface Props : WithSnackbar {
         var agenda: Agenda?
+        var user: User?
     }
 
     data class State(
@@ -77,9 +108,11 @@ private val wrapped = withSnackbar<Scheduler.Props>()(Scheduler::class.rClass)
 
 fun RBuilder.scheduler(
     agenda: Agenda?,
+    user: User?,
     handler: (RHandler<Scheduler.Props>) = {}
 ) = wrapped {
     attrs.agenda = agenda
+    attrs.user = user
 
     handler(this)
 }

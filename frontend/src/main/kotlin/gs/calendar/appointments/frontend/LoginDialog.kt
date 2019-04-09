@@ -1,8 +1,6 @@
 package gs.calendar.appointments.frontend
 
 import gs.calendar.appointments.frontend.redux.ChangeUser
-import gs.calendar.appointments.frontend.redux.StartLoading
-import gs.calendar.appointments.frontend.redux.StopLoading
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.model.User
 import material_ui.core.dialog
@@ -27,19 +25,16 @@ fun RBuilder.loginDialog(currentUser: User?, withSnackbar: WithSnackbar) {
                 clientId = BuildConfig.API_CLIENT_ID,
                 buttonText = "Google Login",
                 isSignedIn = true,
-                onRequest = { StartLoading.dispatch() },
                 onSuccess = {
                     val user = with(it.profileObj) { User(googleId, name, email, imageUrl) }
 
                     ChangeUser(user).dispatch()
                     withSnackbar.enqueueSnackbar("Logged as ${user.name} <${user.email}>")
-                    StopLoading.dispatch()
                 },
                 onFailure = {
                     console.error(it)
 
                     withSnackbar.enqueueSnackbar(it.details ?: it.errorValue, variant = SnackbarVariant.ERROR)
-                    StopLoading.dispatch()
                 }
             )
         }

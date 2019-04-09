@@ -9,6 +9,12 @@ val Date.sanitized
         else -> this
     }
 
+val <T> List<T>.sanitized
+    get() = when (asDynamic()) {
+        is Array<T> -> unsafeCast<Array<T>>().toList()
+        else -> this
+    }
+
 fun <T : Promise<*>> T.finally(onFinally: () -> Unit): T =
     if (asJsObject().hasOwnProperty("finally")) asDynamic().finally(onFinally).unsafeCast<T>()
     else apply { then { onFinally() }; catch { onFinally() } }

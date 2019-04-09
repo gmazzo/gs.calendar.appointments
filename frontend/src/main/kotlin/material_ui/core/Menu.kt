@@ -19,7 +19,7 @@ fun RBuilder.menu(
     attrs.anchorEl = anchorEl
     attrs.onClose = onClose
     attrs.open = open
-    anchorOrigin?.let { attrs.anchorOrigin = anchorOrigin }
+    anchorOrigin?.let { attrs.anchorOrigin = it }
 
     handler(this)
 }
