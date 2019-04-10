@@ -17,6 +17,7 @@ I've used Kotlin everywere here:
 
 ## What to Expect?
 See a running example at https://gs-calendar-appointments.herokuapp.com/
+
 ![screenshot](https://user-images.githubusercontent.com/513566/55768951-e9522580-5a4c-11e9-93ae-688c8df0f7d4.png)
 
 ## Modules
