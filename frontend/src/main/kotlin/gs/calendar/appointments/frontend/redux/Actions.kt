@@ -76,12 +76,3 @@ data class SelectSlot(private val slot: Slot?) : Action() {
     )
 
 }
-
-data class RefreshSlot(private val slot: Slot?) : Action() {
-
-    override fun invoke(state: App.State) = state.copy(
-        currentAgenda = state.currentAgenda?.copy(),
-        currentSlot = slot
-    )
-
-}

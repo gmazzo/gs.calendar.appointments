@@ -9,9 +9,11 @@ data class Slot(
     val id: SlotId,
     val name: String,
     val description: String?,
-    @Serializable(DateSerializer::class) val startTime: Date?,
-    @Serializable(DateSerializer::class) val endTime: Date?,
+    @Serializable(DateSerializer::class) val startTime: Date,
+    @Serializable(DateSerializer::class) val endTime: Date,
     val location: String?,
+    // TODO attendees should not be exposed to the client, add some auth token for current user and resolve it in backend
+    val showAttendees: Boolean,
     val attendees: List<User>,
     val capacity: Int
 ) {

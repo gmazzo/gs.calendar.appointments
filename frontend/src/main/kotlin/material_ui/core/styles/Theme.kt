@@ -6,8 +6,14 @@ external interface Theme {
 
     val spacing: Spacing
 
+    val palette: Palette
+
     interface Spacing {
         val unit: Int
+    }
+
+    interface Palette {
+        val divider: String
     }
 
 }
