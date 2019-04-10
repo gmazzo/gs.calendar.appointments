@@ -7,7 +7,6 @@ import gs.calendar.appointments.frontend.redux.SetAgendas
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.store
 import gs.calendar.appointments.frontend.redux.uiLinked
-import gs.calendar.appointments.frontend.scheduler.appointmentDetails
 import gs.calendar.appointments.frontend.scheduler.scheduler
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.Slot
@@ -60,16 +59,14 @@ class App : RComponent<App.Props, App.State>() {
                 flexGrow = 1.0
                 overflow = Overflow.auto
             }
-            scheduler(agenda = state.currentAgenda, user = state.currentUser)
+            scheduler(
+                agenda = state.currentAgenda,
+                slot = state.currentSlot,
+                user = state.currentUser
+            )
         }
         loginDialog(
             currentUser = state.currentUser,
-            withSnackbar = props
-        )
-        appointmentDetails(
-            agenda = state.currentAgenda,
-            slot = state.currentSlot,
-            user = state.currentUser,
             withSnackbar = props
         )
     }

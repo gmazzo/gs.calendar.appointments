@@ -6,6 +6,7 @@ import gs.calendar.appointments.frontend.redux.SelectSlot
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.model.Agenda
+import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.User
 import kotlinext.js.jsObject
 import kotlinx.css.Color
@@ -36,7 +37,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     }
 
     override fun componentDidUpdate(prevProps: Props, prevState: State, snapshot: Any) {
-        props.agenda?.takeIf { it.id != prevProps.agenda?.id }?.also {
+        if (props.agenda !== prevProps.agenda) { // !== is intentional to force an update
             loadEvents()
         }
     }
@@ -72,6 +73,12 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             eventPropGetter = ::eventPropGetter,
             onSelectEvent = { SelectSlot(it.slot).dispatch() }
         )
+        appointmentDetails(
+            agenda = props.agenda,
+            slot = props.slot,
+            user = props.user,
+            withSnackbar = props
+        )
     }
 
     private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
@@ -93,6 +100,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
     interface Props : WithSnackbar {
         var agenda: Agenda?
+        var slot: Slot?
         var user: User?
     }
 
@@ -106,10 +114,12 @@ private val wrapped = withSnackbar<Scheduler.Props>()(Scheduler::class.rClass)
 
 fun RBuilder.scheduler(
     agenda: Agenda?,
+    slot: Slot?,
     user: User?,
     handler: (RHandler<Scheduler.Props>) = {}
 ) = wrapped {
     attrs.agenda = agenda
+    attrs.slot = slot
     attrs.user = user
 
     handler(this)

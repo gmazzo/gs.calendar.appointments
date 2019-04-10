@@ -40,8 +40,12 @@ class Application : javax.ws.rs.core.Application() {
     }
 
     override fun getSingletons() = setOf(
-        Json.asMessageBodyReader(MediaType.APPLICATION_JSON_TYPE),
-        Json.asMessageBodyWriter(MediaType.APPLICATION_JSON_TYPE),
+        *Json(encodeDefaults = false).let {
+            arrayOf(
+                it.asMessageBodyReader(MediaType.APPLICATION_JSON_TYPE),
+                it.asMessageBodyWriter(MediaType.APPLICATION_JSON_TYPE)
+            )
+        },
         corsFilter,
         agendasResource,
         slotsResource
