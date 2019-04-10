@@ -4,6 +4,10 @@ plugins {
     id("com.github.gmazzo.buildconfig")
 }
 
+val generateBuildConfig by tasks
+val jar: Jar by tasks
+val installDist: Sync by tasks
+
 dependencies {
     implementation(project(":backend"))
 }
@@ -11,6 +15,8 @@ dependencies {
 application {
     mainClassName = "gs.calendar.appointments.WebappMainKt"
 }
+
+jar.manifest { attributes["Main-Class"] = application.mainClassName }
 
 val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
     val frontend = evaluationDependsOn(":frontend")
@@ -24,8 +30,6 @@ val copyFrontendBuild = task<Copy>("copyFrontendBuild") {
 
     sourceSets["main"].resources.srcDir(outputDir.parentFile)
 }
-
-val generateBuildConfig by tasks
 
 task("generateResourcesConstants") {
     val resConfig = buildConfig.forClass("Resources")
@@ -41,4 +45,13 @@ task("generateResourcesConstants") {
     }
 
     generateBuildConfig.dependsOn(this)
+}
+
+task("stage") {
+    doFirst {
+        val command = file("${installDist.destinationDir}/bin/${project.name}").relativeTo(rootDir)
+
+        file("$rootDir/Procfile").writeText("web: RESTEASY_PORT=\$PORT $command")
+    }
+    dependsOn(installDist)
 }

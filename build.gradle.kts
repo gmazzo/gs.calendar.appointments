@@ -14,7 +14,3 @@ allprojects {
 task<Delete>("clean") {
     delete(buildDir)
 }
-
-task("stage") {
-    dependsOn(":webapp-bundle:run")
-}

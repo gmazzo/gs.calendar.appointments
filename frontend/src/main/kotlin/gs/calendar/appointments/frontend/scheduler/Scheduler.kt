@@ -53,8 +53,8 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
                         events = it.map { slot ->
                             CalendarEvent(
                                 slot = slot,
-                                start = slot.startTime!!,
-                                end = slot.endTime!!,
+                                start = slot.startTime,
+                                end = slot.endTime,
                                 title = slot.name
                             )
                         }
