@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 
 plugins {
     application
@@ -49,7 +51,7 @@ tasks.withType(KotlinCompile::class).all {
 
 val generateBuildConfig by tasks
 
-task("generateResourcesConstants") {
+val generateResourcesConstants = task("generateResourcesConstants") {
     val resConfig = buildConfig.forClass("Resources")
 
     doFirst {
@@ -62,4 +64,24 @@ task("generateResourcesConstants") {
     }
 
     generateBuildConfig.dependsOn(this)
+}
+
+task("retrieveCredentialsFromEnv") {
+    val propertyValue = System.getenv("GOOGLE_CREDENTIALS") ?: ""
+    val resourceFile = file("src/main/resources/google_client_secrets.json")
+
+    inputs.property("credentials", propertyValue)
+    outputs.file(resourceFile)
+    generateResourcesConstants.dependsOn(this)
+
+    onlyIf { propertyValue.isNotBlank() || !resourceFile.exists() }
+    doFirst {
+        resourceFile.writeText(
+            if (propertyValue.isNotBlank()) Base64.getDecoder()
+                .decode(propertyValue)
+                .toString(StandardCharsets.UTF_8)
+            else
+                "// TODO put a valid Service Account credential here"
+        )
+    }
 }

@@ -16,6 +16,7 @@ I've used Kotlin everywere here:
 - React, Redux and Material-UI, full Kotlin
 
 ## What to Expect?
+See a running example at https://gs-calendar-appointments.herokuapp.com/
 ![screenshot](https://user-images.githubusercontent.com/513566/55768951-e9522580-5a4c-11e9-93ae-688c8df0f7d4.png)
 
 ## Modules
@@ -36,7 +37,9 @@ I've used Kotlin everywere here:
     1. Enter an ID and confirm
     1. Take note of your **Service Account's email address**
     1. Create a key-pair credentials for your new service account, in JSON format
-    1. Download the credentials and replace the `google_client_secrets.json` in `backend` module's resources (under `src/main/resources`).
+    1. Download the credentials and store the credentials (one of):
+        - Encode it as `Base64` and set an Environment Variable called `GOOGLE_CREDENTIALS` with the value
+        - Or save it directly on `backend` module's resources (under `src/main/resources`).
 1. Create an OAuth Client ID
     1. Go to [Credentials](https://console.cloud.google.com/apis/credentials)
     1. Choose *Create Credentials* and pick *OAuth Client ID*
