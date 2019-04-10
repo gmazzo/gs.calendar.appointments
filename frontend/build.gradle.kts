@@ -44,6 +44,7 @@ buildConfig {
 
 kotlinFrontend {
     sourceMaps = true
+    downloadNodeJsVersion = "latest"
 
     npm {
         dependency("@material-ui/core", "3.9.3")
