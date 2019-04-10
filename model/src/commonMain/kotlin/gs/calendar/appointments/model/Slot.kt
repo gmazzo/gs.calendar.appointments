@@ -20,6 +20,6 @@ data class Slot(
 
     fun availableFor(user: User?) = available && user !in this
 
-    operator fun contains(user: User?) = user != null && attendees.find { it.email == user.email } != null
+    operator fun contains(user: User?) = attendees.find { it.isSelf(user) } != null
 
 }

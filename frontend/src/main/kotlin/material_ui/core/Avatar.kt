@@ -8,10 +8,10 @@ import react.RProps
 private val avatar = module.Avatar.unsafeCast<Avatar>()
 
 fun RBuilder.avatar(
-    src: String,
+    src: String? = null,
     handler: (RHandler<Avatar.Props>) = {}
 ) = avatar.invoke {
-    attrs.src = src
+    src?.let { attrs.src = it }
 
     handler(this)
 }

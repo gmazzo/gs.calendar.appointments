@@ -1,5 +1,6 @@
 package gs.calendar.appointments.frontend.scheduler
 
+import allOf
 import css
 import gs.calendar.appointments.frontend.API
 import gs.calendar.appointments.frontend.redux.SelectSlot
@@ -12,6 +13,8 @@ import kotlinext.js.jsObject
 import kotlinx.css.Color
 import kotlinx.css.properties.TextDecorationLine
 import kotlinx.css.properties.textDecoration
+import material_ui.core.styles.WithTheme
+import material_ui.core.styles.withTheme
 import moment.moment
 import notistack.WithSnackbar
 import notistack.withSnackbar
@@ -20,7 +23,6 @@ import react.RBuilder
 import react.RComponent
 import react.RHandler
 import react.RState
-import react.invoke
 import react.setState
 import react_big_calendar.CalendarComponents
 import react_big_calendar.CalendarEvent
@@ -77,7 +79,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             agenda = props.agenda,
             slot = props.slot,
             user = props.user,
-            withSnackbar = props
+            props = props
         )
     }
 
@@ -98,7 +100,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
         }
     }
 
-    interface Props : WithSnackbar {
+    interface Props : WithTheme, WithSnackbar {
         var agenda: Agenda?
         var slot: Slot?
         var user: User?
@@ -110,7 +112,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
 }
 
-private val wrapped = withSnackbar<Scheduler.Props>()(Scheduler::class.rClass)
+private val wrapped = allOf<Scheduler.Props>(withTheme(), withSnackbar())(Scheduler::class.rClass)
 
 fun RBuilder.scheduler(
     agenda: Agenda?,

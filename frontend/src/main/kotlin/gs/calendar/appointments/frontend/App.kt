@@ -23,10 +23,12 @@ import notistack.withSnackbar
 import rClass
 import react.RBuilder
 import react.RComponent
+import react.RErrorInfo
 import react.RHandler
 import react.RState
 import react.dom.div
 import redux.state
+import snackbar
 
 class App : RComponent<App.Props, App.State>() {
 
@@ -69,6 +71,10 @@ class App : RComponent<App.Props, App.State>() {
             currentUser = state.currentUser,
             withSnackbar = props
         )
+    }
+
+    override fun componentDidCatch(error: Throwable, info: RErrorInfo) {
+        error.snackbar(props)
     }
 
     interface Props : WithTheme, WithSnackbar

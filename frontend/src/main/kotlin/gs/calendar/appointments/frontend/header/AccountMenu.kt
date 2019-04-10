@@ -5,6 +5,7 @@ import css
 import gs.calendar.appointments.frontend.redux.ChangeUser
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
+import gs.calendar.appointments.frontend.userAvatar
 import gs.calendar.appointments.model.User
 import kotlinext.js.jsObject
 import kotlinx.css.Color
@@ -15,7 +16,6 @@ import kotlinx.css.padding
 import kotlinx.css.px
 import material_ui.core.TooltipPlacement
 import material_ui.core.TypographyVariant
-import material_ui.core.avatar
 import material_ui.core.iconButton
 import material_ui.core.listItemAvatar
 import material_ui.core.menu
@@ -24,8 +24,6 @@ import material_ui.core.styles.WithTheme
 import material_ui.core.styles.withTheme
 import material_ui.core.tooltip
 import material_ui.core.typography
-import material_ui.icons.Icons
-import material_ui.icons.icon
 import notistack.WithSnackbar
 import notistack.withSnackbar
 import onClick
@@ -50,7 +48,7 @@ class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
             iconButton {
                 css { marginLeft = props.theme.spacing.unit.px }
 
-                props.user.imageUrl?.let { avatar(it) } ?: icon(icon = Icons.ACCOUNT_CIRCLE)
+                userAvatar(props.user)
                 onClick { ev ->
                     val target = ev.target as Element
 
@@ -70,7 +68,7 @@ class AccountMenu : RComponent<AccountMenu.Props, AccountMenu.State>() {
                     backgroundColor = Color.lightGray
                 }
 
-                props.user.imageUrl?.let { listItemAvatar { avatar(it) } }
+                listItemAvatar { userAvatar(props.user) }
                 typography(variant = TypographyVariant.CAPTION) {
                     css {
                         display = Display.flex

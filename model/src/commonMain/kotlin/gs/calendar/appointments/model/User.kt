@@ -7,4 +7,8 @@ data class User(
     val name: String? = null,
     val email: String,
     val imageUrl: String? = null
-)
+) {
+
+    fun isSelf(user: User?) = email == user?.email
+
+}
