@@ -12,10 +12,4 @@ data class Agenda(
     val foregroundColor: String,
     val backgroundColor: String,
     val available: Boolean
-) {
-
-    override fun hashCode() = id.hashCode()
-
-    override fun equals(other: Any?) = other is Agenda && id == other.id
-
-}
+)

@@ -9,6 +9,7 @@ import gs.calendar.appointments.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.Consumes
+import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
@@ -33,8 +34,17 @@ class SlotsResource @Inject constructor(
     fun book(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
         @PathParam(PARAM_SLOT) slotId: SlotId,
-        bookingUser: User
+        user: User
     ) =
-        service.register(agendaId, slotId, bookingUser)
+        service.register(agendaId, slotId, user)
+
+    @DELETE
+    @Path("{$PARAM_SLOT}")
+    fun unbook(
+        @PathParam(PARAM_AGENDA) agendaId: AgendaId,
+        @PathParam(PARAM_SLOT) slotId: SlotId,
+        user: User
+    ) =
+        service.unregister(agendaId, slotId, user)
 
 }

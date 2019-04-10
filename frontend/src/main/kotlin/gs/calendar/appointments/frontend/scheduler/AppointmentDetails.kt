@@ -2,7 +2,6 @@ package gs.calendar.appointments.frontend.scheduler
 
 import css
 import gs.calendar.appointments.frontend.API
-import gs.calendar.appointments.frontend.redux.SelectAgenda
 import gs.calendar.appointments.frontend.redux.SelectSlot
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
@@ -34,12 +33,20 @@ fun RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, withS
 
                 slot.description?.let { dialogContentText(it) }
                 dialogActions {
-                    if (user != null) {
+                    if (slot.availableFor(user)) {
                         button(label = "Book", color = ButtonColor.PRIMARY) {
                             onClick {
-                                API.book(agenda.id, slot.id, user)
+                                API.book(agenda.id, slot.id, user!!)
                                     .uiLinked(withSnackbar)
-                                    .then { SelectAgenda(agenda).dispatch() } // reloads the agenda
+                                    .then { SelectSlot(it).dispatch() } // reloads the agenda
+                            }
+                        }
+                    } else if (user in slot) {
+                        button(label = "Unbook", color = ButtonColor.SECONDARY) {
+                            onClick {
+                                API.unbook(agenda.id, slot.id, user!!)
+                                    .uiLinked(withSnackbar)
+                                    .then { SelectSlot(it).dispatch() } // reloads the agenda
                             }
                         }
                     }

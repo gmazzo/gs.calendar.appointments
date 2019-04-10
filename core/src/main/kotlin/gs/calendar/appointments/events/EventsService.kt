@@ -11,4 +11,6 @@ interface EventsService {
 
     fun register(agendaId: AgendaId, slotId: SlotId, user: User): Slot
 
+    fun unregister(agendaId: AgendaId, slotId: SlotId, user: User): Slot
+
 }

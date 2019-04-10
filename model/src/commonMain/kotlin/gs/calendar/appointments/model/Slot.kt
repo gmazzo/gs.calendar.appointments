@@ -18,8 +18,8 @@ data class Slot(
 
     val available get() = attendees.size < capacity
 
-    override fun hashCode() = id.hashCode()
+    fun availableFor(user: User?) = available && user !in this
 
-    override fun equals(other: Any?) = other is Slot && id == other.id
+    operator fun contains(user: User?) = user != null && attendees.find { it.email == user.email } != null
 
 }

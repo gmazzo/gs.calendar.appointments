@@ -7,7 +7,7 @@ import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.User
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 internal class EventsServiceImpl @Inject constructor(
@@ -23,15 +23,25 @@ internal class EventsServiceImpl @Inject constructor(
         .items
         .map { it.asSlot() }
 
-    override fun register(agendaId: AgendaId, slotId: SlotId, user: User) = api
-        .events()
+    override fun register(agendaId: AgendaId, slotId: SlotId, user: User) =
+        update(agendaId, slotId, user, Collection<EventAttendee>::plus)
+
+    override fun unregister(agendaId: AgendaId, slotId: SlotId, user: User) =
+        update(agendaId, slotId, user, Collection<EventAttendee>::minus)
+
+    private fun update(
+        agendaId: AgendaId,
+        slotId: SlotId,
+        user: User,
+        action: List<EventAttendee>.(EventAttendee) -> List<EventAttendee>
+    ) = api.events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
             api
                 .events()
                 .patch(agendaId, slotId, event.also { ev ->
-                    ev.attendees = (ev.registeredAttendees ?: emptyList()) + user.asEventAttendee()
+                    ev.attendees = action(ev.registeredAttendees ?: emptyList(), user.asEventAttendee())
                 })
                 .setSendUpdates("externalOnly")
                 .execute()

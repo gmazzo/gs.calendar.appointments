@@ -75,17 +75,17 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     }
 
     private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
-        val available = event.slot.available
-        val hasSelf = props.user in event.slot.attendees
+        val inEvent = props.user in event.slot
+        val unavailable = !event.slot.available
 
         css {
             when {
-                hasSelf -> Color.darkGreen
-                !available -> Color.darkRed
+                inEvent -> Color.darkGreen
+                unavailable -> Color.darkRed
                 else -> null
             }?.let { backgroundColor = it }
 
-            if (!hasSelf && !available) {
+            if (!inEvent && unavailable) {
                 textDecoration(TextDecorationLine.lineThrough)
             }
         }
