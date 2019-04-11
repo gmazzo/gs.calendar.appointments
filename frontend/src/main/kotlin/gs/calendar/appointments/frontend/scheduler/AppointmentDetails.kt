@@ -12,6 +12,7 @@ import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.User
+import kotlinx.css.Display
 import kotlinx.css.margin
 import kotlinx.css.px
 import material_ui.core.ButtonColor
@@ -56,10 +57,17 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
             dialogContent {
                 css { minWidth = 300.px }
 
-                slot.description?.let { dialogContentText(it) }
+                val hasDescription = !slot.description.isNullOrBlank()
+                if (hasDescription) {
+                    dialogContentText(slot.description!!)
+                }
 
                 slot.attendees.takeIf { slot.showAttendees && it.isNotEmpty() }?.let {
                     div {
+                        if (hasDescription) {
+                            css { marginTop = (24 - props.theme.spacing.unit).px }
+                        }
+
                         it.forEach { attendee ->
                             val self = attendee.isSelf(user)
 
@@ -72,6 +80,7 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                     }
                 }
             }
+
             dialogActions {
                 if (slot.availableFor(user)) {
                     button(label = "Book", color = ButtonColor.PRIMARY) {
@@ -84,10 +93,12 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                     }
                 }
 
-                if (childList.isNotEmpty()) {
-                    css {
-                        borderTop = "1px solid ${props.theme.palette.divider}"
-                        paddingTop = props.theme.spacing.unit.px
+                css {
+                    borderTop = "1px solid ${props.theme.palette.divider}"
+                    paddingTop = props.theme.spacing.unit.px
+
+                    if (childList.isEmpty()) {
+                        display = Display.none
                     }
                 }
             }

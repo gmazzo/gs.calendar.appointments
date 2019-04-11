@@ -11,12 +11,14 @@ private val chip = module.Chip.unsafeCast<Chip>()
 
 fun RBuilder.chip(
     color: ChipColor? = null,
+    variant: ChipVariant? = null,
     avatar: (RBuilder.() -> Unit)? = null,
     label: String? = null,
     onDelete: (() -> Unit)? = null,
     handler: (RHandler<Chip.Props>) = {}
 ) = chip.invoke {
     color?.let { attrs.color = it }
+    variant?.let { attrs.variant = it }
     avatar?.let { attrs.avatar = buildElement(avatar) }
     label?.let { attrs.label = it }
     onDelete?.let { attrs.onDelete = it }
@@ -30,6 +32,9 @@ external interface Chip : RClass<Chip.Props> {
 
         @JsName("color")
         var colorValue: String
+
+        @JsName("variant")
+        var variantValue: String
 
         var avatar: ReactElement?
 
@@ -47,8 +52,19 @@ enum class ChipColor(val value: String) {
     SECONDARY("secondary")
 }
 
+enum class ChipVariant(val value: String) {
+    DEFAULT("default"),
+    OUTLINED("outlined")
+}
+
 var Chip.Props.color
     get() = colorValue.let { ChipColor.values().find { v -> v.value == it }!! }
     set(value) {
         colorValue = value.value
+    }
+
+var Chip.Props.variant
+    get() = variantValue.let { ChipVariant.values().find { v -> v.value == it }!! }
+    set(value) {
+        variantValue = value.value
     }

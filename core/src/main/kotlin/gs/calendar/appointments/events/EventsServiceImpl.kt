@@ -25,7 +25,7 @@ internal class EventsServiceImpl @Inject constructor(
         .map { it.asSlot() }
 
     override fun register(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId) { it + user.asEventAttendee() }
+        update(agendaId, slotId, { assureAvailable(user) }) { it + user.asEventAttendee() }
 
     override fun unregister(agendaId: AgendaId, slotId: SlotId, user: User) =
         update(agendaId, slotId) { it.filter { at -> at.email != user.email } }
@@ -33,11 +33,14 @@ internal class EventsServiceImpl @Inject constructor(
     private fun update(
         agendaId: AgendaId,
         slotId: SlotId,
+        validateOp: (Event.() -> Unit)? = null,
         action: (List<EventAttendee>) -> List<EventAttendee>
     ) = api.events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
+            validateOp?.let { event.it() }
+
             api.events()
                 .patch(agendaId, slotId, event.also { ev ->
                     ev.attendees = action(ev.registeredAttendees ?: emptyList())
@@ -85,6 +88,14 @@ internal class EventsServiceImpl @Inject constructor(
         it.displayName = name
         it.email = email
         it.responseStatus = "accepted"
+    }
+
+    private fun Event.assureAvailable(user: User) {
+        with(asSlot()) {
+            if (!availableFor(user)) {
+                throw IllegalStateException("Slot $id is no available for $user")
+            }
+        }
     }
 
 }
