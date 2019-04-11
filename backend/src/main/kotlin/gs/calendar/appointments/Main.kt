@@ -1,5 +1,6 @@
 package gs.calendar.appointments
 
+import io.undertow.Undertow
 import io.undertow.server.handlers.resource.ClassPathResourceManager
 import io.undertow.servlet.api.DeploymentInfo
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer
@@ -27,7 +28,7 @@ fun startServer(staticContent: String?, welcomePage: String?) {
                     }
                 }
         )
-        start()
+        start(Undertow.builder().addHttpListener(PortProvider.getPort(), "0.0.0.0"))
     }
 
     printWelcomeMessage(welcomePage != null)

@@ -45,7 +45,7 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                 .then { SelectAgenda(agenda.copy()).dispatch() } // reloads the agenda
                 .then {
                     props.enqueueSnackbar(
-                        "$successPrefix ${slot.name} at ${slot.startTime!!.toLocaleString()}",
+                        "$successPrefix ${slot.name} at ${slot.startTime.toLocaleString()}",
                         variant = SnackbarVariant.SUCCESS
                     )
                 }
