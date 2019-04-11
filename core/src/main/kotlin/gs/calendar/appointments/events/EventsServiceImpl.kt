@@ -25,24 +25,22 @@ internal class EventsServiceImpl @Inject constructor(
         .map { it.asSlot() }
 
     override fun register(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId, user, Collection<EventAttendee>::plus)
+        update(agendaId, slotId) { it + user.asEventAttendee() }
 
     override fun unregister(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId, user, Collection<EventAttendee>::minus)
+        update(agendaId, slotId) { it.filter { at -> at.email != user.email } }
 
     private fun update(
         agendaId: AgendaId,
         slotId: SlotId,
-        user: User,
-        action: List<EventAttendee>.(EventAttendee) -> List<EventAttendee>
+        action: (List<EventAttendee>) -> List<EventAttendee>
     ) = api.events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
-            api
-                .events()
+            api.events()
                 .patch(agendaId, slotId, event.also { ev ->
-                    ev.attendees = action(ev.registeredAttendees ?: emptyList(), user.asEventAttendee())
+                    ev.attendees = action(ev.registeredAttendees ?: emptyList())
                 })
                 .setSendUpdates("externalOnly")
                 .execute()
