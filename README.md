@@ -8,12 +8,13 @@ An appointment system based on Google Calendars
 This a sample project for demostrate the power of Kotlin language with a simple goal:
 > Appointments scheduling on pre-given (event based) availaibility
 
-I've used Kotlin everywere here:
+Fullstack Kotlin project demo:
 - KTS for Gradle's scripts (bye bye Groovy)
 - Kotlin's multuplatform for sharing DTO models between Java and JavaScript.
+- KotlinX's Serialization for cross-platform JSON support
 - Dagger for tide everying up
 - RestEasy for API binding (JAX-RS spec)
-- React, Redux and Material-UI, full Kotlin
+- React, Redux and Material-UI in full Kotlin/JS
 
 ## What to Expect?
 See a running example at https://gs-calendar-appointments.herokuapp.com/
