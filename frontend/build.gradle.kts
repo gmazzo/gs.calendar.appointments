@@ -38,7 +38,9 @@ buildConfig {
     buildConfigField(
         "String",
         "API_CLIENT_ID",
-        "\"752118259594-201e8779d52re6d2lr2pkrca4fjt2tbj.apps.googleusercontent.com\""
+        System.getenv("GOOGLE_CLIENT_ID")?.let {"\"$it\""}
+            ?: file("google_client_id.txt").takeIf { it.isFile }?.readText()?.let {"\"$it\""}
+            ?: "\"\" // TODO put a valid ClientId  here"
     )
 }
 

@@ -8,3 +8,4 @@ Procfile
 
 # do not commit this file if the repo is public!
 backend/src/main/resources/google_client_secrets.json
+frontend/google_client_id.txt

@@ -38,9 +38,9 @@ See a running example at https://gs-calendar-appointments.herokuapp.com/
     1. Enter an ID and confirm
     1. Take note of your **Service Account's email address**
     1. Create a key-pair credentials for your new service account, in JSON format
-    1. Download the credentials and store the credentials (one of):
+    1. Download the credentials and store the Credentials *(one of)*:
         - Encode it as `Base64` and set an Environment Variable called `GOOGLE_CREDENTIALS` with the value
-        - Or save it directly on `backend` module's resources (under `src/main/resources`).
+        - Or save it on `backend` module's resources under `src/main/resources` with name `google_client_secrets.json`.
 1. Create an OAuth Client ID
     1. Go to [Credentials](https://console.cloud.google.com/apis/credentials)
     1. Choose *Create Credentials* and pick *OAuth Client ID*
@@ -51,7 +51,10 @@ See a running example at https://gs-calendar-appointments.herokuapp.com/
         - *(your production servers here)*
     1. Confirm it. You can let *allowed redirect URIs* empty. We will be using Google's own sign in.
     1. Take note of your **OAuth Client ID**
-    1. Replace the `buildConfigField:API_CLIENT_ID` entry on `frontend` module's `build.gradle.kts` file.
+    1. Store the Client Id *(one of)*:
+        - Set an Environment Variable called `GOOGLE_CLIENT_ID` with the value
+        - Save it on `frontend` module's root under with name `google_client_id.txt`.
+        - Or replace the `buildConfigField:API_CLIENT_ID` value on `frontend` module's `build.gradle.kts` file.
 1. Create a new (Google Calendar)[https://calendar.google.com/calendar/r/settings/createcalendar]
     1. Share it with the **Service Account's email address** you just created. This will make it available at the app
     1. Make sure it has **write access** to the Calendar's events when you share it
