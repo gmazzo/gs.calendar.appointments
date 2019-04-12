@@ -8,7 +8,7 @@ typealias AgendaId = String
 data class Agenda(
     val id: AgendaId,
     val name: String,
-    val description: String?,
+    val description: String? = null,
     val foregroundColor: String,
     val backgroundColor: String,
     val available: Boolean

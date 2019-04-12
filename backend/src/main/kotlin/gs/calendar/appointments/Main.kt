@@ -1,5 +1,6 @@
 package gs.calendar.appointments
 
+import gs.calendar.appointments.backend.BuildConfig
 import io.undertow.Undertow
 import io.undertow.server.handlers.resource.ClassPathResourceManager
 import io.undertow.servlet.api.DeploymentInfo

@@ -38,10 +38,10 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
     if (agenda != null && slot != null) {
 
         fun performBook(
-            bookOp: (agendaId: AgendaId, slotId: SlotId, user: User) -> Promise<Slot>,
+            bookOp: (agendaId: AgendaId, slotId: SlotId, user: User, authUser: User?) -> Promise<Slot>,
             successPrefix: String
         ) {
-            bookOp(agenda.id, slot.id, user!!)
+            bookOp(agenda.id, slot.id, user!!, user)
                 .uiLinked(props)
                 .then { SelectAgenda(agenda.copy()).dispatch() } // reloads the agenda
                 .then {

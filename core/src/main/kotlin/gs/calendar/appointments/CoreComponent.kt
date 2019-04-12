@@ -9,6 +9,7 @@ import com.google.api.client.util.store.MemoryDataStoreFactory
 import dagger.BindsInstance
 import dagger.Component
 import gs.calendar.appointments.agendas.AgendasService
+import gs.calendar.appointments.auth.AuthService
 import gs.calendar.appointments.events.EventsService
 import java.net.URL
 import javax.inject.Named
@@ -19,6 +20,8 @@ interface CoreComponent {
     fun provideAgendasService(): AgendasService
 
     fun provideEventsService(): EventsService
+
+    fun provideUsersService(): AuthService
 
     @Component.Builder
     @Suppress("LeakingThis")

@@ -26,7 +26,7 @@ fun RBuilder.loginDialog(currentUser: User?, withSnackbar: WithSnackbar) {
                 buttonText = "Google Login",
                 isSignedIn = true,
                 onSuccess = {
-                    val user = with(it.profileObj) { User(name, email, imageUrl) }
+                    val user = with(it.profileObj) { User(name, email, imageUrl, it.tokenId) }
 
                     ChangeUser(user).dispatch()
                     withSnackbar.enqueueSnackbar("Logged as ${user.name} <${user.email}>")

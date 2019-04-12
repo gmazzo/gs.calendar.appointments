@@ -37,13 +37,23 @@ class App : RComponent<App.Props, App.State>() {
     override fun componentDidMount() {
         unsubscribe = store.subscribe { setState(store.state) }
 
-        API.listAgendas()
-            .uiLinked(props)
-            .then { SetAgendas(it.toList()).dispatch() }
+        loadAgendas()
     }
 
     override fun componentWillUnmount() {
         unsubscribe()
+    }
+
+    override fun componentDidUpdate(prevProps: Props, prevState: State, snapshot: Any) {
+        if (state.currentUser != prevState.currentUser) {
+            loadAgendas()
+        }
+    }
+
+    private fun loadAgendas() {
+        API.listAgendas(state.currentUser)
+            .uiLinked(props)
+            .then { SetAgendas(it.toList()).dispatch() }
     }
 
     override fun RBuilder.render() {

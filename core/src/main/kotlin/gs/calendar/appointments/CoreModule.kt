@@ -2,6 +2,7 @@ package gs.calendar.appointments
 
 import com.google.api.client.auth.oauth2.Credential
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.services.calendar.Calendar
@@ -11,11 +12,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import gs.calendar.appointments.agendas.AgendasModule
+import gs.calendar.appointments.auth.AuthModule
 import gs.calendar.appointments.events.EventsModule
 import java.net.URL
 import javax.inject.Named
 
-@Module(includes = [AgendasModule::class, EventsModule::class])
+@Module(includes = [AgendasModule::class, EventsModule::class, AuthModule::class])
 internal class CoreModule {
 
     @Provides
@@ -55,5 +57,15 @@ internal class CoreModule {
         PeopleService.Builder(transport, jsonFactory, credential)
             .setApplicationName(applicationName)
             .build()!!
+
+    @Provides
+    @Reusable
+    fun provideTokenVerifier(
+        transport: HttpTransport,
+        jsonFactory: JsonFactory
+    ) = GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+        // FIXME this must be a shared buildConfig
+        .setAudience(listOf("1060481272070-n50bd7qmcbpukplpctbfpump33uht4gc.apps.googleusercontent.com"))
+        .build()
 
 }

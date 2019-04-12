@@ -8,13 +8,13 @@ typealias SlotId = String
 data class Slot(
     val id: SlotId,
     val name: String,
-    val description: String?,
+    val description: String? = null,
     @Serializable(DateSerializer::class) val startTime: Date,
     @Serializable(DateSerializer::class) val endTime: Date,
-    val location: String?,
+    val location: String? = null,
     // TODO attendees should not be exposed to the client, add some auth token for current user and resolve it in backend
     val showAttendees: Boolean,
-    val attendees: List<User>,
+    val attendees: (List<User>) = emptyList(),
     val capacity: Int
 ) {
 

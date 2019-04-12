@@ -46,7 +46,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 
     private fun loadEvents() {
         props.agenda?.id?.let {
-            API.listSlots(it)
+            API.listSlots(it, props.user)
                 .uiLinked(props)
                 .then {
                     setState {
