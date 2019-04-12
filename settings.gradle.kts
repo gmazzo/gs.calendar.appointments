@@ -24,7 +24,7 @@ pluginManagement {
     }
     repositories {
         jcenter()
-        maven(url = "https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://kotlin.bintray.com/kotlin-eap")
     }
