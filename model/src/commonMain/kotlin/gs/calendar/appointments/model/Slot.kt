@@ -15,5 +15,9 @@ data class Slot(
     val attendees: (List<User>) = emptyList(),
     val selfIsAttendee: Boolean,
     val available: Boolean,
+    override val capacity: Int
+) : SlotParams
+
+interface SlotParams {
     val capacity: Int
-)
+}

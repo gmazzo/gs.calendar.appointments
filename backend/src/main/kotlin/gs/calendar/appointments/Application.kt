@@ -18,6 +18,7 @@ import org.jboss.resteasy.plugins.interceptors.CorsFilter
 import javax.inject.Inject
 import javax.ws.rs.ApplicationPath
 import javax.ws.rs.core.MediaType
+import gs.calendar.appointments.model.BuildConfig as ModelBuildConfig
 
 @ApplicationPath(BuildConfig.API_CONTEXT)
 class Application : javax.ws.rs.core.Application() {
@@ -60,7 +61,7 @@ class Application : javax.ws.rs.core.Application() {
     )
 
     override fun getClasses() = setOf(
-        // resources
+        // swagger
         OpenApiResource::class.java,
         AcceptHeaderOpenApiResource::class.java,
 

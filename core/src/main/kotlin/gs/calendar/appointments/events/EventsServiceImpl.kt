@@ -7,6 +7,7 @@ import com.google.api.services.calendar.model.EventDateTime
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
+import gs.calendar.appointments.model.SlotParams
 import gs.calendar.appointments.model.User
 import java.util.Date
 import javax.inject.Inject
@@ -25,12 +26,12 @@ internal class EventsServiceImpl @Inject constructor(
         .map { it.asSlot(user) }
 
     override fun register(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId, user, { assureAvailable(it) }) { it + user.asEventAttendee() }
+        registerOp(agendaId, slotId, user, { assureAvailable(it) }) { it + user.asEventAttendee() }
 
     override fun unregister(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId, user) { it.filter { at -> at.email != user.email } }
+        registerOp(agendaId, slotId, user) { it.filter { at -> at.email != user.email } }
 
-    private fun update(
+    private fun registerOp(
         agendaId: AgendaId,
         slotId: SlotId,
         user: User,
@@ -49,6 +50,19 @@ internal class EventsServiceImpl @Inject constructor(
                 .setSendUpdates("externalOnly")
                 .execute()
                 .let { it.asSlot(user) }
+        }
+
+    override fun update(agendaId: AgendaId, slotId: SlotId, allInstances: Boolean, params: SlotParams) = api
+        .events()
+        .get(agendaId, slotId)
+        .execute()
+        .let { event ->
+            api.events()
+                .patch(agendaId, event.recurringEventId?.takeIf { allInstances } ?: slotId, event.also { ev ->
+                    ev.capacity = params.capacity
+                })
+                .execute()
+                .let { it.asSlot() }
         }
 
     private var Event.capacity: Int
@@ -78,7 +92,7 @@ internal class EventsServiceImpl @Inject constructor(
         }
     }
 
-    private fun Event.asSlot(user: User?) = Slot(
+    private fun Event.asSlot(user: User? = null) = Slot(
         id = id,
         name = summary,
         startTime = start!!.modelDate,

@@ -2,28 +2,33 @@ package gs.calendar.appointments.api.agendas
 
 import gs.calendar.appointments.agendas.AgendasService
 import gs.calendar.appointments.api.PARAM_AGENDA
-import gs.calendar.appointments.api.PARAM_ENABLED
+import gs.calendar.appointments.api.Resource
 import gs.calendar.appointments.model.AgendaId
 import javax.inject.Inject
 import javax.inject.Singleton
-import javax.ws.rs.*
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.DefaultValue
+import javax.ws.rs.GET
+import javax.ws.rs.PATCH
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.QueryParam
 
 @Singleton
 @Path("agendas")
-@Produces(MediaType.APPLICATION_JSON)
 class AgendasResource @Inject constructor(
     private val service: AgendasService
-) {
+) : Resource() {
 
     @GET
-    fun list(@QueryParam("all") all: String?) = service.list(all != null)
+    fun list(
+        @QueryParam("all") @DefaultValue("false") all: Boolean
+    ) = service.list(all)
 
     @PATCH
     @Path("{$PARAM_AGENDA}")
     fun enable(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
-        @QueryParam(PARAM_ENABLED) enabled: Boolean
+        @QueryParam("enabled") enabled: Boolean
     ) = service.enable(agendaId, enabled)
 
 }
