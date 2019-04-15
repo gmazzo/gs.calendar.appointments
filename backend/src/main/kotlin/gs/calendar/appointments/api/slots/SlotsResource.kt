@@ -68,9 +68,9 @@ class SlotsResource @Inject constructor(
         @PathParam(PARAM_SLOT) slotId: SlotId,
         @Context authUser: User?,
         @QueryParam("all") @DefaultValue("false") all: Boolean,
-        slotParams: SlotParamsBody
+        params: SlotBody
     ): Slot = authUser.assureAdmin(agendaId) {
-        slotsService.update(agendaId, slotId, all, slotParams)
+        slotsService.update(agendaId, slotId, all, params)
     }
 
     private fun <R> User?.assureSame(user: User, then: () -> R): R {
@@ -91,6 +91,11 @@ class SlotsResource @Inject constructor(
     }
 
     @Serializable
-    data class SlotParamsBody(override val capacity: Int) : SlotParams
+    data class SlotBody(
+        override val name: String?,
+        override val description: String?,
+        override val location: String?,
+        override val capacity: Int
+    ) : SlotParams
 
 }

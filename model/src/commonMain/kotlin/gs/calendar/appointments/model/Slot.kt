@@ -7,11 +7,11 @@ typealias SlotId = String
 @Serializable
 data class Slot(
     val id: SlotId,
-    val name: String,
-    val description: String? = null,
+    override val name: String,
+    override val description: String? = null,
     @Serializable(DateSerializer::class) val startTime: Date,
     @Serializable(DateSerializer::class) val endTime: Date,
-    val location: String? = null,
+    override val location: String? = null,
     val attendees: (List<User>) = emptyList(),
     val selfIsAttendee: Boolean,
     val available: Boolean,
@@ -19,5 +19,8 @@ data class Slot(
 ) : SlotParams
 
 interface SlotParams {
+    val name: String?
+    val description: String?
+    val location: String?
     val capacity: Int
 }

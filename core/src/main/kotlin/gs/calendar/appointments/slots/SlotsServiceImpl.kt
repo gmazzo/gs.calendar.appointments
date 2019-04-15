@@ -59,7 +59,10 @@ internal class SlotsServiceImpl @Inject constructor(
         .let { event ->
             api.events()
                 .patch(agendaId, event.recurringEventId?.takeIf { allInstances } ?: slotId, Event().apply {
-                    capacity = params.capacity
+                    params.name?.let { summary = it }
+                    params.description?.let { description = it }
+                    params.location?.let { location = it }
+                    capacity = Math.max(params.capacity, 1)
                 })
                 .execute()
                 .let { it.asSlot() }
