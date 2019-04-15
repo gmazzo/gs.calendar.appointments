@@ -1,4 +1,4 @@
-package gs.calendar.appointments.events
+package gs.calendar.appointments.slots
 
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
@@ -6,7 +6,7 @@ import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.SlotParams
 import gs.calendar.appointments.model.User
 
-interface EventsService {
+interface SlotsService {
 
     fun list(agendaId: AgendaId, flatInstances: Boolean, user: User?): List<Slot>
 

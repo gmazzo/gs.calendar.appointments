@@ -1,4 +1,4 @@
-package gs.calendar.appointments.events
+package gs.calendar.appointments.slots
 
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.model.Event
@@ -12,9 +12,9 @@ import gs.calendar.appointments.model.User
 import java.util.Date
 import javax.inject.Inject
 
-internal class EventsServiceImpl @Inject constructor(
+internal class SlotsServiceImpl @Inject constructor(
     private val api: Calendar
-) : EventsService {
+) : SlotsService {
 
     override fun list(agendaId: String, flatInstances: Boolean, user: User?) = api
         .events()
@@ -44,8 +44,8 @@ internal class EventsServiceImpl @Inject constructor(
             event.validation(user)
 
             api.events()
-                .patch(agendaId, slotId, event.also { ev ->
-                    ev.attendees = action(ev.registeredAttendees ?: emptyList())
+                .patch(agendaId, slotId, Event().apply {
+                    attendees = action(event.registeredAttendees ?: emptyList())
                 })
                 .setSendUpdates("externalOnly")
                 .execute()
@@ -58,8 +58,8 @@ internal class EventsServiceImpl @Inject constructor(
         .execute()
         .let { event ->
             api.events()
-                .patch(agendaId, event.recurringEventId?.takeIf { allInstances } ?: slotId, event.also { ev ->
-                    ev.capacity = params.capacity
+                .patch(agendaId, event.recurringEventId?.takeIf { allInstances } ?: slotId, Event().apply {
+                    capacity = params.capacity
                 })
                 .execute()
                 .let { it.asSlot() }

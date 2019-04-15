@@ -4,12 +4,12 @@ import gs.calendar.appointments.agendas.AgendasService
 import gs.calendar.appointments.api.PARAM_AGENDA
 import gs.calendar.appointments.api.PARAM_SLOT
 import gs.calendar.appointments.api.Resource
-import gs.calendar.appointments.events.EventsService
 import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.SlotParams
 import gs.calendar.appointments.model.User
+import gs.calendar.appointments.slots.SlotsService
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,28 +23,31 @@ import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.QueryParam
+import javax.ws.rs.core.Context
 
 @Singleton
 @Path("slots/{$PARAM_AGENDA}")
 class SlotsResource @Inject constructor(
     private val agendasService: AgendasService,
-    private val eventsService: EventsService
+    private val slotsService: SlotsService
 ) : Resource() {
 
     @GET
     fun list(
-        @PathParam(PARAM_AGENDA) agendaId: AgendaId
+        @PathParam(PARAM_AGENDA) agendaId: AgendaId,
+        @Context authUser: User?
     ): List<Slot> =
-        eventsService.list(agendaId, true, authUser)
+        slotsService.list(agendaId, true, authUser)
 
     @PUT
     @Path("{$PARAM_SLOT}")
     fun book(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
         @PathParam(PARAM_SLOT) slotId: SlotId,
+        @Context authUser: User?,
         user: User
     ): Slot = authUser.assureSame(user) {
-        eventsService.register(agendaId, slotId, user)
+        slotsService.register(agendaId, slotId, user)
     }
 
     @DELETE
@@ -52,9 +55,10 @@ class SlotsResource @Inject constructor(
     fun unbook(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
         @PathParam(PARAM_SLOT) slotId: SlotId,
+        @Context authUser: User?,
         user: User
     ): Slot = authUser.assureSame(user) {
-        eventsService.unregister(agendaId, slotId, user)
+        slotsService.unregister(agendaId, slotId, user)
     }
 
     @PATCH
@@ -62,10 +66,18 @@ class SlotsResource @Inject constructor(
     fun update(
         @PathParam(PARAM_AGENDA) agendaId: AgendaId,
         @PathParam(PARAM_SLOT) slotId: SlotId,
+        @Context authUser: User?,
         @QueryParam("all") @DefaultValue("false") all: Boolean,
         slotParams: SlotParamsBody
     ): Slot = authUser.assureAdmin(agendaId) {
-        eventsService.update(agendaId, slotId, all, slotParams)
+        slotsService.update(agendaId, slotId, all, slotParams)
+    }
+
+    private fun <R> User?.assureSame(user: User, then: () -> R): R {
+        if (!user.isSelf(this)) {
+            throw ForbiddenException("${this} can't operate on behalf of $user")
+        }
+        return then()
     }
 
     private fun <R> User?.assureAdmin(agendaId: AgendaId, then: () -> R): R {

@@ -13,11 +13,11 @@ import dagger.Provides
 import dagger.Reusable
 import gs.calendar.appointments.agendas.AgendasModule
 import gs.calendar.appointments.auth.AuthModule
-import gs.calendar.appointments.events.EventsModule
+import gs.calendar.appointments.slots.SlotsModule
 import java.net.URL
 import javax.inject.Named
 
-@Module(includes = [AgendasModule::class, EventsModule::class, AuthModule::class])
+@Module(includes = [AgendasModule::class, SlotsModule::class, AuthModule::class])
 internal class CoreModule {
 
     @Provides

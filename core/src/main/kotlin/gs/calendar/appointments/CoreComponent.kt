@@ -10,7 +10,7 @@ import dagger.BindsInstance
 import dagger.Component
 import gs.calendar.appointments.agendas.AgendasService
 import gs.calendar.appointments.auth.AuthService
-import gs.calendar.appointments.events.EventsService
+import gs.calendar.appointments.slots.SlotsService
 import java.net.URL
 import javax.inject.Named
 
@@ -19,7 +19,7 @@ interface CoreComponent {
 
     fun provideAgendasService(): AgendasService
 
-    fun provideEventsService(): EventsService
+    fun provideSlotsService(): SlotsService
 
     fun provideUsersService(): AuthService
 
