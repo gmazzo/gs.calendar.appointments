@@ -12,16 +12,8 @@ data class Slot(
     @Serializable(DateSerializer::class) val startTime: Date,
     @Serializable(DateSerializer::class) val endTime: Date,
     val location: String? = null,
-    // TODO attendees should not be exposed to the client, add some auth token for current user and resolve it in backend
-    val showAttendees: Boolean,
     val attendees: (List<User>) = emptyList(),
+    val selfIsAttendee: Boolean,
+    val available: Boolean,
     val capacity: Int
-) {
-
-    val available get() = attendees.size < capacity
-
-    fun availableFor(user: User?) = available && user !in this
-
-    operator fun contains(user: User?) = attendees.find { it.isSelf(user) } != null
-
-}
+)

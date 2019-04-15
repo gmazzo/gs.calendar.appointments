@@ -84,7 +84,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     }
 
     private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
-        val inEvent = props.user in event.slot
+        val inEvent = event.slot.selfIsAttendee
         val unavailable = !event.slot.available
 
         css {

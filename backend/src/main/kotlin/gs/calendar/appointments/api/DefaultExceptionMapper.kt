@@ -1,32 +1,29 @@
 package gs.calendar.appointments.api
 
-import com.google.api.client.http.HttpResponseException
-import io.undertow.util.Headers
 import kotlinx.serialization.Serializable
+import javax.ws.rs.NotAcceptableException
+import javax.ws.rs.Produces
+import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import javax.ws.rs.ext.ExceptionMapper
 import javax.ws.rs.ext.Provider
 
 @Provider
+@Produces(MediaType.APPLICATION_JSON)
 class DefaultExceptionMapper : ExceptionMapper<Exception> {
 
-    override fun toResponse(exception: Exception): Response = Response
-        .status(exception.statusCode)
-        .entity(Error(exception.statusCode, exception.message))
-        .header(Headers.CONTENT_TYPE_STRING, MediaType.APPLICATION_JSON)
-        .build()
-        .also { exception.printStackTrace() }
-
-    private val Exception.statusCode
-        get() =
-            if (this is HttpResponseException) this.statusCode
-            else Response.Status.INTERNAL_SERVER_ERROR.statusCode
+    override fun toResponse(exception: Exception): Response = when (exception) {
+        is NotAcceptableException -> exception.response
+        is WebApplicationException -> Response.status(exception.response.statusInfo)
+            .entity(ErrorMessage(exception.response.status, exception.localizedMessage))
+            .build()
+        else -> Response.serverError()
+            .entity(ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.statusCode, exception.localizedMessage))
+            .build()
+    }.also { exception.printStackTrace() }
 
     @Serializable
-    data class Error(
-        val statusCode: Int,
-        val message: String? = null
-    )
+    data class ErrorMessage(val statusCode: Int, val message: String)
 
 }

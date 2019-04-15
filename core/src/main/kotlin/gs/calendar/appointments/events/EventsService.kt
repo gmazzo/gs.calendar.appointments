@@ -7,7 +7,7 @@ import gs.calendar.appointments.model.User
 
 interface EventsService {
 
-    fun list(agendaId: AgendaId, flatInstances: Boolean): List<Slot>
+    fun list(agendaId: AgendaId, flatInstances: Boolean, user: User?): List<Slot>
 
     fun register(agendaId: AgendaId, slotId: SlotId, user: User): Slot
 

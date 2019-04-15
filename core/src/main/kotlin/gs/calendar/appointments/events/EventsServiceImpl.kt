@@ -15,31 +15,32 @@ internal class EventsServiceImpl @Inject constructor(
     private val api: Calendar
 ) : EventsService {
 
-    override fun list(agendaId: String, flatInstances: Boolean) = api
+    override fun list(agendaId: String, flatInstances: Boolean, user: User?) = api
         .events()
         .list(agendaId)
         .setSingleEvents(flatInstances)
         .setOrderBy("startTime")
         .execute()
         .items
-        .map { it.asSlot() }
+        .map { it.asSlot(user) }
 
     override fun register(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId, { assureAvailable(user) }) { it + user.asEventAttendee() }
+        update(agendaId, slotId, user, { assureAvailable(it) }) { it + user.asEventAttendee() }
 
     override fun unregister(agendaId: AgendaId, slotId: SlotId, user: User) =
-        update(agendaId, slotId) { it.filter { at -> at.email != user.email } }
+        update(agendaId, slotId, user) { it.filter { at -> at.email != user.email } }
 
     private fun update(
         agendaId: AgendaId,
         slotId: SlotId,
-        validateOp: (Event.() -> Unit)? = null,
+        user: User,
+        validation: Event.(User) -> Unit = {},
         action: (List<EventAttendee>) -> List<EventAttendee>
     ) = api.events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
-            validateOp?.let { event.it() }
+            event.validation(user)
 
             api.events()
                 .patch(agendaId, slotId, event.also { ev ->
@@ -47,7 +48,7 @@ internal class EventsServiceImpl @Inject constructor(
                 })
                 .setSendUpdates("externalOnly")
                 .execute()
-                .let { it.asSlot() }
+                .let { it.asSlot(user) }
         }
 
     private var Event.capacity: Int
@@ -63,39 +64,51 @@ internal class EventsServiceImpl @Inject constructor(
     private val Event.registeredAttendees: List<EventAttendee>?
         get() = attendees?.filter { it.responseStatus != "declined" }
 
-    private fun Event.asSlot() = Slot(
+    private val Event.available: Boolean
+        get() = capacity > registeredAttendees?.size ?: 0
+
+    private operator fun Event.contains(user: User?): Boolean =
+        user != null && registeredAttendees?.find { user.isSelf(it.asUser()) } != null
+
+    private fun Event.availableFor(user: User?): Boolean = available && user !in this
+
+    private fun Event.assureAvailable(user: User) {
+        if (!availableFor(user)) {
+            throw IllegalStateException("Slot $id is no available for $user")
+        }
+    }
+
+    private fun Event.asSlot(user: User?) = Slot(
         id = id,
         name = summary,
         startTime = start!!.modelDate,
         endTime = end!!.modelDate,
         location = location,
         description = description,
-        showAttendees = guestsCanSeeOtherGuests ?: true,
-        attendees = registeredAttendees?.map { it.asUser() } ?: emptyList(),
+        attendees = registeredAttendees
+            ?.filter { guestsCanSeeOtherGuests != false || it.isSelf(user) }
+            ?.map { it.asUser() }
+            ?: emptyList(),
+        selfIsAttendee = user != null && registeredAttendees?.find { it.isSelf(user) } != null,
+        available = availableFor(user),
         capacity = capacity
     )
 
     private val EventDateTime.modelDate
-        get() =
-            Date((dateTime ?: date).value)
+        get() = Date((dateTime ?: date).value)
 
     private fun EventAttendee.asUser() = User(
         name = displayName,
         email = email
     )
 
+    private fun EventAttendee.isSelf(user: User?): Boolean =
+        asUser().isSelf(user)
+
     private fun User.asEventAttendee() = EventAttendee().also {
         it.displayName = name
         it.email = email
         it.responseStatus = "accepted"
-    }
-
-    private fun Event.assureAvailable(user: User) {
-        with(asSlot()) {
-            if (!availableFor(user)) {
-                throw IllegalStateException("Slot $id is no available for $user")
-            }
-        }
     }
 
 }

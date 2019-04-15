@@ -12,8 +12,6 @@ import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.User
-import kotlinx.css.Display
-import kotlinx.css.margin
 import kotlinx.css.px
 import material_ui.core.ButtonColor
 import material_ui.core.ChipColor
@@ -62,7 +60,7 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                     dialogContentText(slot.description!!)
                 }
 
-                slot.attendees.takeIf { slot.showAttendees && it.isNotEmpty() }?.let {
+                slot.attendees.takeIf { it.isNotEmpty() }?.let {
                     div {
                         if (hasDescription) {
                             css { marginTop = (24 - props.theme.spacing.unit).px }
@@ -75,30 +73,26 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                                 color = if (self) ChipColor.PRIMARY else null,
                                 avatar = { userAvatar(attendee) },
                                 label = attendee.name ?: attendee.email
-                            ) { css { margin(props.theme.spacing.unit.px) } }
+                            ) { css { marginRight = props.theme.spacing.unit.px } }
                         }
                     }
                 }
             }
 
-            dialogActions {
-                if (slot.availableFor(user)) {
-                    button(label = "Book", color = ButtonColor.PRIMARY) {
-                        onClick { performBook(API::book, "Booked") }
+            if (slot.available || slot.selfIsAttendee) {
+                dialogActions {
+                    css {
+                        borderTop = "1px solid ${props.theme.palette.divider}"
+                        paddingTop = props.theme.spacing.unit.px
                     }
 
-                } else if (user in slot) {
-                    button(label = "Cancel", color = ButtonColor.SECONDARY) {
-                        onClick { performBook(API::unbook, "Canceled") }
-                    }
-                }
-
-                css {
-                    borderTop = "1px solid ${props.theme.palette.divider}"
-                    paddingTop = props.theme.spacing.unit.px
-
-                    if (childList.isEmpty()) {
-                        display = Display.none
+                    when {
+                        slot.available -> button(label = "Book", color = ButtonColor.PRIMARY) {
+                            onClick { performBook(API::book, "Booked") }
+                        }
+                        slot.selfIsAttendee -> button(label = "Cancel", color = ButtonColor.SECONDARY) {
+                            onClick { performBook(API::unbook, "Canceled") }
+                        }
                     }
                 }
             }
