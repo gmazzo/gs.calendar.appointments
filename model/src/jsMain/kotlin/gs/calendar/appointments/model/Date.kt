@@ -12,6 +12,7 @@ actual object DateSerializer {
     override fun serialize(encoder: Encoder, obj: Date) =
         encoder.encodeString(obj.toISOString())
 
-    override fun deserialize(decoder: Decoder) = Date(decoder.decodeString())
+    override fun deserialize(decoder: Decoder) =
+        Date(decoder.decodeString())
 
 }

@@ -29,6 +29,7 @@ import notistack.enqueueSnackbar
 import onClick
 import react.RBuilder
 import react.dom.div
+import kotlin.browser.window
 import kotlin.js.Promise
 
 fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, props: P)
@@ -79,21 +80,22 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                 }
             }
 
-            if (slot.available || slot.selfIsAttendee) {
-                dialogActions {
-                    css {
-                        borderTop = "1px solid ${props.theme.palette.divider}"
-                        paddingTop = props.theme.spacing.unit.px
-                    }
+            dialogActions {
+                css {
+                    borderTop = "1px solid ${props.theme.palette.divider}"
+                    paddingTop = props.theme.spacing.unit.px
+                }
 
-                    when {
-                        slot.available -> button(label = "Book", color = ButtonColor.PRIMARY) {
-                            onClick { performBook(API::book, "Booked") }
-                        }
-                        slot.selfIsAttendee -> button(label = "Cancel", color = ButtonColor.SECONDARY) {
-                            onClick { performBook(API::unbook, "Canceled") }
-                        }
+                when {
+                    slot.available -> button(label = "Book", color = ButtonColor.PRIMARY) {
+                        onClick { performBook(API::book, "Booked") }
                     }
+                    slot.selfIsAttendee -> button(label = "Cancel", color = ButtonColor.SECONDARY) {
+                        onClick { performBook(API::unbook, "Canceled") }
+                    }
+                }
+                button(label = "Open at Google", color = ButtonColor.DEFAULT) {
+                    onClick { window.open(slot.externalUrl) }
                 }
             }
         }

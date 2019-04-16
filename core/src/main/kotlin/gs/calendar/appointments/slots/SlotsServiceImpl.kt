@@ -108,7 +108,8 @@ internal class SlotsServiceImpl @Inject constructor(
             ?: emptyList(),
         selfIsAttendee = user != null && registeredAttendees?.find { it.isSelf(user) } != null,
         available = availableFor(user),
-        capacity = capacity
+        capacity = capacity,
+        externalUrl = htmlLink
     )
 
     private val EventDateTime.modelDate

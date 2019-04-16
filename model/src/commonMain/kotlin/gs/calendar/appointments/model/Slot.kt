@@ -15,7 +15,8 @@ data class Slot(
     val attendees: (List<User>) = emptyList(),
     val selfIsAttendee: Boolean,
     val available: Boolean,
-    override val capacity: Int
+    override val capacity: Int,
+    val externalUrl: URL
 ) : SlotParams
 
 interface SlotParams {
