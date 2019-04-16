@@ -51,7 +51,7 @@ class App : RComponent<App.Props, App.State>() {
     }
 
     private fun loadAgendas() {
-        API.listAgendas(state.currentUser)
+        API.agendasList(state.currentUser)
             .uiLinked(props)
             .then { SetAgendas(it.toList()).dispatch() }
     }

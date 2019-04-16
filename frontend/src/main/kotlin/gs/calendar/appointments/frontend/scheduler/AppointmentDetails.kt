@@ -135,14 +135,14 @@ fun <P> RBuilder.appointmentDetails(adminMode: Boolean, agenda: Agenda, slot: Sl
                         color = ButtonColor.PRIMARY,
                         variant = ButtonVariant.CONTAINED
                     ) {
-                        onClick { performBook(API::book, "Booked") }
+                        onClick { performBook(API::slotsBook, "Booked") }
                     }
                     slot.selfIsAttendee -> button(
                         label = "Cancel",
                         color = ButtonColor.SECONDARY,
                         variant = ButtonVariant.CONTAINED
                     ) {
-                        onClick { performBook(API::unbook, "Canceled") }
+                        onClick { performBook(API::slotsUnbook, "Canceled") }
                     }
                 }
             }

@@ -17,26 +17,25 @@ import kotlin.js.Promise
 
 object API {
 
-    fun listAgendas(authUser: User?) = window
+    fun agendasList(authUser: User?) = window
         .fetch("$API_ENDPOINT/agendas", request(authUser))
         .body()
         .then { Json.parse(Agenda.serializer().list, it) }
 
-    fun listSlots(agendaId: AgendaId, authUser: User?) = window
+    fun slotsList(agendaId: AgendaId, authUser: User?) = window
         .fetch("$API_ENDPOINT/slots/$agendaId", request(authUser))
         .body()
         .then { Json.parse(Slot.serializer().list, it) }
 
-    fun book(agendaId: AgendaId, slotId: SlotId, user: User, authUser: User? = user) = window
+    fun slotsBook(agendaId: AgendaId, slotId: SlotId, user: User, authUser: User? = user) = window
         .fetch("$API_ENDPOINT/slots/$agendaId/$slotId", request(authUser, "put", user, User.serializer()))
         .body()
         .then { Json.parse(Slot.serializer(), it) }
 
-    fun unbook(agendaId: AgendaId, slotId: SlotId, user: User, authUser: User? = user) = window
+    fun slotsUnbook(agendaId: AgendaId, slotId: SlotId, user: User, authUser: User? = user) = window
         .fetch("$API_ENDPOINT/slots/$agendaId/$slotId", request(authUser, "delete", user, User.serializer()))
         .body()
         .then { Json.parse(Slot.serializer(), it) }
-
 
     private fun request(authUser: User? = null): RequestInit =
         jsObject {

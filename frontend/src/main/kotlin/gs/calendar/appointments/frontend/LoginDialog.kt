@@ -19,7 +19,7 @@ fun RBuilder.loginDialog(currentUser: User?, withSnackbar: WithSnackbar) {
     dialog(open = currentUser == null) {
         dialogTitle("Account required")
         dialogContent {
-            dialogContentText("Sign-in with your Google account to book appointments")
+            dialogContentText("Sign-in with your Google account to slotsBook appointments")
         }
         dialogActions {
             googleLogin(
