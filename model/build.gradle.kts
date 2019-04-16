@@ -37,7 +37,7 @@ kotlin {
 }
 
 buildConfig {
-    buildConfigField("String", "HTTP_HEADER_AUTH_TOKEN_ID", "\"Google-Token-Id\"")
+    buildConfigField("String", "HEADER_AUTH_TOKEN_ID", "\"Google-Token-Id\"")
     buildConfigField(
         "String",
         "API_CLIENT_ID",

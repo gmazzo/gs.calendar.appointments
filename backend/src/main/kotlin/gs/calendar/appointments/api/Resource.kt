@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType
         name = "googleTokenIdAuth",
         type = SecuritySchemeType.APIKEY,
         `in` = SecuritySchemeIn.HEADER,
-        paramName = BuildConfig.HTTP_HEADER_AUTH_TOKEN_ID
+        paramName = BuildConfig.HEADER_AUTH_TOKEN_ID
     )
 )
 @SecurityRequirement(name = "googleTokenIdAuth")

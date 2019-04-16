@@ -16,7 +16,7 @@ class AuthFilter @Inject constructor(
 ) : ContainerRequestFilter {
 
     override fun filter(context: ContainerRequestContext) {
-        context.headers[BuildConfig.HTTP_HEADER_AUTH_TOKEN_ID]?.let {
+        context.headers[BuildConfig.HEADER_AUTH_TOKEN_ID]?.let {
             val accessToken = it.first()
             val authUser = service.verify(accessToken) ?: throw ForbiddenException("Invalid tokenId: $accessToken")
 

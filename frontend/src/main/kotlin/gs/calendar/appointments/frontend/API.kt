@@ -3,7 +3,6 @@ package gs.calendar.appointments.frontend
 import gs.calendar.appointments.frontend.BuildConfig.API_ENDPOINT
 import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.AgendaId
-import gs.calendar.appointments.model.BuildConfig.HTTP_HEADER_AUTH_TOKEN_ID
 import gs.calendar.appointments.model.Slot
 import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.User
@@ -44,7 +43,7 @@ object API {
             this.headers = jsObject<dynamic> {
                 this["Content-Type"] = "application/json"
 
-                authUser?.let(User::tokenId)?.let { this[HTTP_HEADER_AUTH_TOKEN_ID] = it }
+                authUser?.let(User::tokenId)?.let { this[HEADER_AUTH_TOKEN_ID] = it }
             }
         }
 
