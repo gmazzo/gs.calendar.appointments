@@ -2,6 +2,7 @@ package gs.calendar.appointments.frontend
 
 import gs.calendar.appointments.frontend.redux.ChangeUser
 import gs.calendar.appointments.frontend.redux.dispatch
+import gs.calendar.appointments.model.BuildConfig
 import gs.calendar.appointments.model.User
 import material_ui.core.dialog
 import material_ui.core.dialogActions

@@ -35,13 +35,6 @@ buildConfig {
 
     buildConfigField("String", "APP_NAME", "\"$appName\"")
     buildConfigField("String", "API_ENDPOINT", "\"${apiEndpoint ?: "api"}\"")
-    buildConfigField(
-        "String",
-        "API_CLIENT_ID",
-        System.getenv("GOOGLE_CLIENT_ID")?.let {"\"$it\""}
-            ?: file("google_client_id.txt").takeIf { it.isFile }?.readText()?.let {"\"$it\""}
-            ?: "\"\" // TODO put a valid ClientId  here"
-    )
 }
 
 kotlinFrontend {
@@ -88,10 +81,4 @@ tasks.withType(Kotlin2JsCompile::class) {
         moduleKind = "commonjs"
         main = "call"
     }
-}
-
-tasks.withType(BuildConfigTask::class) {
-    addGeneratedAnnotation = false
-
-    tasks["compileKotlin2Js"].dependsOn(this)
 }

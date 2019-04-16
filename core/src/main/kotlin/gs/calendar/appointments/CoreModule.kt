@@ -13,6 +13,7 @@ import dagger.Provides
 import dagger.Reusable
 import gs.calendar.appointments.agendas.AgendasModule
 import gs.calendar.appointments.auth.AuthModule
+import gs.calendar.appointments.model.BuildConfig
 import gs.calendar.appointments.slots.SlotsModule
 import java.net.URL
 import javax.inject.Named
@@ -64,8 +65,7 @@ internal class CoreModule {
         transport: HttpTransport,
         jsonFactory: JsonFactory
     ) = GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-        // FIXME this must be a shared buildConfig
-        .setAudience(listOf("1060481272070-n50bd7qmcbpukplpctbfpump33uht4gc.apps.googleusercontent.com"))
+        .setAudience(listOf(BuildConfig.API_CLIENT_ID))
         .build()
 
 }
