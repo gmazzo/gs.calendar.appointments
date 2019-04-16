@@ -27,6 +27,7 @@ import notistack.SnackbarVariant
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
 import onClick
+import org.w3c.dom.events.MouseEvent
 import react.RBuilder
 import react.dom.div
 import kotlin.browser.window
@@ -35,6 +36,8 @@ import kotlin.js.Promise
 fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, props: P)
         where P : WithSnackbar, P : WithTheme {
     if (agenda != null && slot != null) {
+
+        val onClose = { _: MouseEvent -> SelectSlot(null).dispatch(); Unit }
 
         fun performBook(
             bookOp: (agendaId: AgendaId, slotId: SlotId, user: User, authUser: User?) -> Promise<Slot>,
@@ -51,30 +54,35 @@ fun <P> RBuilder.appointmentDetails(agenda: Agenda?, slot: Slot?, user: User?, p
                 }
         }
 
-        dialog(onClose = { SelectSlot(null).dispatch() }) {
-            dialogTitle(slot.name)
-            dialogContent {
-                css { minWidth = 300.px }
+        dialog(onClose = onClose) {
+            dialogTitle(title = slot.name, onClose = onClose)
 
-                val hasDescription = !slot.description.isNullOrBlank()
-                if (hasDescription) {
-                    dialogContentText(slot.description!!)
-                }
+            val hasDescription = !slot.description.isNullOrBlank()
+            val hasAttendees = slot.attendees.isNotEmpty()
 
-                slot.attendees.takeIf { it.isNotEmpty() }?.let {
-                    div {
-                        if (hasDescription) {
-                            css { marginTop = (24 - props.theme.spacing.unit).px }
-                        }
+            if (hasDescription || hasAttendees) {
+                dialogContent {
+                    css { minWidth = 300.px }
 
-                        it.forEach { attendee ->
-                            val self = attendee.isSelf(user)
+                    if (hasDescription) {
+                        dialogContentText(slot.description!!)
+                    }
 
-                            chip(
-                                color = if (self) ChipColor.PRIMARY else null,
-                                avatar = { userAvatar(attendee) },
-                                label = attendee.name ?: attendee.email
-                            ) { css { marginRight = props.theme.spacing.unit.px } }
+                    if (hasAttendees) {
+                        div {
+                            if (hasDescription) {
+                                css { marginTop = (24 - props.theme.spacing.unit).px }
+                            }
+
+                            slot.attendees.forEach { attendee ->
+                                val self = attendee.isSelf(user)
+
+                                chip(
+                                    color = if (self) ChipColor.PRIMARY else null,
+                                    avatar = { userAvatar(attendee) },
+                                    label = attendee.name ?: attendee.email
+                                ) { css { marginRight = props.theme.spacing.unit.px } }
+                            }
                         }
                     }
                 }
