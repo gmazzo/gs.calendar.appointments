@@ -1,23 +1,25 @@
 package gs.calendar.appointments.frontend.scheduler
 
+import allOf
 import css
 import dialogTitleWithActions
 import gs.calendar.appointments.frontend.API
 import gs.calendar.appointments.frontend.redux.RefreshSlots
 import gs.calendar.appointments.frontend.redux.SelectSlot
-import gs.calendar.appointments.frontend.redux.SetAdminMode
 import gs.calendar.appointments.frontend.redux.dispatch
 import gs.calendar.appointments.frontend.redux.uiLinked
 import gs.calendar.appointments.frontend.userAvatar
 import gs.calendar.appointments.model.Agenda
-import gs.calendar.appointments.model.AgendaId
 import gs.calendar.appointments.model.Slot
-import gs.calendar.appointments.model.SlotId
+import gs.calendar.appointments.model.SlotParams
 import gs.calendar.appointments.model.User
+import gs.calendar.appointments.model.params
 import kotlinx.css.px
 import material_ui.core.ButtonColor
 import material_ui.core.ButtonVariant
 import material_ui.core.ChipColor
+import material_ui.core.TypographyColor
+import material_ui.core.TypographyVariant
 import material_ui.core.button
 import material_ui.core.chip
 import material_ui.core.dialog
@@ -26,126 +28,200 @@ import material_ui.core.dialogContent
 import material_ui.core.dialogContentText
 import material_ui.core.iconButton
 import material_ui.core.styles.WithTheme
+import material_ui.core.styles.withTheme
+import material_ui.core.textField
+import material_ui.core.typography
 import material_ui.icons.Icons
 import material_ui.icons.icon
 import notistack.SnackbarVariant
 import notistack.WithSnackbar
 import notistack.enqueueSnackbar
+import notistack.withSnackbar
 import onClick
+import org.w3c.dom.events.MouseEvent
+import rClass
 import react.RBuilder
+import react.RComponent
+import react.RHandler
+import react.RState
 import react.dom.div
+import react.setState
 import kotlin.browser.window
 import kotlin.js.Promise
 
-fun <P> RBuilder.appointmentDetails(adminMode: Boolean, agenda: Agenda, slot: Slot, user: User?, props: P)
-        where P : WithSnackbar, P : WithTheme {
+class AppointmentDetails : RComponent<AppointmentDetails.Props, AppointmentDetails.State>() {
 
-    fun close() {
-        if (adminMode) {
-            SetAdminMode(false).dispatch()
+    @Suppress("UNUSED_PARAMETER")
+    private fun close(ev: MouseEvent? = null) {
+        setState {
+            editParams = null
+            capacityError = null
         }
+
         SelectSlot(null).dispatch()
     }
 
-    fun performBook(
-        bookOp: (agendaId: AgendaId, slotId: SlotId, user: User, authUser: User?) -> Promise<Slot>,
-        successPrefix: String
-    ) {
-        bookOp(agenda.id, slot.id, user!!, user)
-            .uiLinked(props)
-            .then { RefreshSlots.dispatch() }
-            .then {
-                props.enqueueSnackbar(
-                    "$successPrefix ${slot.name} at ${slot.startTime.toLocaleString()}",
-                    variant = SnackbarVariant.SUCCESS
-                )
-            }
-    }
+    private fun Promise<Slot>.opThen(successMessage: (Slot) -> String) = uiLinked(props)
+        .then { props.enqueueSnackbar(message = successMessage(it), variant = SnackbarVariant.SUCCESS) }
+        .then { RefreshSlots.dispatch() }
 
-    dialog(onClose = { close() }) {
-        dialogTitleWithActions(title = slot.name) {
-            if (agenda.canChangSlots) {
+    override fun RBuilder.render() {
+        val hasDescription = !props.slot.description.isNullOrBlank()
+        val hasAttendees = props.slot.attendees.isNotEmpty()
+        val editParams = state.editParams
+        val adminMode = editParams != null
+
+        dialog(onClose = ::close) {
+            dialogTitleWithActions(title = props.slot.name) {
+                if (props.agenda.canChangSlots) {
+                    iconButton(color = (ButtonColor.SECONDARY).takeIf { adminMode }) {
+                        icon(Icons.SETTINGS)
+                        onClick { setState { this.editParams = props.slot.params.takeUnless { adminMode } } }
+                    }
+                }
                 iconButton {
-                    icon(Icons.SETTINGS)
-                    onClick { SetAdminMode(!adminMode).dispatch() }
+                    icon(Icons.CLOSE)
+                    onClick(::close)
                 }
             }
-            iconButton {
-                icon(Icons.CLOSE)
-                onClick { close() }
-            }
-        }
 
-        val hasDescription = !slot.description.isNullOrBlank()
-        val hasAttendees = slot.attendees.isNotEmpty()
+            if (hasDescription || hasAttendees || adminMode) {
+                dialogContent {
+                    if (adminMode) {
+                        textField(
+                            label = "Capacity",
+                            value = editParams!!.capacity.toString(),
+                            type = "number",
+                            error = state.capacityError != null,
+                            onChange = {
+                                val value = it.target.asDynamic().value.unsafeCast<String>().toIntOrNull()
 
-        if (adminMode || hasDescription || hasAttendees) {
-            dialogContent {
-                if (adminMode) {
-                    // TODO implement a callback and save the data
-                    appointmentEditor(slot)
-
-                } else {
-                    dialogContentText(slot.description!!)
-
-                    if (hasAttendees) {
-                        div {
-                            if (hasDescription) {
-                                css { marginTop = (24 - props.theme.spacing.unit).px }
+                                setState {
+                                    this.editParams = editParams.copy(capacity = value ?: 1)
+                                    this.capacityError = "Capacity must be at least 1".takeIf { value ?: 1 < 1 }
+                                }
                             }
+                        )
+                        state.capacityError?.let {
+                            typography(
+                                variant = TypographyVariant.CAPTION,
+                                color = TypographyColor.ERROR
+                            ) { +it }
+                        }
 
-                            slot.attendees.forEach { attendee ->
-                                val self = attendee.isSelf(user)
+                    } else {
+                        dialogContentText(props.slot.description!!)
 
-                                chip(
-                                    color = if (self) ChipColor.PRIMARY else null,
-                                    avatar = { userAvatar(attendee) },
-                                    label = attendee.name ?: attendee.email
-                                ) { css { marginRight = props.theme.spacing.unit.px } }
+                        if (hasAttendees) {
+                            div {
+                                if (hasDescription) {
+                                    css { marginTop = (24 - props.theme.spacing.unit).px }
+                                }
+
+                                props.slot.attendees.forEach { attendee ->
+                                    val self = attendee.isSelf(props.user)
+
+                                    chip(
+                                        color = if (self) ChipColor.PRIMARY else null,
+                                        avatar = { userAvatar(attendee) },
+                                        label = attendee.name ?: attendee.email
+                                    ) { css { marginRight = props.theme.spacing.unit.px } }
+                                }
                             }
                         }
                     }
                 }
-            }
-            dialogActions {
-                css {
-                    minWidth = 300.px
-                    borderTop = "1px solid ${props.theme.palette.divider}"
-                    paddingTop = props.theme.spacing.unit.px
-                }
+                dialogActions {
+                    css {
+                        minWidth = 300.px
+                        borderTop = "1px solid ${props.theme.palette.divider}"
+                        paddingTop = props.theme.spacing.unit.px
+                    }
 
-                when {
-                    adminMode -> {
-                        button(
-                            label = "Open at Google",
-                            color = ButtonColor.DEFAULT
-                        ) {
-                            onClick { window.open(slot.externalUrl) }
+                    when {
+                        adminMode -> {
+                            button(
+                                label = "Open at Google",
+                                color = ButtonColor.DEFAULT
+                            ) {
+                                onClick { window.open(props.slot.externalUrl) }
+                            }
+
+                            fun saveButton(label: String, all: Boolean) {
+                                button(
+                                    label = label,
+                                    color = if (all) ButtonColor.SECONDARY else ButtonColor.PRIMARY,
+                                    variant = ButtonVariant.CONTAINED
+                                ) {
+                                    onClick {
+                                        API.slotsUpdate(props.agenda.id, props.slot.id, editParams!!, all, props.user)
+                                            .opThen {
+                                                "Updated ${it.name} at ${it.startTime.toLocaleString()}"
+                                            }
+                                    }
+                                }
+                            }
+
+                            if (props.slot.recurrent) {
+                                saveButton("Update This", false)
+                                saveButton("Update All", true)
+
+                            } else {
+                                saveButton("Update", false)
+                            }
                         }
-                        button(
-                            label = "Save",
+                        props.slot.available -> button(
+                            label = "Book",
                             color = ButtonColor.PRIMARY,
                             variant = ButtonVariant.CONTAINED
                         ) {
-                            // TODO onClick { performSave }
+                            onClick {
+                                API.slotsBook(props.agenda.id, props.slot.id, props.user!!).opThen {
+                                    "Booked ${it.name} at ${it.startTime.toLocaleString()}"
+                                }
+                            }
                         }
-                    }
-                    slot.available -> button(
-                        label = "Book",
-                        color = ButtonColor.PRIMARY,
-                        variant = ButtonVariant.CONTAINED
-                    ) {
-                        onClick { performBook(API::slotsBook, "Booked") }
-                    }
-                    slot.selfIsAttendee -> button(
-                        label = "Cancel",
-                        color = ButtonColor.SECONDARY,
-                        variant = ButtonVariant.CONTAINED
-                    ) {
-                        onClick { performBook(API::slotsUnbook, "Canceled") }
+                        props.slot.selfIsAttendee -> button(
+                            label = "Cancel",
+                            color = ButtonColor.SECONDARY,
+                            variant = ButtonVariant.CONTAINED
+                        ) {
+                            onClick {
+                                API.slotsUnbook(props.agenda.id, props.slot.id, props.user!!).opThen {
+                                    "Canceled ${it.name} at ${it.startTime.toLocaleString()}"
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
+    interface Props : WithTheme, WithSnackbar {
+        var agenda: Agenda
+        var slot: Slot
+        var user: User?
+    }
+
+    data class State(
+        var editParams: SlotParams?,
+        var capacityError: String?
+    ) : RState
+
+}
+
+private val wrapped = allOf<AppointmentDetails.Props>(withTheme(), withSnackbar())(AppointmentDetails::class.rClass)
+
+fun RBuilder.appointmentDetails(
+    agenda: Agenda,
+    slot: Slot,
+    user: User?,
+    handler: (RHandler<AppointmentDetails.Props>) = {}
+) = wrapped {
+    attrs.agenda = agenda
+    attrs.slot = slot
+    attrs.user = user
+
+    handler(this)
 }

@@ -4,6 +4,7 @@ import com.google.api.client.util.store.FileDataStoreFactory
 import com.jakewharton.rs.kotlinx.serialization.asMessageBodyReader
 import com.jakewharton.rs.kotlinx.serialization.asMessageBodyWriter
 import gs.calendar.appointments.api.AuthFilter
+import gs.calendar.appointments.api.BooleanQueryParamSanitizer
 import gs.calendar.appointments.api.DefaultExceptionMapper
 import gs.calendar.appointments.api.agendas.AgendasResource
 import gs.calendar.appointments.api.slots.SlotsResource
@@ -64,9 +65,10 @@ class Application : javax.ws.rs.core.Application() {
         // swagger
         OpenApiResource::class.java,
         AcceptHeaderOpenApiResource::class.java,
+        SwaggerSerializers::class.java,
 
         // providers
-        SwaggerSerializers::class.java,
+        BooleanQueryParamSanitizer::class.java,
         DefaultExceptionMapper::class.java
     )
 

@@ -4,24 +4,29 @@ import kotlinx.serialization.Serializable
 
 typealias SlotId = String
 
+private interface MutableSlot {
+    val capacity: Int
+}
+
 @Serializable
 data class Slot(
     val id: SlotId,
-    override val name: String,
-    override val description: String? = null,
+    val name: String,
+    val description: String? = null,
     @Serializable(DateSerializer::class) val startTime: Date,
     @Serializable(DateSerializer::class) val endTime: Date,
-    override val location: String? = null,
+    val location: String? = null,
     val attendees: (List<User>) = emptyList(),
     val selfIsAttendee: Boolean,
     val available: Boolean,
+    val recurrent: Boolean,
     override val capacity: Int,
     val externalUrl: URL
-) : SlotParams
+) : MutableSlot
 
-interface SlotParams {
-    val name: String?
-    val description: String?
-    val location: String?
-    val capacity: Int
-}
+@Serializable
+data class SlotParams(
+    override val capacity: Int
+) : MutableSlot
+
+val Slot.params get() = SlotParams(capacity = capacity)

@@ -85,11 +85,3 @@ object RefreshSlots : Action() {
     )
 
 }
-
-data class SetAdminMode(private val adminMode: Boolean) : Action() {
-
-    override fun invoke(state: App.State) = state.copy(
-        adminMode = adminMode
-    )
-
-}

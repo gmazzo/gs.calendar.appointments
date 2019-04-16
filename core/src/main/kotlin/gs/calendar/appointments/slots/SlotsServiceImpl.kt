@@ -52,20 +52,23 @@ internal class SlotsServiceImpl @Inject constructor(
                 .let { it.asSlot(user) }
         }
 
-    override fun update(agendaId: AgendaId, slotId: SlotId, allInstances: Boolean, params: SlotParams) = api
+    override fun update(
+        agendaId: AgendaId,
+        slotId: SlotId,
+        allInstances: Boolean,
+        params: SlotParams,
+        user: User?
+    ) = api
         .events()
         .get(agendaId, slotId)
         .execute()
         .let { event ->
             api.events()
                 .patch(agendaId, event.recurringEventId?.takeIf { allInstances } ?: slotId, Event().apply {
-                    params.name?.let { summary = it }
-                    params.description?.let { description = it }
-                    params.location?.let { location = it }
                     capacity = Math.max(params.capacity, 1)
                 })
                 .execute()
-                .let { it.asSlot() }
+                .let { it.asSlot(user) }
         }
 
     private var Event.capacity: Int
@@ -108,6 +111,7 @@ internal class SlotsServiceImpl @Inject constructor(
             ?: emptyList(),
         selfIsAttendee = user != null && registeredAttendees?.find { it.isSelf(user) } != null,
         available = availableFor(user),
+        recurrent = recurringEventId != null,
         capacity = capacity,
         externalUrl = htmlLink
     )

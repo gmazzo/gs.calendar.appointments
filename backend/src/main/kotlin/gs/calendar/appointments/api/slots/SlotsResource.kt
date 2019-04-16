@@ -10,7 +10,6 @@ import gs.calendar.appointments.model.SlotId
 import gs.calendar.appointments.model.SlotParams
 import gs.calendar.appointments.model.User
 import gs.calendar.appointments.slots.SlotsService
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.ws.rs.DELETE
@@ -68,9 +67,9 @@ class SlotsResource @Inject constructor(
         @PathParam(PARAM_SLOT) slotId: SlotId,
         @Context authUser: User?,
         @QueryParam("all") @DefaultValue("false") all: Boolean,
-        params: SlotBody
+        params: SlotParams
     ): Slot = authUser.assureAdmin(agendaId) {
-        slotsService.update(agendaId, slotId, all, params)
+        slotsService.update(agendaId, slotId, all, params, authUser)
     }
 
     private fun <R> User?.assureSame(user: User, then: () -> R): R {
@@ -89,13 +88,5 @@ class SlotsResource @Inject constructor(
         }
         return then()
     }
-
-    @Serializable
-    data class SlotBody(
-        override val name: String?,
-        override val description: String?,
-        override val location: String?,
-        override val capacity: Int
-    ) : SlotParams
 
 }

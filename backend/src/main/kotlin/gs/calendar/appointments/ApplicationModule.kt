@@ -10,7 +10,9 @@ internal class ApplicationModule {
 
     @Provides
     @Reusable
-    fun provideCorsFilter() =
-        CorsFilter().apply { allowedOrigins.add("*") }
+    fun provideCorsFilter() = CorsFilter().apply {
+        allowedOrigins.add("*")
+        allowedMethods = "OPTIONS, GET, POST, DELETE, PUT, PATCH"
+    }
 
 }
