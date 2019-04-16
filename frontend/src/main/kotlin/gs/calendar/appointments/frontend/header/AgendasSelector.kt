@@ -8,6 +8,7 @@ import gs.calendar.appointments.model.Agenda
 import kotlinx.css.margin
 import kotlinx.css.px
 import material_ui.core.ButtonColor
+import material_ui.core.ButtonVariant
 import material_ui.core.TooltipPlacement
 import material_ui.core.button
 import material_ui.core.menu
@@ -32,6 +33,7 @@ class AgendasSelector : RComponent<AgendasSelector.Props, AgendasSelector.State>
         props.options?.takeIf { it.isNotEmpty() }?.also { agendas ->
             button(
                 color = ButtonColor.SECONDARY,
+                variant = ButtonVariant.CONTAINED,
                 label = props.value?.name ?: ""
             ) {
                 css { margin(left = props.theme.spacing.unit.px) }

@@ -72,6 +72,7 @@ class App : RComponent<App.Props, App.State>() {
                 overflow = Overflow.auto
             }
             scheduler(
+                adminMode = state.adminMode,
                 agenda = state.currentAgenda,
                 slot = state.currentSlot,
                 user = state.currentUser
@@ -90,6 +91,7 @@ class App : RComponent<App.Props, App.State>() {
     interface Props : WithTheme, WithSnackbar
 
     data class State(
+        val adminMode: Boolean = false,
         val loadingCount: Int = 0,
         val agendas: List<Agenda>? = null,
         val currentUser: User? = null,

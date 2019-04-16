@@ -11,5 +11,6 @@ data class Agenda(
     val description: String? = null,
     val foregroundColor: String,
     val backgroundColor: String,
-    val available: Boolean
+    val available: Boolean,
+    val canChangSlots: Boolean
 )

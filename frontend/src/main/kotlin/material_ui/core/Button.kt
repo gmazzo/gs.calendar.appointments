@@ -8,15 +8,15 @@ import react.RProps
 private val button = module.Button.unsafeCast<Button>()
 
 fun RBuilder.button(
-    label: String,
-    variant: ButtonVariant = ButtonVariant.CONTAINED,
-    color: ButtonColor = ButtonColor.INHERIT,
+    label: String? = null,
+    variant: ButtonVariant? = null,
+    color: ButtonColor? = null,
     handler: (RHandler<Button.Props>) = {}
-) = button {
-    attrs.variant = variant
-    attrs.color = color
+) = button.invoke {
+    variant?.let { attrs.variant = it }
+    color?.let { attrs.color = it }
+    label?.let { +it }
 
-    +label
     handler(this)
 }
 

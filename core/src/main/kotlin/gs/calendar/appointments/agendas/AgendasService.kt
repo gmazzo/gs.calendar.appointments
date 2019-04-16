@@ -6,9 +6,9 @@ import gs.calendar.appointments.model.User
 
 interface AgendasService {
 
-    fun list(includeHidden: Boolean): List<Agenda>
+    fun list(includeHidden: Boolean, user: User?): List<Agenda>
 
-    fun enable(agendaId: AgendaId, enabled: Boolean): Agenda
+    fun enable(agendaId: AgendaId, enabled: Boolean, user: User?): Agenda
 
     fun isAdmin(agendaId: AgendaId, user: User): Boolean
 

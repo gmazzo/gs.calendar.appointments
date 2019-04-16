@@ -9,12 +9,12 @@ private val typography = module.Typography.unsafeCast<Typography>()
 
 fun RBuilder.typography(
     variant: TypographyVariant,
-    color: TypographyColor = TypographyColor.INHERIT,
+    color: TypographyColor? = null,
     handler: (RHandler<Typography.Props>) = {}
 ) =
     typography {
         attrs.variant = variant
-        attrs.color = color
+        color?.let { attrs.color = it }
 
         handler(this)
     }

@@ -6,6 +6,7 @@ import gs.calendar.appointments.model.Agenda
 import gs.calendar.appointments.model.User
 import kotlinx.css.flex
 import material_ui.core.AppBarPosition
+import material_ui.core.TypographyColor
 import material_ui.core.TypographyVariant
 import material_ui.core.appBar
 import material_ui.core.position
@@ -24,7 +25,7 @@ fun RBuilder.header(
             position = AppBarPosition.STATIC
         }
         toolBar {
-            typography(TypographyVariant.H6) {
+            typography(variant = TypographyVariant.H6, color = TypographyColor.INHERIT) {
                 css {
                     flex(1.0)
                 }

@@ -75,12 +75,18 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
             eventPropGetter = ::eventPropGetter,
             onSelectEvent = { SelectSlot(it.slot).dispatch() }
         )
-        appointmentDetails(
-            agenda = props.agenda,
-            slot = props.slot,
-            user = props.user,
-            props = props
-        )
+
+        val agenda = props.agenda
+        val slot = props.slot
+        if (agenda != null && slot != null) {
+            appointmentDetails(
+                adminMode = props.adminMode,
+                agenda = agenda,
+                slot = slot,
+                user = props.user,
+                props = props
+            )
+        }
     }
 
     private fun eventPropGetter(event: CalendarEvent): AppointmentView.Props = jsObject {
@@ -101,6 +107,7 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
     }
 
     interface Props : WithTheme, WithSnackbar {
+        var adminMode: Boolean
         var agenda: Agenda?
         var slot: Slot?
         var user: User?
@@ -115,11 +122,13 @@ class Scheduler : RComponent<Scheduler.Props, Scheduler.State>() {
 private val wrapped = allOf<Scheduler.Props>(withTheme(), withSnackbar())(Scheduler::class.rClass)
 
 fun RBuilder.scheduler(
+    adminMode: Boolean,
     agenda: Agenda?,
     slot: Slot?,
     user: User?,
     handler: (RHandler<Scheduler.Props>) = {}
 ) = wrapped {
+    attrs.adminMode = adminMode
     attrs.agenda = agenda
     attrs.slot = slot
     attrs.user = user

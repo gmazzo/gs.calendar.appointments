@@ -1,37 +1,29 @@
 package material_ui.core
 
-import css
-import kotlinx.css.Position
-import kotlinx.css.px
-import material_ui.icons.Icons
-import material_ui.icons.icon
-import onClick
-import org.w3c.dom.events.MouseEvent
 import react.RBuilder
 import react.RClass
 import react.RHandler
 import react.RProps
 
-private val dialogTitle = module.DialogTitle.unsafeCast<RClass<RProps>>()
+private val dialogTitle = module.DialogTitle.unsafeCast<DialogTitle>()
 
 fun RBuilder.dialogTitle(
-    title: String,
-    onClose: ((MouseEvent) -> Unit)? = null,
-    handler: (RHandler<RProps>) = {}
-) = dialogTitle {
-    +title
-
-    onClose?.let {
-        iconButton {
-            css {
-                position = Position.absolute
-                top = 6.px
-                right = 6.px
-            }
-            icon(Icons.CLOSE)
-            onClick(it)
-        }
-    }
+    title: String? = null,
+    disableTypography: Boolean? = null,
+    handler: (RHandler<DialogTitle.Props>) = {}
+) = dialogTitle.invoke {
+    disableTypography?.let { attrs.disableTypography = disableTypography }
+    title?.let { +it }
 
     handler(this)
+}
+
+external interface DialogTitle : RClass<DialogTitle.Props> {
+
+    interface Props : RProps {
+
+        var disableTypography: Boolean
+
+    }
+
 }

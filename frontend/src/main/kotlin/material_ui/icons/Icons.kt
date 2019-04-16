@@ -19,6 +19,9 @@ external object Icons {
     @JsName("Menu")
     val MENU: Icon
 
+    @JsName("Settings")
+    val SETTINGS: Icon
+
 }
 
 fun RBuilder.icon(

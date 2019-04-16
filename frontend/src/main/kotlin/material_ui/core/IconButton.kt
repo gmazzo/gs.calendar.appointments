@@ -8,10 +8,10 @@ abstract external class IconButton : Button
 private val iconButton = module.IconButton.unsafeCast<IconButton>()
 
 fun RBuilder.iconButton(
-    color: ButtonColor = ButtonColor.INHERIT,
+    color: ButtonColor? = null,
     handler: (RHandler<Button.Props>) = {}
 ) = iconButton.invoke {
-    attrs.color = color
+    color?.let { attrs.color = it }
 
     handler(this)
 }

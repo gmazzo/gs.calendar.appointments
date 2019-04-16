@@ -76,3 +76,20 @@ data class SelectSlot(private val slot: Slot?) : Action() {
     )
 
 }
+
+object RefreshSlots : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        currentAgenda = state.currentAgenda?.copy(),
+        currentSlot = null
+    )
+
+}
+
+data class SetAdminMode(private val adminMode: Boolean) : Action() {
+
+    override fun invoke(state: App.State) = state.copy(
+        adminMode = adminMode
+    )
+
+}

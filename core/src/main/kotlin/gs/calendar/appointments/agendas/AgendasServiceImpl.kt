@@ -11,20 +11,20 @@ internal class AgendasServiceImpl @Inject constructor(
     private val api: Calendar
 ) : AgendasService {
 
-    override fun list(includeHidden: Boolean) = api
+    override fun list(includeHidden: Boolean, user: User?) = api
         .calendarList()
         .list()
         .setMinAccessRole("writer")
         .setShowHidden(includeHidden)
         .execute()
         .items
-        .map { it.toAgenda() }
+        .map { it.toAgenda(user) }
 
-    override fun enable(agendaId: AgendaId, enabled: Boolean) = api
+    override fun enable(agendaId: AgendaId, enabled: Boolean, user: User?) = api
         .calendarList()
         .patch(agendaId, CalendarListEntry().setHidden(enabled))
         .execute()
-        .let { it.toAgenda() }
+        .let { it.toAgenda(user) }
 
     override fun isAdmin(agendaId: AgendaId, user: User) = api
         .acl()
@@ -33,13 +33,14 @@ internal class AgendasServiceImpl @Inject constructor(
         .items
         .find { it.scope.type == "user" && it.scope.value == user.email } != null
 
-    private fun CalendarListEntry.toAgenda() = Agenda(
+    private fun CalendarListEntry.toAgenda(authUser: User?) = Agenda(
         id = id,
         name = summary,
         description = description,
         foregroundColor = foregroundColor,
         backgroundColor = backgroundColor,
-        available = hidden != true
+        available = hidden != true,
+        canChangSlots = authUser != null && isAdmin(id, authUser)
     )
 
 }
