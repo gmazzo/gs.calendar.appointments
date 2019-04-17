@@ -40,10 +40,6 @@ buildConfig {
     )
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 tasks.withType(KotlinCompile::class).all {
     kotlinOptions {
         jvmTarget = "1.8"

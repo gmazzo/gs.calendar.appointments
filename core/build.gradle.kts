@@ -18,7 +18,3 @@ dependencies {
 
     testCompile("junit:junit:4.12")
 }
-
-kapt {
-    correctErrorTypes = true
-}

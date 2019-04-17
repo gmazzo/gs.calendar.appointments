@@ -1,12 +1,13 @@
 val buildConfigVersion: String by settings
 val kotlinVersion: String by settings
+val kotlinFrontendVersion: String by settings
 
 pluginManagement {
     resolutionStrategy {
         eachPlugin {
             when {
                 requested.id.id == "org.jetbrains.kotlin.frontend" ->
-                    useModule("org.jetbrains.kotlin:kotlin-frontend-plugin:${requested.version}")
+                    useModule("org.jetbrains.kotlin:kotlin-frontend-plugin:$kotlinFrontendVersion")
 
                 requested.id.id == "kotlin2js" ->
                     useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
