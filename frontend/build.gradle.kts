@@ -1,11 +1,9 @@
-import com.github.gmazzo.gradle.plugins.BuildConfigLanguage
-import com.github.gmazzo.gradle.plugins.tasks.BuildConfigTask
 import org.jetbrains.kotlin.gradle.frontend.webpack.WebPackExtension
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("kotlin2js")
-    kotlin("frontend") version "0.0.45"
+    kotlin("frontend")
     id("com.github.gmazzo.buildconfig")
 }
 
@@ -30,7 +28,6 @@ dependencies {
 }
 
 buildConfig {
-    language(BuildConfigLanguage.KOTLIN)
     packageName("${project.group}.${project.name}")
 
     buildConfigField("String", "APP_NAME", "\"$appName\"")

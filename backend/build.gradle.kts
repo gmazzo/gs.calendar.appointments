@@ -17,7 +17,7 @@ val restEasyVersion = "4.0.0.Beta8"
 dependencies {
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
-    implementation(project(":core"))
+    api(project(":core"))
 
     implementation("com.google.dagger:dagger:$daggerVersion")
     implementation("com.jakewharton:jax-rs-kotlinx-serialization:0.2.1")
@@ -38,10 +38,6 @@ buildConfig {
         name = "DATA_STORE_FILE",
         value = "File(\"${rootProject.buildDir.relativeTo(rootDir)}/storage\")"
     )
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 tasks.withType(KotlinCompile::class).all {

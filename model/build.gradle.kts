@@ -42,7 +42,7 @@ buildConfig {
         "String",
         "API_CLIENT_ID",
         System.getenv("GOOGLE_CLIENT_ID")?.let {"\"$it\""}
-            ?: file("google_client_id.txt").takeIf { it.isFile }?.readText()?.let {"\"$it\""}
+            ?: file("google_client_id.txt").takeIf { it.isFile }?.readText()?.trim()?.let {"\"$it\""}
             ?: "\"\" // TODO put a valid ClientId  here"
     )
 }
